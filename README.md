@@ -1,16 +1,12 @@
-# Full-Stack-E-Commerce-MERN-APP
-Full Stack E-Commerce MERN APP
+eccomemrce website
 
-![Alt text](Full%20Stack%20E-Commerce%20MERN%20App.png?raw=true "Title")
+command To run frontend :
+cd frontend
+npm i 
+npm start 
 
-Backend .env file 
 
-MONGODB_URI = 
-TOKEN_SECRET_KEY = 
-FRONTEND_URL
-
-Frontend .env file
-
-REACT_APP_CLOUD_NAME_CLOUDINARY = 
-
-Image : https://drive.google.com/drive/folders/1KmY74OYniEodtOVAjNGJv4628HghRbcQ?usp=sharing
+command TO run backend:
+cd backend
+npm i
+npm run dev
