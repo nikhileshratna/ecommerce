@@ -45,13 +45,6 @@ async function userSignInController(req,res){
        }else{
          throw new Error("Please check Password")
        }
-
-
-
-
-
-
-
     }catch(err){
         res.json({
             message : err.message || err  ,
@@ -59,7 +52,6 @@ async function userSignInController(req,res){
             success : false,
         })
     }
-
 }
 
 module.exports = userSignInController

@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import Logo from './Logo'
+import Logo from '../assest/ecommercelogo.jpg'
 import { GrSearch } from "react-icons/gr";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { FaShoppingCart } from "react-icons/fa";
@@ -55,10 +55,13 @@ const Header = () => {
   return (
     <header className='h-16 shadow-md bg-white fixed w-full z-40'>
       <div className=' h-full container mx-auto flex items-center px-4 justify-between'>
-            <div className=''>
+            <div className='flex flex-row gap-2'>
                 <Link to={"/"}>
-                    <Logo w={90} h={50}/>
+                    <img src={Logo} alt="logo" className='h-12 '/>
                 </Link>
+                <p className='text-3xl color:red'>
+                  Sidham
+                </p>
             </div>
 
             <div className='hidden lg:flex items-center w-full justify-between max-w-sm border rounded-full focus-within:shadow pl-2'>
@@ -97,6 +100,7 @@ const Header = () => {
                               <Link to={"/admin-panel/all-products"} className='whitespace-nowrap hidden md:block hover:bg-slate-100 p-2' onClick={()=>setMenuDisplay(preve => !preve)}>Admin Panel</Link>
                             )
                           }
+                          
                          
                         </nav>
                       </div>

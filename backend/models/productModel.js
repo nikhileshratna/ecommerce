@@ -7,7 +7,11 @@ const productSchema = mongoose.Schema({
     productImage : [],
     description : String,
     price : Number,
-    sellingPrice : Number
+    sellingPrice : Number,
+    howToUse : String,
+    benefits : String,
+    ingredients : String,
+    review : String,
 },{
     timestamps : true
 })

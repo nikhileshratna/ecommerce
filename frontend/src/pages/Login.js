@@ -28,32 +28,39 @@ const Login = () => {
     }
 
 
-    const handleSubmit = async(e) =>{
-        e.preventDefault()
-
-        const dataResponse = await fetch(SummaryApi.signIn.url,{
-            method : SummaryApi.signIn.method,
-            credentials : 'include',
-            headers : {
-                "content-type" : "application/json"
-            },
-            body : JSON.stringify(data)
-        })
-
-        const dataApi = await dataResponse.json()
-
-        if(dataApi.success){
-            toast.success(dataApi.message)
-            navigate('/')
-            fetchUserDetails()
-            fetchUserAddToCart()
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+    
+        try {
+            const response = await fetch(SummaryApi.signIn.url, {
+                method: SummaryApi.signIn.method,
+                credentials: 'include',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            });
+    
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+    
+            const dataApi = await response.json();
+    
+            if (dataApi.success) {
+                toast.success(dataApi.message);
+                navigate('/');
+                fetchUserDetails();
+                fetchUserAddToCart();
+            } else if (dataApi.error) {
+                toast.error(dataApi.message);
+            }
+        } catch (error) {
+            console.error('Failed to fetch', error);
+            toast.error('An error occurred while logging in.');
         }
-
-        if(dataApi.error){
-            toast.error(dataApi.message)
-        }
-
-    }
+    };
+    
 
     console.log("data login",data)
     

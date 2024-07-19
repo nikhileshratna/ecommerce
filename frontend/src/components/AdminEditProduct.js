@@ -22,7 +22,11 @@ const AdminEditProduct = ({
     productImage : productData?.productImage || [],
     description : productData?.description,
     price : productData?.price,
-    sellingPrice : productData?.sellingPrice
+    sellingPrice : productData?.sellingPrice,
+    howToUse : productData?.howToUse,
+    benefits : productData?.benefits,
+    ingredients : productData?.ingredients,
+    review : productData?.review,
   })
   const [openFullScreenImage,setOpenFullScreenImage] = useState(false)
   const [fullScreenImage,setFullScreenImage] = useState("")
@@ -225,6 +229,52 @@ const AdminEditProduct = ({
              value={data.description}
            >
            </textarea>
+
+           <label htmlFor='howToUse' className='mt-3'>How To Use :</label>
+              <textarea 
+                className='h-28 bg-slate-100 border resize-none p-1' 
+                placeholder='enter how to use this product' 
+                rows={3} 
+                onChange={handleOnChange} 
+                name='howToUse'
+                value={data.howToUse}
+              >
+              </textarea>
+
+              <label htmlFor='benefits' className='mt-3'>Benefits of Product:</label>
+              <textarea 
+                className='h-28 bg-slate-100 border resize-none p-1' 
+                placeholder='enter product benefits' 
+                rows={3} 
+                onChange={handleOnChange} 
+                name='benefits'
+                value={data.benefits}
+              >
+              </textarea>
+
+
+              <label htmlFor='ingredients' className='mt-3'>Ingredients of Product:</label>
+              <textarea
+                className='h-28 bg-slate-100 border resize-none p-1' 
+                placeholder='enter product ingredients' 
+                rows={3} 
+                onChange={handleOnChange} 
+                name='ingredients'
+                value={data.ingredients}
+              >
+              </textarea>
+
+              <label htmlFor='review' className='mt-3'>Riview of Product:</label>
+              <textarea
+                className='h-28 bg-slate-100 border resize-none p-1' 
+                placeholder='enter product review' 
+                rows={3} 
+                onChange={handleOnChange} 
+                name='review'
+                value={data.review}
+              >
+              </textarea>
+
 
 
 

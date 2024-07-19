@@ -1,4 +1,4 @@
-const backendDomin = "http://localhost:8080"
+const backendDomin = "http://localhost:8000"
 
 const SummaryApi = {
     signUP : {
@@ -36,6 +36,10 @@ const SummaryApi = {
     updateProduct : {
         url : `${backendDomin}/api/update-product`,
         method  : 'post'
+    },
+    deleteProduct : {
+        url : `${backendDomin}/api/delete-product`,
+        method : 'post'
     },
     categoryProduct : {
         url : `${backendDomin}/api/get-categoryProduct`,
