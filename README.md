@@ -1,4 +1,4 @@
-Ecommerce website
+Ecommerce website : 
 
 Command To run frontend :
 cd frontend
