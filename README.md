@@ -1,4 +1,4 @@
-eccomemrce website
+ecommerce website
 
 command To run frontend :
 cd frontend
