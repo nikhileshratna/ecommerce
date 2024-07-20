@@ -1,12 +1,12 @@
-ecommerce website
+Ecommerce website
 
-command To run frontend :
+Command To run frontend :
 cd frontend
 npm i 
 npm start 
 
 
-command TO run backend:
+Command TO run backend:
 cd backend
 npm i
 npm run dev
