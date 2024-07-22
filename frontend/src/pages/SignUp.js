@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import imageTobase64 from '../helpers/imageTobase64';
 import SummaryApi from '../common';
 import { toast } from 'react-toastify';
+import GoogleLoginButton from '../components/GoogleLoginButton';
 
 const SignUp = () => {
   const [showPassword,setShowPassword] = useState(false)
@@ -76,6 +77,7 @@ const SignUp = () => {
   }
 
   return (
+    <div>
     <section id='signup'>
         <div className='mx-auto container p-4'>
 
@@ -188,6 +190,10 @@ const SignUp = () => {
 
         </div>
     </section>
+    <button className='mb-4'>
+    <GoogleLoginButton loginType = {'signup'}/>
+    </button>
+    </div>
   )
 }
 
