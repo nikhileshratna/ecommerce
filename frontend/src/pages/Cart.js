@@ -12,15 +12,22 @@ const Cart = () => {
   const [loading, setLoading] = useState(false);
   const context = useContext(Context);
   const loadingCart = new Array(4).fill(null);
-  const { token } = useSelector((state) => state.auth);
-  const { total, cart } = useSelector((state) => state.cart);
+  // const { token } = useSelector((state) => state.auth);
+  // const { total, cart } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.profile);
+  
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   const handleBuyProduct = async () => {
-    const products = cart.map((product) => product._id);
-    BuyProduct(token, products, user, navigate, dispatch);
+    let products = [];
+    data?.map((item) => {
+      products.push({
+        _id: item._id,
+        quantity: item.quantity,
+      });
+    })
+    BuyProduct( products, user, navigate);
   };
 
   const fetchData = async () => {

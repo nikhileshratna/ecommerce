@@ -5,11 +5,11 @@ const {
   capturePayment,
   // verifySignature,
   verifyPayment,
-  //   sendPaymentSuccessEmail,
-} = require("../controller/Payments");
-const { auth, isBuyer } = require("../middleware/auth");
-router.post("/capturePayment", auth, isBuyer, capturePayment);
-router.post("/verifyPayment", auth, isBuyer, verifyPayment);
+//   sendPaymentSuccessEmail,
+} = require("../controller/Payments")
+const { authToken } = require("../middleware/authToken")
+router.post("/capturePayment", authToken, capturePayment)
+router.post("/verifyPayment", authToken, verifyPayment)
 // router.post(
 //   "/sendPaymentSuccessEmail",
 //   auth,

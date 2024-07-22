@@ -1,5 +1,4 @@
 import { toast } from "react-hot-toast"
-
 import Logo from '../assest/ecommercelogo.jpg'
 import { resetCart } from "../slices/cartSlice"
 import { setPaymentLoading } from "../slices/productSlice"
@@ -32,11 +31,10 @@ function loadScript(src) {
 
 // Buy the Course
 export async function BuyProduct(
-  token,
   products,
   user_details,
   navigate,
-  dispatch
+  dispatch,
 ) {
   const toastId = toast.loading("Loading...")
   try {
@@ -55,11 +53,11 @@ export async function BuyProduct(
       "POST",
       PRODUCT_PAYMENT_API,
       {
-        products,
+        products
       },
-      {
-        Authorization: `Bearer ${token}`,
-      }
+      // {
+      //   Authorization: `Bearer ${token}`,
+      // }
     )
 
     if (!orderResponse.data.success) {
@@ -82,7 +80,7 @@ export async function BuyProduct(
       },
       handler: function (response) {
         // sendPaymentSuccessEmail(response, orderResponse.data.data.amount, token)
-        verifyPayment({ ...response, products }, token, navigate, dispatch)
+        verifyPayment({ ...response, products },  navigate, dispatch)
       },
     }
     const paymentObject = new window.Razorpay(options)
@@ -100,13 +98,16 @@ export async function BuyProduct(
 }
 
 // Verify the Payment
-async function verifyPayment(bodyData, token, navigate, dispatch) {
+async function verifyPayment(bodyData,  navigate, dispatch) {
   const toastId = toast.loading("Verifying Payment...")
   dispatch(setPaymentLoading(true))
   try {
-    const response = await apiConnector("POST", PRODUCT_VERIFY_API, bodyData, {
-      Authorization: `Bearer ${token}`,
-    })
+    const response = await apiConnector("POST", PRODUCT_VERIFY_API, bodyData
+    // ,
+    //  {
+    //   Authorization: `Bearer ${token}`,
+    // }
+    )
 
     console.log("VERIFY PAYMENT RESPONSE FROM BACKEND............", response)
 

@@ -13,15 +13,17 @@ const mongoose = require("mongoose")
 // Capture the payment and initiate the Razorpay order
 exports.capturePayment = async (req, res) => {
   const { products, quantity } = req.body
-  const userId = req.user.id
+  const userId = req.userId
   if (products.length === 0) {
     return res.json({ success: false, message: "Please Provide Course ID" })
   }
 
   let total_amount = 0
 
-  for (const product_id of products) {
+  for (let i = 0 ; i < products.length ; i++) {
     let product
+    const product_id = products[i]._id;
+    const quantity = products[i].quantity;
     try {
       // Find the course by its ID
       product = await productModel.findById(product_id)
@@ -70,7 +72,7 @@ exports.verifyPayment = async (req, res) => {
   const razorpay_signature = req.body?.razorpay_signature
   const products = req.body?.products
 
-  const userId = req.user.id
+  const userId = req.userId
 
   if (
     !razorpay_order_id ||
@@ -101,7 +103,7 @@ exports.verifyPayment = async (req, res) => {
 exports.sendPaymentSuccessEmail = async (req, res) => {
   const { orderId, paymentId, amount } = req.body
 
-  const userId = req.user.id
+  const userId = req.userId
 
   if (!orderId || !paymentId || !amount || !userId) {
     return res
