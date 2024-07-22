@@ -1,15 +1,15 @@
 // Import the required modules
-const express = require("express")
-const router = express.Router()
+const express = require("express");
+const router = express.Router();
 const {
   capturePayment,
   // verifySignature,
   verifyPayment,
-//   sendPaymentSuccessEmail,
-} = require("../controllers/Payments")
-const { authToken } = require("../middleware/authToken")
-router.post("/capturePayment", authToken, capturePayment)
-router.post("/verifyPayment", authToken, verifyPayment)
+  //   sendPaymentSuccessEmail,
+} = require("../controller/Payments");
+const { auth, isBuyer } = require("../middleware/auth");
+router.post("/capturePayment", auth, isBuyer, capturePayment);
+router.post("/verifyPayment", auth, isBuyer, verifyPayment);
 // router.post(
 //   "/sendPaymentSuccessEmail",
 //   auth,
@@ -18,4 +18,4 @@ router.post("/verifyPayment", authToken, verifyPayment)
 // )
 // router.post("/verifySignature", verifySignature)
 
-module.exports = router
+module.exports = router;

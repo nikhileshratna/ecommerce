@@ -1,7 +1,7 @@
 const { instance } = require("../config/razorpay")
 const productModel = require("../models/productModel")
 const crypto = require("crypto")
-const User = require("../models/User")
+const userModel = require("../models/userModel")
 // const mailSender = require("../utils/mailSender")
 const mongoose = require("mongoose")
 // const {
@@ -110,7 +110,7 @@ exports.sendPaymentSuccessEmail = async (req, res) => {
   }
 
   try {
-    const enrolledStudent = await User.findById(userId)
+    const enrolledStudent = await userModel.findById(userId)
 
     await mailSender(
       enrolledStudent.email,

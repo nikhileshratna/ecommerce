@@ -3,7 +3,7 @@ import fetchCategoryWiseProduct from '../helpers/fetchCategoryWiseProduct'
 import displayINRCurrency from '../helpers/displayCurrency'
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa6'
 import { Link } from 'react-router-dom'
-import addToCart from '../helpers/addToCart'
+import AddToCart from '../helpers/AddToCart'
 import Context from '../context'
 import scrollTop from '../helpers/scrollTop'
 
@@ -15,7 +15,7 @@ const CategroyWiseProductDisplay = ({category, heading}) => {
     const { fetchUserAddToCart } = useContext(Context)
 
     const handleAddToCart = async(e,id)=>{
-       await addToCart(e,id)
+       await AddToCart(e,id)
        fetchUserAddToCart()
     }
 

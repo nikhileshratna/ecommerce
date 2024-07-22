@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import scrollTop from '../helpers/scrollTop'
 import displayINRCurrency from '../helpers/displayCurrency'
 import Context from '../context'
-import addToCart from '../helpers/addToCart'
+import AddToCart from '../helpers/AddToCart'
 import { Link } from 'react-router-dom'
 
 const VerticalCard = ({loading,data = []}) => {
@@ -10,8 +10,9 @@ const VerticalCard = ({loading,data = []}) => {
     const { fetchUserAddToCart } = useContext(Context)
 
     const handleAddToCart = async(e,id)=>{
-       await addToCart(e,id)
-       fetchUserAddToCart()
+       const res=await AddToCart(e,id)
+       console.log(res);
+    //    fetchUserAddToCart()
     }
 
   return (

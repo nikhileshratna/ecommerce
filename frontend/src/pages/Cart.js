@@ -26,13 +26,11 @@ const Cart = () => {
   const fetchData = async () => {
     const response = await fetch(SummaryApi.addToCartProductView.url, {
       method: SummaryApi.addToCartProductView.method,
-      credentials: "include",
-      headers: {
-        "content-type": "application/json",
-      },
     });
 
     const responseData = await response.json();
+
+    console.log("response data", responseData);
 
     if (responseData.success) {
       setData(responseData.data);

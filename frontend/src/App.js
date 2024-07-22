@@ -10,9 +10,12 @@ import SummaryApi from './common';
 import Context from './context';
 import { useDispatch } from 'react-redux';
 import { setUserDetails } from './store/userSlice';
+import { getUserDetails } from './services/operations/profileAPI';
+import { useNavigate } from 'react-router-dom';
 
 function App() {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const [cartProductCount,setCartProductCount] = useState(0)
 
   const fetchUserDetails = async()=>{
@@ -40,10 +43,13 @@ function App() {
   }
 
   useEffect(()=>{
-    /**user Details */
-    fetchUserDetails()
+    if (localStorage.getItem("token")) {
+      const token = JSON.parse(localStorage.getItem("token"))
+      dispatch(getUserDetails(token, navigate))
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     /**user Details cart product */
-    fetchUserAddToCart()
+    // fetchUserAddToCart()
 
   },[])
   return (
