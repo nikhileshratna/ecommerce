@@ -9,7 +9,7 @@ async function authToken(req,res,next){
             return res.status(200).json({
                 message : "Please Login...!",
                 error : true,
-                success : false
+                success : false,
             })
         }
 
@@ -20,9 +20,7 @@ async function authToken(req,res,next){
             if(err){
                 console.log("error auth", err)
             }
-
             req.userId = decoded?._id
-
             next()
         });
 
@@ -32,7 +30,7 @@ async function authToken(req,res,next){
             message : err.message || err,
             data : [],
             error : true,
-            success : false
+            success : false,
         })
     }
 }
