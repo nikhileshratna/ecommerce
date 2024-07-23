@@ -2,7 +2,8 @@ import React, { useContext } from 'react'
 import scrollTop from '../helpers/scrollTop'
 import displayINRCurrency from '../helpers/displayCurrency'
 import Context from '../context'
-import AddToCart from '../helpers/AddToCart'
+import AddToCart from '../helpers/addToCart'
+
 import { Link } from 'react-router-dom'
 
 const VerticalCard = ({loading,data = []}) => {
@@ -51,7 +52,7 @@ const VerticalCard = ({loading,data = []}) => {
                                  <p className='text-red-600 font-medium'>{ displayINRCurrency(product?.sellingPrice) }</p>
                                  <p className='text-slate-500 line-through'>{ displayINRCurrency(product?.price)  }</p>
                              </div>
-                             <button className='text-sm bg-red-600 hover:bg-red-700 text-white px-3 py-0.5 rounded-full' onClick={(e)=>handleAddToCart(e,product?._id)}>Add to Cart</button>
+                             <button className='text-sm bg-red-600 hover:bg-red-700 text-white px-3 py-0.5 rounded-full' onClick={(e)=>handleAddToCart(e,product?._id,1)}>Add to Cart</button>
                          </div>
                      </Link>
                  )
