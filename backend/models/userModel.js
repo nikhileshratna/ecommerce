@@ -19,6 +19,11 @@ const userSchema = new mongoose.Schema({
         type : String,
         default : "Buyer",
     },
+    role: {
+        type : String,
+        default : "GENERAL",
+    },
+    token : String,
     contactNumber : Number,
     profilePic : String
 },{

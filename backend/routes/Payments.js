@@ -7,9 +7,10 @@ const {
   verifyPayment,
 //   sendPaymentSuccessEmail,
 } = require("../controller/Payments")
+const { auth } = require("../middleware/auth")
 const { authToken } = require("../middleware/authToken")
-router.post("/capturePayment", authToken, capturePayment)
-router.post("/verifyPayment", authToken, verifyPayment)
+router.post("/capturePayment",auth, capturePayment)
+router.post("/verifyPayment",auth, verifyPayment)
 // router.post(
 //   "/sendPaymentSuccessEmail",
 //   auth,

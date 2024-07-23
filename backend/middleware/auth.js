@@ -9,10 +9,7 @@ dotenv.config();
 exports.auth = async (req, res, next) => {
 	try {
 		// Extracting JWT from request cookies, body or header
-		const token =
-			req.cookies.token ||
-			req.body.token ||
-			req.header("Authorization").replace("Bearer ", "");
+		const token = req.body.token || req.cookies.jwt || req.header("Authorization").replace("Bearer ", "");
 
 		// If JWT is missing, return 401 Unauthorized response
 		if (!token) {
@@ -21,10 +18,10 @@ exports.auth = async (req, res, next) => {
 
 		try {
 			// Verifying the JWT using the secret key stored in environment variables
-			const decode = await jwt.verify(token, process.env.JWT_SECRET);
+			const decode = await jwt.verify(token, process.env.TOKEN_SECRET_KEY);
 			console.log(decode);
 			// Storing the decoded JWT payload in the request object for further use
-			req.user = decode;
+			req.userId = decode._id;
 		} catch (error) {
 			// If JWT verification fails, return 401 Unauthorized response
 			return res

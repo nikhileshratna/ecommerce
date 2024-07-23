@@ -33,11 +33,12 @@ const deleteAddToCartProduct = require("../controller/user/deleteAddToCartProduc
 const searchProduct = require("../controller/product/searchProduct");
 const filterProductController = require("../controller/product/filterProduct");
 const deleteProductController = require("../controller/product/deleteProductAdmin");
+const authToken = require("../middleware/authToken");
 
 router.post("/login", login);
 router.post("/signup", signup);
 router.post("/sendotp", sendotp);
-router.get("/user-details", userDetailsController);
+router.get("/user-details",authToken, userDetailsController);
 router.post("/logout", userLogout);
 // Route for Changing the password
 // router.post("/changepassword", auth, changePassword)
@@ -54,7 +55,7 @@ router.post("/logout", userLogout);
 
 //admin panel
 router.get("/all-user", allUsers);
-router.post("/update-user", auth, updateUser);
+router.post("/update-user", updateUser);
 
 //product
 router.post("/upload-product", UploadProductController);

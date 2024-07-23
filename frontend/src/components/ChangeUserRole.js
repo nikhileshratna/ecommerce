@@ -23,11 +23,12 @@ const ChangeUserRole = ({
     const updateUserRole = async() =>{
         const fetchResponse = await fetch(SummaryApi.updateUser.url,{
             method : SummaryApi.updateUser.method,
-            credentials : 'include',
             headers : {
-                "content-type" : "application/json"
+                "Authorization" : `Bearer ${localStorage.getItem("token")}`
             },
             body : JSON.stringify({
+                email : email,
+                name : name,
                 userId : userId,
                 role : userRole
             })
