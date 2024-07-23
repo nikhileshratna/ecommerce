@@ -63,7 +63,7 @@ const Cart = () => {
       },
       body: JSON.stringify({
         userId : user._id,
-        productId: item._id,
+        // productId: item._id,
         quantity: qty + 1,
       }),
     });
@@ -85,7 +85,7 @@ const Cart = () => {
         },
         body: JSON.stringify({
           userId : user._id,
-          productId: item._id,
+          // productId: item._id,
           quantity: qty - 1,
         }),
       });
