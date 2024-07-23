@@ -31,6 +31,8 @@ function VerifyEmail() {
       confirmPassword,
     } = signupData;
 
+    const profilePic="";
+
     dispatch(
       signUp(
         accountType,
@@ -38,6 +40,7 @@ function VerifyEmail() {
         email,
         password,
         confirmPassword,
+        profilePic,
         otp,
         navigate
       )

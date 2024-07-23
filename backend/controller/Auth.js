@@ -19,6 +19,7 @@ exports.signup = async (req, res) => {
       email,
       password,
       confirmPassword,
+      profilePic,
       otp,
     } = req.body
     const contactNumber = 9999999999;
@@ -54,20 +55,22 @@ exports.signup = async (req, res) => {
     }
 
     // Find the most recent OTP for the email
-    const response = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1)
-    console.log(response)
-    if (response?.length === 0) {
-      // OTP not found for the email
-      return res.status(400).json({
-        success: false,
-        message: "The OTP is not valid",
-      })
-    } else if (otp !== response[0].otp) {
-      // Invalid OTP
-      return res.status(400).json({
-        success: false,
-        message: "The OTP is not valid",
-      })
+    if(otp !== -1){
+      const response = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1)
+      console.log(response)
+      if (response?.length === 0) {
+        // OTP not found for the email
+        return res.status(400).json({
+          success: false,
+          message: "The OTP is not valid",
+        })
+      } else if (otp !== response[0].otp) {
+        // Invalid OTP
+        return res.status(400).json({
+          success: false,
+          message: "The OTP is not valid",
+        })
+      }
     }
 
     // Hash the password
@@ -91,7 +94,7 @@ exports.signup = async (req, res) => {
       password: hashedPassword,
       accountType: accountType,
       approved: approved,
-      profilePic: "",
+      profilePic: profilePic,
     })
     return res.status(200).json({
       success: true,

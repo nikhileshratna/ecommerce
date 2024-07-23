@@ -9,9 +9,7 @@ import Context from '../context';
 import GoogleLoginButton from '../components/GoogleLoginButton';
 import {gapi} from 'gapi-script'
 import { useDispatch, useSelector } from "react-redux";
-
-
-
+import { login } from "../services/operations/authAPI";
 
 const Login = () => {
     const clientId = "571441638341-45rnsf56sp2qa2tr5tbdd31m9b3jin7n.apps.googleusercontent.com"
@@ -23,6 +21,7 @@ const Login = () => {
         password : ""
     })
     const navigate = useNavigate()
+    const dispatch = useDispatch();
     const { fetchUserDetails, fetchUserAddToCart } = useContext(Context)
 
     const handleOnChange = (e) =>{
@@ -36,41 +35,41 @@ const Login = () => {
         })
     }
 
-
     const handleSubmit = async (e) => {
-        e.preventDefault();
-    
-        try {
-            const response = await fetch(SummaryApi.signIn.url, {
-                method: SummaryApi.signIn.method,
-                credentials: 'include',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(data)
-            });
-    
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-    
-            const dataApi = await response.json();
-    
-            if (dataApi.success) {
-                toast.success(dataApi.message);
-                navigate('/');
-                fetchUserDetails();
-                fetchUserAddToCart();
-                console.log(dataApi);
-                // user.setUser(dataApi);
-            } else if (dataApi.error) {
-                toast.error(dataApi.message);
-            }
-        } catch (error) {
-            console.error('Failed to fetch', error);
-            toast.error('An error occurred while logging in.');
-        }
+      e.preventDefault();
+      dispatch(login(data.email, data.password, navigate));
     };
+
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    
+    //     try {
+    //         const response = await fetch(SummaryApi.signIn.url, {
+    //             method: SummaryApi.signIn.method,
+    //             body: JSON.stringify(data)
+    //         });
+    
+    //         if (!response.ok) {
+    //             throw new Error(`HTTP error! status: ${response.status}`);
+    //         }
+    
+    //         const dataApi = await response.json();
+    
+    //         if (dataApi.success) {
+    //             toast.success(dataApi.message);
+    //             navigate('/');
+    //             fetchUserDetails();
+    //             fetchUserAddToCart();
+    //             console.log(dataApi);
+    //             // user.setUser(dataApi);
+    //         } else if (dataApi.error) {
+    //             toast.error(dataApi.message);
+    //         }
+    //     } catch (error) {
+    //         console.error('Failed to fetch', error);
+    //         toast.error('An error occurred while logging in.');
+    //     }
+    // };
     
     useEffect(() => {
         function start(){
@@ -155,7 +154,7 @@ const Login = () => {
         
         </section>
         <button className='mb-4'>
-        <GoogleLoginButton loginType = {'login'}/>
+          <GoogleLoginButton loginType = {'login'}/>
         </button>
     </div>
   )

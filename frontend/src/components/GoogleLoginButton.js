@@ -5,10 +5,15 @@ import { toast } from 'react-toastify';
 import Context from '../context';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { login } from "../services/operations/authAPI";
+import { useDispatch } from "react-redux";
+import { setSignupData } from "../slices/authSlice"
+import { signUp } from '../services/operations/authAPI';
 
-const GoogleLoginButton = ({ loginType }) => {
-    const user = useSelector(state => state?.user?.user)
+const GoogleLoginButton = ({ loginType, accountType }) => {
+    const user = useSelector(state => state.profile)
     const { fetchUserDetails, fetchUserAddToCart } = useContext(Context);
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const clientId = "571441638341-45rnsf56sp2qa2tr5tbdd31m9b3jin7n.apps.googleusercontent.com";
 
@@ -16,67 +21,40 @@ const GoogleLoginButton = ({ loginType }) => {
         email: "",
         password: ""
     });
-    const [signupData, setSignupData] = useState({
-        email: "",
-        password: "",
-        name: "",
-        confirmPassword: "",
-        profilePic: ""
-    });
 
-    const login = async (data) => {
+    const signin = async (data) => {
         if (loginType === "signup") {
             console.log(loginType, "inside login function");
-            const dataResponse = await fetch(SummaryApi.signUP.url, {
-                method: SummaryApi.signUP.method,
-                headers: {
-                    "content-type": "application/json"
-                },
-                body: JSON.stringify(data)
-            });
-
-            const dataApi = await dataResponse.json();
-
-            if (dataApi.success) {
-                toast.success(dataApi.message);
-                navigate("/login");
+            const otp=-1; 
+            const signupData = {
+                ...data,
+                accountType,
+                otp,
             }
+            dispatch(signUp(
+                signupData.accountType,
+                signupData.name,
+                signupData.email,
+                signupData.password,
+                signupData.confirmPassword,
+                signupData.profilePic,
+                signupData.otp,
+                navigate
+            ));
 
-            if (dataApi.error) {
-                toast.error(dataApi.message);
-            }
+            // const dataApi = await dataResponse.json();
+
+            // if (dataApi.success) {
+            //     toast.success(dataApi.message);
+            //     navigate("/login");
+            // }
+
+            // if (dataApi.error) {
+            //     toast.error(dataApi.message);
+            // }
         } else {
             console.log(loginType, "inside else part");
-            try {
-                const response = await fetch(SummaryApi.signIn.url, {
-                    method: SummaryApi.signIn.method,
-                    credentials: 'include',
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(data)
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const dataApi = await response.json();
-
-                if (dataApi.success) {
-                    toast.success(dataApi.message);
-                    navigate('/');
-                    fetchUserDetails();
-                    fetchUserAddToCart();
-                    console.log(dataApi);
-                    // user.setUser(dataApi);
-                } else if (dataApi.error) {
-                    toast.error(dataApi.message);
-                }
-            } catch (error) {
-                console.error('Failed to fetch', error);
-                toast.error('An error occurred while logging in.');
-            }
+            dispatch(login(data.email, data.password, navigate));
         }
     };
 
@@ -95,7 +73,7 @@ const GoogleLoginButton = ({ loginType }) => {
             };
 
             // setSignupData(newSignupData);
-            login(newSignupData);
+            signin(newSignupData);
         } else {
             console.log(loginType, "inside else part");
 
@@ -105,7 +83,7 @@ const GoogleLoginButton = ({ loginType }) => {
             };
 
             // setLoginData(newLoginData);
-            login(newLoginData);
+            signin(newLoginData);
         }
     };
 

@@ -10,10 +10,11 @@ import { toast } from 'react-toastify';
 import { setUserDetails } from '../store/userSlice';
 import ROLE from '../common/role';
 import Context from '../context';
+import { logout } from '../services/operations/authAPI';
 import GoogleLogoutButton from './GoogleLogout';
 
 const Header = () => {
-  const user = useSelector(state => state?.user?.user);
+  const user = useSelector(state => state.profile);
   const dispatch = useDispatch();
   const [menuDisplay, setMenuDisplay] = useState(false);
   const context = useContext(Context);
@@ -24,22 +25,7 @@ const Header = () => {
   const [search, setSearch] = useState(searchQuery);
 
   const handleLogout = async () => {
-    const fetchData = await fetch(SummaryApi.logout_user.url, {
-      method: SummaryApi.logout_user.method,
-      credentials: "include",
-    });
-
-    const data = await fetchData.json();
-
-    if (data.success) {
-      toast.success(data.message);
-      dispatch(setUserDetails(null));
-      navigate("/");
-    }
-
-    if (data.error) {
-      toast.error(data.message);
-    }
+    dispatch(logout(navigate))
   };
 
   const handleSearch = (e) => {
@@ -124,7 +110,7 @@ const Header = () => {
           )}
 
           <div>
-            {user?._id ? (
+            {user.user?._id ? (
               <GoogleLogoutButton onLogoutSuccess={handleLogout} />
             ) : (
               <Link to={"/login"} className='px-3 py-1 rounded-full text-white bg-red-600 hover:bg-red-700'>Login</Link>
