@@ -62,7 +62,8 @@ const Cart = () => {
         "content-type": "application/json",
       },
       body: JSON.stringify({
-        _id: id,
+        userId : user._id,
+        productId: item._id,
         quantity: qty + 1,
       }),
     });
@@ -83,7 +84,8 @@ const Cart = () => {
           "content-type": "application/json",
         },
         body: JSON.stringify({
-          _id: id,
+          userId : user._id,
+          productId: item._id,
           quantity: qty - 1,
         }),
       });

@@ -3,7 +3,7 @@ import fetchCategoryWiseProduct from '../helpers/fetchCategoryWiseProduct'
 import displayINRCurrency from '../helpers/displayCurrency'
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa6'
 import { Link } from 'react-router-dom'
-import AddToCart from '../helpers/AddToCart'
+import AddToCart from '../helpers/addToCart'
 import Context from '../context'
 import scrollTop from '../helpers/scrollTop'
 
@@ -14,8 +14,8 @@ const CategroyWiseProductDisplay = ({category, heading}) => {
 
     const { fetchUserAddToCart } = useContext(Context)
 
-    const handleAddToCart = async(e,id)=>{
-       await AddToCart(e,id)
+    const handleAddToCart = async(e,id,quantity)=>{
+       await AddToCart(e,id,quantity)
        fetchUserAddToCart()
     }
 
@@ -79,7 +79,7 @@ const CategroyWiseProductDisplay = ({category, heading}) => {
                                         <p className='text-red-600 font-medium'>{ displayINRCurrency(product?.sellingPrice) }</p>
                                         <p className='text-slate-500 line-through'>{ displayINRCurrency(product?.price)  }</p>
                                     </div>
-                                    <button className='text-sm bg-red-600 hover:bg-red-700 text-white px-3 py-0.5 rounded-full' onClick={(e)=>handleAddToCart(e,product?._id)}>Add to Cart</button>
+                                    <button className='text-sm bg-red-600 hover:bg-red-700 text-white px-3 py-0.5 rounded-full' onClick={(e)=>handleAddToCart(e,product?._id,1)}>Add to Cart</button>
                                 </div>
                             </Link>
                         )

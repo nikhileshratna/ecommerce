@@ -2,7 +2,7 @@ import { useState } from "react"
 import SummaryApi from "../common"
 import { toast } from 'react-toastify'
 
-const AddToCart = async(e,id) =>{
+const AddToCart = async(e,id,quantity) =>{
     e?.stopPropagation()
     e?.preventDefault()
     console.log("id", id)
@@ -11,7 +11,8 @@ const AddToCart = async(e,id) =>{
         body : JSON.stringify(
             { 
                 productId : id,
-                token : localStorage.getItem("token")
+                token : localStorage.getItem("token"),
+                quantity: quantity,
             }
         )
     })

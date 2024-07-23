@@ -25,7 +25,7 @@ const updateProductController = require("../controller/product/updateProduct");
 const getCategoryProduct = require("../controller/product/getCategoryProductOne");
 const getCategoryWiseProduct = require("../controller/product/getCategoryWiseProduct");
 const getProductDetails = require("../controller/product/getProductDetails");
-const addToCartController = require("../controller/user/addToCartController");
+// const addToCartController = require("../controller/user/addToCartController");
 const countAddToCartProduct = require("../controller/user/countAddToCartProduct");
 const addToCartViewProduct = require("../controller/user/addToCartViewProduct");
 const updateAddToCartProduct = require("../controller/user/updateAddToCartProduct");
@@ -33,7 +33,9 @@ const deleteAddToCartProduct = require("../controller/user/deleteAddToCartProduc
 const searchProduct = require("../controller/product/searchProduct");
 const filterProductController = require("../controller/product/filterProduct");
 const deleteProductController = require("../controller/product/deleteProductAdmin");
+const addToCartController = require("../controller/user/addToCartNikku");
 const authToken = require("../middleware/authToken");
+
 
 router.post("/login", login);
 router.post("/signup", signup);
