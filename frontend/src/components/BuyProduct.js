@@ -101,6 +101,7 @@ export async function BuyProduct(products, token, user, navigate, dispatch) {
 // Verify the Payment
 async function verifyPayment(bodyData, products, token , navigate, dispatch) {
   const toastId = toast.loading("Verifying Payment...");
+  console.log("PAYMENT VERIFY BODY DATA............", bodyData);
   dispatch(setPaymentLoading(true));
   try {
     const response = await apiConnector("POST", PRODUCT_VERIFY_API, 
