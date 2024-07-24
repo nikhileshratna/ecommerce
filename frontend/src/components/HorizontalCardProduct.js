@@ -5,6 +5,7 @@ import { FaAngleLeft, FaAngleRight } from 'react-icons/fa6'
 import { Link } from 'react-router-dom'
 import AddToCart from '../helpers/addToCart'
 import Context from '../context'
+import { useSelector } from 'react-redux'
 
 const HorizontalCardProduct = ({category, heading}) => {
     const [data,setData] = useState([])
@@ -13,13 +14,14 @@ const HorizontalCardProduct = ({category, heading}) => {
 
     const [scroll,setScroll] = useState(0)
     const scrollElement = useRef()
+    const { token } = useSelector((state) => state.auth);
 
 
     const { fetchUserAddToCart } = useContext(Context)
 
     const handleAddToCart = async(e,id)=>{
-       await AddToCart(e,id)
-       fetchUserAddToCart()
+       await AddToCart(e,id,1,token)
+    //    fetchUserAddToCart()
     }
 
     const fetchData = async() =>{

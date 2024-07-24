@@ -5,9 +5,11 @@ import { FaAngleLeft, FaAngleRight } from 'react-icons/fa6'
 import { Link } from 'react-router-dom'
 import AddToCart from '../helpers/addToCart'
 
+import { useSelector } from 'react-redux'
 import Context from '../context'
 
 const VerticalCardProduct = ({category, heading}) => {
+    const { token } = useSelector((state) => state.auth);
     const [data,setData] = useState([])
     const [loading,setLoading] = useState(true)
     const loadingList = new Array(13).fill(null)
@@ -17,8 +19,8 @@ const VerticalCardProduct = ({category, heading}) => {
 
     const { fetchUserAddToCart } = useContext(Context)
 
-    const handleAddToCart = async(e,id)=>{
-       await AddToCart(e,id)
+    const handleAddToCart = async(e,id,quantity)=>{
+       await AddToCart(e,id,quantity,token)
     //    fetchUserAddToCart()
     }
 

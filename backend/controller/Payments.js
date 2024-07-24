@@ -12,10 +12,10 @@ const mongoose = require("mongoose")
 
 // Capture the payment and initiate the Razorpay order
 exports.capturePayment = async (req, res) => {
-  const { products, quantity } = req.body
+  const { products } = req.body
   const userId = req.userId
   if (products.length === 0) {
-    return res.json({ success: false, message: "Please Provide Course ID" })
+    return res.json({ success: false, message: "Please Provide Product ID" })
   }
 
   let total_amount = 0
@@ -67,6 +67,9 @@ exports.capturePayment = async (req, res) => {
 
 // verify the payment
 exports.verifyPayment = async (req, res) => {
+  if(req){
+    return res.status(200).json({ success: false, message: `req.body: ${req.body}` })
+  }
   const razorpay_order_id = req.body?.razorpay_order_id
   const razorpay_payment_id = req.body?.razorpay_payment_id
   const razorpay_signature = req.body?.razorpay_signature

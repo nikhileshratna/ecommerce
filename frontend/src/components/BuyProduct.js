@@ -1,51 +1,49 @@
-import { toast } from "react-hot-toast"
-import Logo from '../assest/ecommercelogo.jpg'
-import { resetCart } from "../slices/cartSlice"
-import { setPaymentLoading } from "../slices/productSlice"
-import { apiConnector } from "../services/apiConnector"
+import { toast } from "react-hot-toast";
+import Logo from "../assest/ecommercelogo.jpg";
+import { resetCart } from "../slices/cartSlice";
+import { setPaymentLoading } from "../slices/productSlice";
+import { apiConnector } from "../services/apiConnector";
+import { useSelector } from "react-redux";
 // import { studentEndpoints } from "../apis"
 
 // const {
 //   SEND_PAYMENT_SUCCESS_EMAIL_API,
 // } = studentEndpoints
 
-const BASE_URL = process.env.REACT_APP_BASE_URL
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-const PRODUCT_PAYMENT_API = BASE_URL + "/capturePayment"
-const PRODUCT_VERIFY_API = BASE_URL + "/verifyPayment"
+const PRODUCT_PAYMENT_API = BASE_URL + "/capturePayment";
+const PRODUCT_VERIFY_API = BASE_URL + "/verifyPayment";
 
 // Load the Razorpay SDK from the CDN
 function loadScript(src) {
   return new Promise((resolve) => {
-    const script = document.createElement("script")
-    script.src = src
+    const script = document.createElement("script");
+    script.src = src;
     script.onload = () => {
-      resolve(true)
-    }
+      resolve(true);
+    };
     script.onerror = () => {
-      resolve(false)
-    }
-    document.body.appendChild(script)
-  })
+      resolve(false);
+    };
+    document.body.appendChild(script);
+  });
 }
 
 // Buy the Course
-export async function BuyProduct(
-  products,
-  user_details,
-  navigate,
-  dispatch,
-) {
-  const toastId = toast.loading("Loading...")
+export async function BuyProduct(products, token, user, navigate, dispatch) {
+  const toastId = toast.loading("Loading...");
   try {
     // Loading the script of Razorpay SDK
-    const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js")
+    const res = await loadScript(
+      "https://checkout.razorpay.com/v1/checkout.js"
+    );
 
     if (!res) {
       toast.error(
         "Razorpay SDK failed to load. Check your Internet Connection."
-      )
-      return
+      );
+      return;
     }
 
     // Initiating the Order in Backend
@@ -53,17 +51,20 @@ export async function BuyProduct(
       "POST",
       PRODUCT_PAYMENT_API,
       {
-        products
+        products,
       },
-      // {
-      //   Authorization: `Bearer ${token}`,
-      // }
-    )
+      {
+        Authorization: `Bearer ${token}`,
+      }
+    );
 
     if (!orderResponse.data.success) {
-      throw new Error(orderResponse.data.message)
+      throw new Error(orderResponse.data.message);
     }
-    console.log("PAYMENT RESPONSE FROM BACKEND............", orderResponse.data)
+    console.log(
+      "PAYMENT RESPONSE FROM BACKEND............",
+      orderResponse.data
+    );
 
     // Opening the Razorpay SDK
     const options = {
@@ -75,55 +76,57 @@ export async function BuyProduct(
       description: "Thank you for Purchasing product on our website.",
       image: Logo,
       prefill: {
-        name: `${user_details.firstName} ${user_details.lastName}`,
-        email: user_details.email,
+        name: `${user.name}`,
+        email: user.email,
       },
       handler: function (response) {
         // sendPaymentSuccessEmail(response, orderResponse.data.data.amount, token)
-        verifyPayment({ ...response, products },  navigate, dispatch)
+        verifyPayment({ ...response },products, token, navigate, dispatch);
       },
-    }
-    const paymentObject = new window.Razorpay(options)
+    };
+    const paymentObject = new window.Razorpay(options);
 
-    paymentObject.open()
+    paymentObject.open();
     paymentObject.on("payment.failed", function (response) {
-      toast.error("Oops! Payment Failed.")
-      console.log(response.error)
-    })
+      toast.error("Oops! Payment Failed.");
+      console.log(response.error);
+    });
   } catch (error) {
-    console.log("PAYMENT API ERROR............", error)
-    toast.error("Could Not make Payment.")
+    console.log("PAYMENT API ERROR............", error);
+    toast.error("Could Not make Payment.");
   }
-  toast.dismiss(toastId)
+  toast.dismiss(toastId);
 }
 
 // Verify the Payment
-async function verifyPayment(bodyData,  navigate, dispatch) {
-  const toastId = toast.loading("Verifying Payment...")
-  dispatch(setPaymentLoading(true))
+async function verifyPayment(bodyData, products, token , navigate, dispatch) {
+  const toastId = toast.loading("Verifying Payment...");
+  dispatch(setPaymentLoading(true));
   try {
-    const response = await apiConnector("POST", PRODUCT_VERIFY_API, bodyData
-    // ,
-    //  {
-    //   Authorization: `Bearer ${token}`,
-    // }
-    )
+    const response = await apiConnector("POST", PRODUCT_VERIFY_API, 
+      {
+        bodyData,
+        products
+      }, 
+      {
+      Authorization: `Bearer ${token}`,
+    });
 
-    console.log("VERIFY PAYMENT RESPONSE FROM BACKEND............", response)
+    console.log("VERIFY PAYMENT RESPONSE FROM BACKEND............", response);
 
     if (!response.data.success) {
-      throw new Error(response.data.message)
+      throw new Error(response.data.message);
     }
 
-    toast.success("Payment Successful. You will receive the product shortly.")
-    navigate("/")
-    dispatch(resetCart())
+    toast.success("Payment Successful. You will receive the product shortly.");
+    navigate("/");
+    dispatch(resetCart());
   } catch (error) {
-    console.log("PAYMENT VERIFY ERROR............", error)
-    toast.error("Could Not Verify Payment.")
+    console.log("PAYMENT VERIFY ERROR............", error);
+    toast.error("Could Not Verify Payment.");
   }
-  toast.dismiss(toastId)
-  dispatch(setPaymentLoading(false))
+  toast.dismiss(toastId);
+  dispatch(setPaymentLoading(false));
 }
 
 // Send the Payment Success Email

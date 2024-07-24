@@ -9,8 +9,10 @@ import CategroyWiseProductDisplay from '../components/CategoryWiseProductDisplay
 import AddToCart from '../helpers/addToCart'
 
 import Context from '../context';
+import { useSelector } from 'react-redux';
 
 const ProductDetails = () => {
+  const { token } = useSelector((state) => state.auth);
   const [data,setData] = useState({
     productName : "",
     brandName : "",
@@ -84,13 +86,13 @@ const ProductDetails = () => {
 
 
   const handleAddToCart = async(e,id,quantity) =>{
-    await AddToCart(e,id,quantity)
-    fetchUserAddToCart()
+    await AddToCart(e,id,quantity,token)
+    // fetchUserAddToCart()
   }
 
   const handleBuyProduct = async(e,id)=>{
-    await AddToCart(e,id,1)
-    fetchUserAddToCart()
+    await AddToCart(e,id,1,token)
+    // fetchUserAddToCart()
     navigate("/cart")
 
   }

@@ -16,6 +16,12 @@ const {
   // resetPassword,
   // updatePassword
 } = require("../controller/Auth");
+const {
+  capturePayment,
+  // verifySignature,
+  verifyPayment,
+//   sendPaymentSuccessEmail,
+} = require("../controller/Payments")
 const userLogout = require('../controller/user/userLogout')
 const allUsers = require("../controller/user/allUsers");
 const updateUser = require("../controller/user/updateUser");
@@ -25,7 +31,6 @@ const updateProductController = require("../controller/product/updateProduct");
 const getCategoryProduct = require("../controller/product/getCategoryProductOne");
 const getCategoryWiseProduct = require("../controller/product/getCategoryWiseProduct");
 const getProductDetails = require("../controller/product/getProductDetails");
-// const addToCartController = require("../controller/user/addToCartController");
 const countAddToCartProduct = require("../controller/user/countAddToCartProduct");
 const addToCartViewProduct = require("../controller/user/addToCartViewProduct");
 const updateAddToCartProduct = require("../controller/user/updateAddToCartProduct");
@@ -35,7 +40,11 @@ const filterProductController = require("../controller/product/filterProduct");
 const deleteProductController = require("../controller/product/deleteProductAdmin");
 const addToCartController = require("../controller/user/addToCartNikku");
 const authToken = require("../middleware/authToken");
-
+const addToCart = require("../controller/user/addToCart");
+const updateQuantity = require("../controller/user/updateQuantity");
+const deleteFromCart = require("../controller/user/deleteFromCart");
+const showCart = require("../controller/user/showCart");
+const countProductsInCart = require("../controller/user/countProductsInCart");
 
 router.post("/login", login);
 router.post("/signup", signup);
@@ -71,10 +80,14 @@ router.post("/filter-product", filterProductController);
 router.delete("/delete-product", deleteProductController);
 
 //user add to cart
-router.post("/addtocart", addToCartController);
-router.get("/countAddToCartProduct", countAddToCartProduct);
-router.get("/view-card-product", addToCartViewProduct);
-router.post("/update-cart-product", updateAddToCartProduct);
-router.post("/delete-cart-product", deleteAddToCartProduct);
+router.post("/addtocart",authToken, addToCart);
+router.get("/countAddToCartProduct",authToken, countProductsInCart);
+router.get("/view-card-product",authToken, showCart);
+router.post("/update-cart-product",authToken, updateQuantity);
+router.post("/delete-cart-product",authToken, deleteFromCart);
+
+//payments
+router.post("/capturePayment",authToken, capturePayment)
+router.post("/verifyPayment",authToken, verifyPayment)
 
 module.exports = router;

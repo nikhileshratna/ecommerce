@@ -11,6 +11,9 @@ exports.auth = async (req, res, next) => {
 		// Extracting JWT from request cookies, body or header
 		const token = req.body.token || req.cookies.jwt || req.header("Authorization").replace("Bearer ", "");
 
+		if(token) {
+			return res.status(401).json({ success: false, message: `${token}` });
+		}
 		// If JWT is missing, return 401 Unauthorized response
 		if (!token) {
 			return res.status(401).json({ success: false, message: `Token Missing` });
@@ -18,10 +21,10 @@ exports.auth = async (req, res, next) => {
 
 		try {
 			// Verifying the JWT using the secret key stored in environment variables
-			const decode = await jwt.verify(token, process.env.TOKEN_SECRET_KEY);
-			console.log(decode);
+			const decoded = await jwt.verify(token, process.env.TOKEN_SECRET_KEY);
+			console.log(decoded);
 			// Storing the decoded JWT payload in the request object for further use
-			req.userId = decode._id;
+			req.userId = decoded._id;
 		} catch (error) {
 			// If JWT verification fails, return 401 Unauthorized response
 			return res

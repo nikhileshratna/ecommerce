@@ -1,54 +1,42 @@
-const addToCartModel = require("../../models/cartProduct")
-const UserCart = require("../../models/UserCart")
+const userModel = require('../../models/userModel');
+const productModel = require('../../models/productModel');
 
-const addToCart = async(req,res)=>{
-    try{
-        const { productId } = req?.body
-        const currentUser = req.userId
-
-        const isUser = await addToCartModel.findOne({ userId : currentUser })
-
-        if(!isUser){
-            const payload  = {
-                userId : currentUser,
-                cartItems : []
-            }
-
-            const newAddToCart = new UserCart(payload);
-            const saveProduct = await newAddToCart.save();
+const addToCart = async (req, res) => {
+    const userId = req.userId;
+    const { productId, quantity } = req.body;
+    
+    try {
+        // Find the user by ID
+        const user = await userModel.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
         }
 
-
-        const user = await addToCartModel.findOne({ userId : currentUser });
-        const isProductPresent = user.cartItems.findOne(productId);
-
-        if(isProductPresent){
-            return res.json({
-                message : "Already exits in Add to cart",
-                success : false,    
-                error : true
-            })
+        // Check if the product exists
+        const product = await productModel.findById(productId);
+        if (!product) {
+            return res.status(404).json({ message: "Product not found" });
         }
 
-        user.cartItems.push({productId, quantity : 1})
-        const saveProduct = await user.save();
+        // Check if the product is already in the cart
+        const existingProductIndex = user.cart.findIndex(item => item.productId.toString() === productId);
 
-        return res.json({
-            data : saveProduct,
-            message : "Product Added in Cart",
-            success : true,
-            error : false
-        })
-        
+        if (existingProductIndex >= 0) {
+            // If product exists in the cart, update the quantity
+            user.cart[existingProductIndex].quantity = quantity;
+        } else {
+            // If product does not exist in the cart, add it to the cart
+            user.cart.push({ productId, quantity });
+        }
 
-    }catch(err){
-        res.json({
-            message : err?.message || err,
-            error : true,
-            success : false
-        })
+        // Save the updated user document
+        await user.save();
+
+        return res.status(200).json({ message: "Product added to cart", cart: user.cart });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Server error" });
     }
-}
-
+};
 
 module.exports = addToCart

@@ -1,55 +1,41 @@
-const UserCart = require("../../models/UserCart");
+const userModel = require('../../models/userModel');
 
-const updateQuantity = async (req, res) => {
-  try {
-    const currentUserId = req.userId;
-    const productId = req.body.productId;
-    const qty = req.body.quantity;
+const updateCart = async (req, res) => {
+    const userId = req.userId;
+    const { productId, quantity } = req.body;
 
-    // Find the user's cart
-    const userCart = await UserCart.findOne({ userId: currentUserId });
+    try {
+        const user = await userModel.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
 
-    if (!userCart) {
-      return res.status(404).json({
-        message: "Cart not found for user",
-        success: false,
-        error: true,
-      });
+        const cartItemIndex = user.cart.findIndex(item => item.productId.toString() === productId);
+
+        if (cartItemIndex > -1) {
+            // If item exists in cart, update the quantity
+            if (quantity > 0) {
+                user.cart[cartItemIndex].quantity = quantity;
+            } else {
+                // If quantity is 0 or less, remove the item from the cart
+                user.cart.splice(cartItemIndex, 1);
+            }
+        } else {
+            // If item does not exist in cart and quantity is greater than 0, add new item to cart
+            if (quantity > 0) {
+                user.cart.push({ productId, quantity });
+            }
+        }
+
+        await user.save();
+
+        res.status(200).json({ 
+            success: true,
+            message: 'Cart updated successfully', 
+        });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error });
     }
-
-    // Check if the product is already in the cart
-    const productIndex = userCart.cartItems.findIndex(
-      (item) => item.productId.toString() === productId
-    );
-
-    if (productIndex !== -1) {
-      // If the product is already in the cart, update the quantity
-      userCart.cartItems[productIndex].quantity = qty;
-
-      // Save the updated cart
-      const updatedCart = await userCart.save();
-
-      return res.json({
-        data: updatedCart,
-        message: "Product quantity updated in the cart",
-        success: true,
-        error: false,
-      });
-    } else {
-      return res.status(404).json({
-        message: "Product not found in cart",
-        success: false,
-        error: true,
-      });
-    }
-
-  } catch (err) {
-    return res.status(500).json({
-      message: err?.message || err,
-      error: true,
-      success: false,
-    });
-  }
 };
 
-module.exports = updateQuantity;
+module.exports = updateCart
