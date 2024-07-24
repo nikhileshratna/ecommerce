@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import SummaryApi from "../common";
-import Context from "../context";
 import displayINRCurrency from "../helpers/displayCurrency";
 import { useDispatch, useSelector } from "react-redux";
 import { MdDelete } from "react-icons/md";
@@ -27,7 +26,7 @@ const Cart = () => {
         quantity: product.quantity,
       });
     });
-    BuyProduct(products,token,user, navigate, dispatch);
+    BuyProduct(products,totalPrice,token,user, navigate, dispatch);
   };
 
   const fetchData = async () => {

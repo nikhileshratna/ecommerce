@@ -51,7 +51,7 @@ const resetCart = async (token) => {
 };
 
 // Buy the Course
-export async function BuyProduct(products, token, user, navigate, dispatch) {
+export async function BuyProduct(products, total_amount, token, user, navigate, dispatch) {
   const toastId = toast.loading("Loading...");
   try {
     // Loading the script of Razorpay SDK
@@ -71,7 +71,7 @@ export async function BuyProduct(products, token, user, navigate, dispatch) {
       "POST",
       PRODUCT_PAYMENT_API,
       {
-        products,
+        total_amount
       },
       {
         Authorization: `Bearer ${token}`,

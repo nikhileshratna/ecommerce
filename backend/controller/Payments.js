@@ -12,36 +12,7 @@ const mongoose = require("mongoose")
 
 // Capture the payment and initiate the Razorpay order
 exports.capturePayment = async (req, res) => {
-  const { products } = req.body
-  const userId = req.userId
-  if (products.length === 0) {
-    return res.json({ success: false, message: "Please Provide Product ID" })
-  }
-
-  let total_amount = 0
-
-  for (let i = 0 ; i < products.length ; i++) {
-    let product
-    const product_id = products[i]._id;
-    const quantity = products[i].quantity;
-    try {
-      // Find the course by its ID
-      product = await productModel.findById(product_id)
-
-      // If the course is not found, return an error
-      if (!product) {
-        return res
-          .status(200)
-          .json({ success: false, message: "Could not find the Product" })
-      }
-
-      // Add the price of the course to the total amount
-      total_amount += product.price*quantity;
-    } catch (error) {
-      console.log(error)
-      return res.status(500).json({ success: false, message: error.message })
-    }
-  }
+  const { total_amount } = req.body
 
   const options = {
     amount: total_amount * 100,
