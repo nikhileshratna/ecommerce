@@ -45,6 +45,7 @@ const updateQuantity = require("../controller/user/updateQuantity");
 const deleteFromCart = require("../controller/user/deleteFromCart");
 const showCart = require("../controller/user/showCart");
 const countProductsInCart = require("../controller/user/countProductsInCart");
+const emptyCart = require("../controller/user/emptyCart");
 
 router.post("/login", login);
 router.post("/signup", signup);
@@ -85,6 +86,7 @@ router.get("/countAddToCartProduct",authToken, countProductsInCart);
 router.get("/view-card-product",authToken, showCart);
 router.post("/update-cart-product",authToken, updateQuantity);
 router.post("/delete-cart-product",authToken, deleteFromCart);
+router.post("/empty-cart",authToken, emptyCart);
 
 //payments
 router.post("/capturePayment",authToken, capturePayment)

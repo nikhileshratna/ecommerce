@@ -1,9 +1,8 @@
 import { toast } from "react-hot-toast";
 import Logo from "../assest/ecommercelogo.jpg";
-import { resetCart } from "../slices/cartSlice";
 import { setPaymentLoading } from "../slices/productSlice";
 import { apiConnector } from "../services/apiConnector";
-import { useSelector } from "react-redux";
+import SummaryApi from "../common";
 // import { studentEndpoints } from "../apis"
 
 // const {
@@ -29,6 +28,27 @@ function loadScript(src) {
     document.body.appendChild(script);
   });
 }
+
+//reset cart
+const resetCart = async (token) => {
+  try {
+    const response = await fetch(SummaryApi.emptyCart.url, {
+      method: SummaryApi.emptyCart.method,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const responseData = await response.json();
+    if (responseData.success) {
+      toast.success(responseData.message);
+    }
+  }
+  catch(error) {
+    console.log(error)
+  }
+};
 
 // Buy the Course
 export async function BuyProduct(products, token, user, navigate, dispatch) {
@@ -121,7 +141,7 @@ async function verifyPayment(bodyData, products, token , navigate, dispatch) {
 
     toast.success("Payment Successful. You will receive the product shortly.");
     navigate("/");
-    dispatch(resetCart());
+    resetCart(token);
   } catch (error) {
     console.log("PAYMENT VERIFY ERROR............", error);
     toast.error("Could Not Verify Payment.");

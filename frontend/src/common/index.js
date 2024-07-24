@@ -80,6 +80,10 @@ const SummaryApi = {
     filterProduct : {
         url : `${backendDomin}/api/filter-product`,
         method : 'post'
+    },
+    emptyCart : {
+        url : `${backendDomin}/api/empty-cart`,
+        method : 'post'
     }
 }
 
