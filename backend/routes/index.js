@@ -46,6 +46,8 @@ const deleteFromCart = require("../controller/user/deleteFromCart");
 const showCart = require("../controller/user/showCart");
 const countProductsInCart = require("../controller/user/countProductsInCart");
 const emptyCart = require("../controller/user/emptyCart");
+const updateUserDetailsController = require("../controller/user/updateAdditionalDetails");
+const fetchUserAdditionalDetailsController = require("../controller/user/showAdditionalDetails");
 
 router.post("/login", login);
 router.post("/signup", signup);
@@ -87,6 +89,10 @@ router.get("/view-card-product",authToken, showCart);
 router.post("/update-cart-product",authToken, updateQuantity);
 router.post("/delete-cart-product",authToken, deleteFromCart);
 router.post("/empty-cart",authToken, emptyCart);
+
+//user
+router.get("/show-additional-details",authToken, fetchUserAdditionalDetailsController);
+router.post("/edit-additional-details",authToken, updateUserDetailsController);
 
 //payments
 router.post("/capturePayment",authToken, capturePayment)

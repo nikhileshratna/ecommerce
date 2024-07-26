@@ -80,7 +80,7 @@ const Login = () => {
         
             gapi.load('client:auth2' , start);
 
-    });
+    },[]);
 
    
 
