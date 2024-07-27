@@ -48,31 +48,20 @@ const resetCart = async (token) => {
 const editMyOrders = async (token, products) => {
   console.log("editMyOrders called with products:", products);
   try {
-    // Ensure myOrders is an array
-    console.log("User object:", user);
-    const myOrders = Array.isArray(user?.additionalDetails?.myOrders) 
-      ? user.additionalDetails.myOrders 
-      : [];
-    console.log("myOrders array:", myOrders);
-    console.log("Products array:", products);
-
-    if (!Array.isArray(products)) {
-      throw new Error("Products should be an array");
-    }
-
-    const response = await fetch(SummaryApi.editAdditionalDetails.url, {
-      method: SummaryApi.editAdditionalDetails.method,
+    const response = await fetch(SummaryApi.update_userOrders.url, {
+      method: SummaryApi.update_userOrders.method,
       credentials: 'include',
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
-        myOrders: [...myOrders, ...products],
+        products,
       }),
     });
 
     const responseData = await response.json();
+    console.log("editMyOrders response:", responseData);
     if (responseData.success) {
       toast.success(responseData?.message);
     } else if (responseData.error) {
@@ -84,7 +73,7 @@ const editMyOrders = async (token, products) => {
 };
 
 // Buy the Product
-export async function BuyProduct(products, token, user, navigate, dispatch) {
+export async function BuyProduct(products, total_amount, token, user, navigate, dispatch) {
   const toastId = toast.loading("Loading...");
   try {
     // Loading the script of Razorpay SDK

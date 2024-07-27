@@ -48,6 +48,7 @@ const countProductsInCart = require("../controller/user/countProductsInCart");
 const emptyCart = require("../controller/user/emptyCart");
 const updateUserDetailsController = require("../controller/user/updateAdditionalDetails");
 const fetchUserAdditionalDetailsController = require("../controller/user/showAdditionalDetails");
+const { updateMyOrders } = require("../controller/user/updateMyOrders");
 
 router.post("/login", login);
 router.post("/signup", signup);
@@ -93,6 +94,7 @@ router.post("/empty-cart",authToken, emptyCart);
 //user
 router.get("/show-additional-details",authToken, fetchUserAdditionalDetailsController);
 router.post("/edit-additional-details",authToken, updateUserDetailsController);
+router.post("/update-userOrders",authToken, updateMyOrders);
 
 //payments
 router.post("/capturePayment",authToken, capturePayment)

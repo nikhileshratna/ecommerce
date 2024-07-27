@@ -17,6 +17,10 @@ const SummaryApi = {
         url: `${backendDomin}/api/edit-additional-details`,
         method: "post"
     },
+    update_userOrders: {
+        url: `${backendDomin}/api/update-userOrders`,
+        method: "post"
+    },
     showAdditionalDetails: {
         url: `${backendDomin}/api/show-additional-details`,
         method: "get"
