@@ -36,7 +36,13 @@ const userSchema = new mongoose.Schema({
             }
         }],
         default: []
-    }
+    },
+    additionalDetails: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Profile",
+        default: null
+    },
+
 }, {
     timestamps: true
 })

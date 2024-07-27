@@ -12,6 +12,8 @@ import ProductDetails from '../pages/ProductDetails'
 import Cart from '../pages/Cart'
 import SearchProduct from '../pages/SearchProduct'
 import VerifyEmail from '../pages/VerifyEmail'
+import UserDashboard from '../pages/UserDashboard'
+import MyOrders from '../pages/MyOrders'
 
 const router = createBrowserRouter([
     {
@@ -68,6 +70,15 @@ const router = createBrowserRouter([
                     }
                 ]
             },
+            {
+                path : "user-details",
+                element : <UserDashboard/>,
+            },
+            {
+                path:"orders",
+                element: <MyOrders/>
+            }
+
         ]
     }
 ])

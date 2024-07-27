@@ -3,14 +3,10 @@ import Logo from "../assest/ecommercelogo.jpg";
 import { setPaymentLoading } from "../slices/productSlice";
 import { apiConnector } from "../services/apiConnector";
 import SummaryApi from "../common";
-// import { studentEndpoints } from "../apis"
 
-// const {
-//   SEND_PAYMENT_SUCCESS_EMAIL_API,
-// } = studentEndpoints
-
+// Assuming `user` is defined at a higher scope in your actual usage
 const BASE_URL = process.env.REACT_APP_BASE_URL;
-
+const user = JSON.parse(localStorage.getItem("userData")) || null;
 const PRODUCT_PAYMENT_API = BASE_URL + "/capturePayment";
 const PRODUCT_VERIFY_API = BASE_URL + "/verifyPayment";
 
@@ -29,7 +25,7 @@ function loadScript(src) {
   });
 }
 
-//reset cart
+// Reset cart
 const resetCart = async (token) => {
   try {
     const response = await fetch(SummaryApi.emptyCart.url, {
@@ -44,14 +40,51 @@ const resetCart = async (token) => {
     if (responseData.success) {
       toast.success(responseData.message);
     }
-  }
-  catch(error) {
-    console.log(error)
+  } catch (error) {
+    console.log(error);
   }
 };
 
-// Buy the Course
-export async function BuyProduct(products, total_amount, token, user, navigate, dispatch) {
+const editMyOrders = async (token, products) => {
+  console.log("editMyOrders called with products:", products);
+  try {
+    // Ensure myOrders is an array
+    console.log("User object:", user);
+    const myOrders = Array.isArray(user?.additionalDetails?.myOrders) 
+      ? user.additionalDetails.myOrders 
+      : [];
+    console.log("myOrders array:", myOrders);
+    console.log("Products array:", products);
+
+    if (!Array.isArray(products)) {
+      throw new Error("Products should be an array");
+    }
+
+    const response = await fetch(SummaryApi.editAdditionalDetails.url, {
+      method: SummaryApi.editAdditionalDetails.method,
+      credentials: 'include',
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        myOrders: [...myOrders, ...products],
+      }),
+    });
+
+    const responseData = await response.json();
+    if (responseData.success) {
+      toast.success(responseData?.message);
+    } else if (responseData.error) {
+      toast.error(responseData?.message);
+    }
+  } catch (error) {
+    console.error("Error in editMyOrders:", error);
+  }
+};
+
+// Buy the Product
+export async function BuyProduct(products, token, user, navigate, dispatch) {
   const toastId = toast.loading("Loading...");
   try {
     // Loading the script of Razorpay SDK
@@ -100,8 +133,7 @@ export async function BuyProduct(products, total_amount, token, user, navigate, 
         email: user.email,
       },
       handler: function (response) {
-        // sendPaymentSuccessEmail(response, orderResponse.data.data.amount, token)
-        verifyPayment({ ...response },products, token, navigate, dispatch);
+        verifyPayment({ ...response }, products, token, navigate, dispatch);
       },
     };
     const paymentObject = new window.Razorpay(options);
@@ -119,7 +151,7 @@ export async function BuyProduct(products, total_amount, token, user, navigate, 
 }
 
 // Verify the Payment
-async function verifyPayment(bodyData, products, token , navigate, dispatch) {
+async function verifyPayment(bodyData, products, token, navigate, dispatch) {
   const toastId = toast.loading("Verifying Payment...");
   console.log("PAYMENT VERIFY BODY DATA............", bodyData);
   dispatch(setPaymentLoading(true));
@@ -127,11 +159,11 @@ async function verifyPayment(bodyData, products, token , navigate, dispatch) {
     const response = await apiConnector("POST", PRODUCT_VERIFY_API, 
       {
         bodyData,
-        products
+        products,
       }, 
       {
-      Authorization: `Bearer ${token}`,
-    });
+        Authorization: `Bearer ${token}`,
+      });
 
     console.log("VERIFY PAYMENT RESPONSE FROM BACKEND............", response);
 
@@ -139,9 +171,11 @@ async function verifyPayment(bodyData, products, token , navigate, dispatch) {
       throw new Error(response.data.message);
     }
 
+    editMyOrders(token, products);
     toast.success("Payment Successful. You will receive the product shortly.");
     navigate("/");
     resetCart(token);
+
   } catch (error) {
     console.log("PAYMENT VERIFY ERROR............", error);
     toast.error("Could Not Verify Payment.");
@@ -149,6 +183,7 @@ async function verifyPayment(bodyData, products, token , navigate, dispatch) {
   toast.dismiss(toastId);
   dispatch(setPaymentLoading(false));
 }
+
 
 // Send the Payment Success Email
 // async function sendPaymentSuccessEmail(response, amount, token) {
