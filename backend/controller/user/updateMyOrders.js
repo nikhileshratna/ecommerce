@@ -32,11 +32,13 @@ const updateMyOrders = async (req, res) => {
         dateOfBirth : "",
         address : "",
         contactNumber   : "",
+        myOrders: [],
       });
       await profile.save();
 
       // Associate the new Profile with the user
       user.additionalDetails = profile._id;
+      await user.save();
     }
 
     profile = await Profile.findById(user.additionalDetails);

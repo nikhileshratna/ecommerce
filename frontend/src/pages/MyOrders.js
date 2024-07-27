@@ -5,71 +5,105 @@ import SummaryApi from '../common';
 const MyOrders = () => {
   const { token } = useSelector(state => state.auth);
   const [orderDetails, setOrderDetails] = useState([]);
-  const [data,setData] = useState([]);
-  const [loading,setLoading] = useState(true)
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const fetchAdditionalDetails = async () => {
     if (!token) return;
 
-    const response = await fetch(SummaryApi.showAdditionalDetails.url, {
-      method: SummaryApi.showAdditionalDetails.method,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    try {
+      const response = await fetch(SummaryApi.showAdditionalDetails.url, {
+        method: SummaryApi.showAdditionalDetails.method,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-    const responseData = await response.json();
-    if (response?.ok) {
-      setOrderDetails(responseData?.data?.myOrders ?? []);
-      console.log('Additional details fetched successfully:', responseData);
-    } else {
-      console.error('Failed to fetch additional details:', responseData.message);
+      const responseData = await response.json();
+      if (response.ok) {
+        setOrderDetails(responseData?.data?.myOrders ?? []);
+        console.log('Additional details fetched successfully:', responseData?.data?.myOrders);
+      } else {
+        console.error('Failed to fetch additional details:', responseData.message);
+      }
+    } catch (error) {
+      console.error('Error fetching additional details:', error);
     }
   };
+
   const fetchProductDetails = async (productId) => {
     setLoading(true);
-    const response = await fetch(SummaryApi.productDetails.url, {
-      method: SummaryApi.productDetails.method,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ productId }),
-    });
-    setLoading(false);
-    const dataResponse = await response.json();
-    console.log(dataResponse);
-  
-    setData((prevData) => [...prevData, dataResponse?.data]);
-  };
-  
+    try {
+      const response = await fetch(SummaryApi.productDetails.url, {
+        method: SummaryApi.productDetails.method,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ productId }),
+      });
 
-  useEffect(() => { 
+      const dataResponse = await response.json();
+      if (response.ok) {
+        setData((prevData) => {
+          const existingIds = new Set(prevData.map(item => item._id));
+          if (!existingIds.has(dataResponse.data._id)) {
+            return [...prevData, dataResponse.data];
+          }
+          return prevData;
+        });
+      } else {
+        console.error('Failed to fetch product details:', dataResponse.message);
+      }
+    } catch (error) {
+      console.error('Error fetching product details:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchAdditionalDetails();
   }, []);
 
   useEffect(() => {
-    orderDetails.forEach((item) => {
-      fetchProductDetails(item._id);
-    })
-
-    console.log(data);
+    if (orderDetails.length > 0) {
+      orderDetails.forEach((item) => {
+        fetchProductDetails(item.productId);
+      });
+    }
   }, [orderDetails]);
 
   return (
     <div className="bg-red-50 text-red-900 p-5 rounded-lg">
-      <div>
-        {
-          orderDetails?.length === 0 && <p className="text-red-600 text-center">No orders found</p>
-        }
-        {
-          orderDetails?.map((item, index) => (
-            <div key={index} className="bg-red-100 p-3 my-2 rounded-md flex flex-col gap-2">
-              <p>{item.quantity}</p>
-              <p>{item._id}</p>
+      <div className="w-full max-w-3xl">
+        {loading ? (
+          <div className="w-full bg-slate-200 h-32 my-2 border border-slate-300 animate-pulse rounded"></div>
+        ) : (
+          data.map((product) => (
+            <div
+              key={product._id}
+              className="w-full bg-white h-32 my-2 border border-slate-300 rounded grid grid-cols-[128px,1fr]"
+            >
+              <div className="w-32 h-32 bg-slate-200">
+                {product.productImage && (
+                  <img
+                    src={product.productImage}
+                    alt={product.productName}
+                    className="w-full h-full object-scale-down mix-blend-multiply"
+                  />
+                )}
+              </div>
+              <div className="p-4 flex flex-col justify-center">
+                <h2 className="text-lg lg:text-xl text-ellipsis line-clamp-1">
+                  {product.productName}
+                </h2>
+                <p className="capitalize text-slate-500">{product.category}</p>
+              </div>
             </div>
           ))
-        }
+        )}
       </div>
     </div>
   );
