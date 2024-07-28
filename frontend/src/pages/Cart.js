@@ -28,6 +28,10 @@ const Cart = () => {
         quantity: product.quantity,
       });
     });
+    if(products.length === 0){
+      toast.error("Cart is empty");
+      return;
+    }
     BuyProduct(products,totalPrice,token,user, navigate, dispatch);
   };
 
@@ -75,10 +79,13 @@ const Cart = () => {
       }),
     });
 
+    
+
     const responseData = await response.json();
 
     if (responseData.success) {
       fetchData();
+      
     }
   };
 
@@ -118,7 +125,16 @@ const Cart = () => {
       }),
     });
 
+  
+
     const responseData = await response.json();
+
+    if(responseData.success){
+      toast.success(responseData.message);
+    }
+    else{
+      toast.error(responseData.message);
+    }
     console.log("response data", responseData);
     if (responseData.success) {
       fetchData();

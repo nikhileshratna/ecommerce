@@ -21,7 +21,7 @@ const deleteFromCart = async (req, res) => {
             success: true 
         });
     } catch (error) {
-        res.status(500).json({ message: 'Server error', error });
+        res.status(500).json({ message: 'Server error', error , success: false });
     }
 };
 
