@@ -4,7 +4,7 @@ const productModel = require('../../models/productModel');
 const addToCart = async (req, res) => {
     const userId = req.userId;
     const { productId, quantity } = req.body;
-    
+
     try {
         // Find the user by ID
         const user = await userModel.findById(userId);
@@ -22,8 +22,7 @@ const addToCart = async (req, res) => {
         const existingProductIndex = user.cart.findIndex(item => item.productId.toString() === productId);
 
         if (existingProductIndex >= 0) {
-            // If product exists in the cart, update the quantity
-            user.cart[existingProductIndex].quantity = quantity;
+            return res.status(200).json({ success: false, message: "Product already in cart", cart: user.cart });
         } else {
             // If product does not exist in the cart, add it to the cart
             user.cart.push({ productId, quantity });
@@ -32,10 +31,10 @@ const addToCart = async (req, res) => {
         // Save the updated user document
         await user.save();
 
-        return res.status(200).json({ message: "Product added to cart", cart: user.cart });
+        return res.status(200).json({ success: true, message: "Product added to cart", cart: user.cart });
     } catch (error) {
         console.error(error);
-        return res.status(500).json({ message: "Server error" });
+        return res.status(500).json({ message: "Server error", success: false });
     }
 };
 

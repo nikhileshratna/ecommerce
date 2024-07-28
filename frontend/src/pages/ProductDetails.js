@@ -7,6 +7,7 @@ import displayINRCurrency from '../helpers/displayCurrency';
 import VerticalCardProduct from '../components/VerticalCardProduct';
 import CategroyWiseProductDisplay from '../components/CategoryWiseProductDisplay';
 import AddToCart from '../helpers/addToCart'
+import { toast } from 'react-toastify';
 
 import Context from '../context';
 import { useSelector } from 'react-redux';
@@ -87,6 +88,7 @@ const ProductDetails = () => {
 
   const handleAddToCart = async(e,id,quantity) =>{
     await AddToCart(e,id,quantity,token)
+    toast.success("Item Added To Cart");
     // fetchUserAddToCart()
   }
 

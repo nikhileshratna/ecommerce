@@ -101,7 +101,7 @@ const Header = () => {
                   {user.user?.role !== ROLE.ADMIN && (
                     <Link
                       to={"/user-details"}
-                      className="whitespace-nowrap hidden md:block hover:bg-slate-100 p-2"
+                      className="whitespace-nowrap  block hover:bg-slate-100 p-2"
                       onClick={() => setMenuDisplay((preve) => !preve)}
                     >
                       Profile

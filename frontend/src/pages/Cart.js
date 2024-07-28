@@ -46,7 +46,6 @@ const Cart = () => {
 
     if (responseData.success) {
       setData(responseData.cart);
-      toast.success("Item Added To Cart");
     }
     else{
       toast.error("Something went wrong");
