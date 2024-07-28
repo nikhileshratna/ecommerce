@@ -1,36 +1,27 @@
 import { GoogleLogin } from '@react-oauth/google';
 import React, { useContext, useState } from 'react';
-import SummaryApi from '../common';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Context from '../context';
-import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { login } from "../services/operations/authAPI";
-import { useDispatch } from "react-redux";
-import { setSignupData } from "../slices/authSlice"
+import { login } from '../services/operations/authAPI';
 import { signUp } from '../services/operations/authAPI';
 
 const GoogleLoginButton = ({ loginType, accountType }) => {
-    const user = useSelector(state => state.profile)
+    const user = useSelector(state => state.profile);
     const { fetchUserDetails, fetchUserAddToCart } = useContext(Context);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const clientId = "571441638341-45rnsf56sp2qa2tr5tbdd31m9b3jin7n.apps.googleusercontent.com";
-
-    const [loginData, setLoginData] = useState({
-        email: "",
-        password: ""
-    });
 
     const signin = async (data) => {
         if (loginType === "signup") {
             console.log(loginType, "inside login function");
-            const otp=-1; 
+            const otp = -1;
             const signupData = {
                 ...data,
                 accountType,
                 otp,
-            }
+            };
             dispatch(signUp(
                 signupData.accountType,
                 signupData.name,
@@ -41,17 +32,6 @@ const GoogleLoginButton = ({ loginType, accountType }) => {
                 signupData.otp,
                 navigate
             ));
-
-            // const dataApi = await dataResponse.json();
-
-            // if (dataApi.success) {
-            //     toast.success(dataApi.message);
-            //     navigate("/login");
-            // }
-
-            // if (dataApi.error) {
-            //     toast.error(dataApi.message);
-            // }
         } else {
             console.log(loginType, "inside else part");
             dispatch(login(data.email, data.password, navigate));
@@ -72,7 +52,6 @@ const GoogleLoginButton = ({ loginType, accountType }) => {
                 profilePic: res.profileObj.imageUrl,
             };
 
-            // setSignupData(newSignupData);
             signin(newSignupData);
         } else {
             console.log(loginType, "inside else part");
@@ -82,7 +61,6 @@ const GoogleLoginButton = ({ loginType, accountType }) => {
                 password: res.profileObj.googleId
             };
 
-            // setLoginData(newLoginData);
             signin(newLoginData);
         }
     };
@@ -94,7 +72,6 @@ const GoogleLoginButton = ({ loginType, accountType }) => {
     return (
         <div>
             <GoogleLogin
-                clientId={clientId}
                 buttonText="Login with Google"
                 onSuccess={onSuccess}
                 onFailure={onFailure}

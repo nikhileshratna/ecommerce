@@ -7,7 +7,7 @@ import imageTobase64 from "../helpers/imageTobase64";
 import SummaryApi from "../common";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import Tab from "../components/Tab";
+// import Tab from "../components/Tab";
 import { setSignupData } from "../slices/authSlice"
 import { sendOtp } from "../services/operations/authAPI";
 import GoogleLoginButton from "../components/GoogleLoginButton";
@@ -100,10 +100,9 @@ const SignUp = () => {
   ]
 
   return (
-    <div>
+    <div className="w-full flex flex-col">
 
       <section id="signup">
-        <Tab tabData={tabData} field={accountType} setField={setAccountType} />
         <div className="mx-auto container p-4">
           <div className="bg-white p-5 w-full max-w-sm mx-auto">
             <div className="w-20 h-20 mx-auto relative overflow-hidden rounded-full">
@@ -216,7 +215,7 @@ const SignUp = () => {
           </div>
         </div>
       </section>
-      <button className="mb-4">
+      <button className="mb-4 w-50 mx-auto">
         <GoogleLoginButton loginType = {'signup'} accountType = {accountType}/>
       </button>
     </div>
