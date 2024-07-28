@@ -1,4 +1,4 @@
-import { GoogleLogin } from 'react-google-login';
+import { GoogleLogin } from '@react-oauth/google';
 import React, { useContext, useState } from 'react';
 import SummaryApi from '../common';
 import { toast } from 'react-toastify';
