@@ -40,12 +40,12 @@ const Header = () => {
   };
   return (
     <header className="h-16 shadow-md bg-white fixed w-full z-40">
-      <div className=" h-full container mx-auto flex items-center px-4 justify-between">
-        <div className="flex flex-row gap-2">
-          <Link to={"/"}>
+      <div className=" h-full container mx-auto flex items-center sm:px-4 px-1 justify-between">
+        <div>
+          <Link to={"/"} className="flex flex-row sm:gap-2 gap-0">
             <img src={Logo} alt="logo" className="h-12 " />
+            <p className="text-3xl color:red">Sidham</p>
           </Link>
-          <p className="text-3xl color:red">Sidham</p>
         </div>
 
         <div className="hidden lg:flex items-center w-full justify-between max-w-sm border rounded-full focus-within:shadow pl-2">
@@ -61,8 +61,8 @@ const Header = () => {
           </div>
         </div>
 
-        <div className="flex items-center gap-7">
-          <div className="relative flex justify-center">
+        <div className="flex items-center sm:gap-7 gap-2">
+          <div className="relative flex justify-center gap-2">
             {user.user?._id && (
               <div
                 className="text-3xl cursor-pointer relative flex justify-center"
@@ -113,7 +113,7 @@ const Header = () => {
           </div>
 
           {user.user?._id && (
-            <Link to={"/cart"} className="text-2xl relative">
+            <Link to={"/cart"} className="text-2xl relative m-2">
               <span>
                 <FaShoppingCart />
               </span>

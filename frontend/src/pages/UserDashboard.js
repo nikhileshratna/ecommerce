@@ -54,7 +54,7 @@ const UserDashboard = () => {
     <div className="min-h-screen bg-red-50">
       <div className="max-w-4xl mx-auto py-10 px-4">
         <h1 className="text-4xl font-bold text-red-600 mb-8">User Dashboard</h1>
-        <div className="flex items-center bg-white shadow-md rounded-lg p-6 mb-8">
+        <div className="flex items-center bg-white shadow-md rounded-lg p-6 mb-8 sm:flex-row flex-col">
           <img 
             src={user.profilePic || localStorage.getItem('userProfilePic')} 
             alt="Profile" 
