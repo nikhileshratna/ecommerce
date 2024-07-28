@@ -7,12 +7,28 @@ const paymentRoutes = require("./routes/Payments");
 const router = require("./routes/index");
 
 const app = express();
+
+const allowedOrigins = [
+  "https://ecommerce-nikhilesh-ratnas-projects.vercel.app",
+  "https://ecommerce-nu-two-18.vercel.app",
+  "https://ecommerce-erenpbtxi-nikhilesh-ratnas-projects.vercel.app",
+  "https://ecommerce-git-main-nikhilesh-ratnas-projects.vercel.app",
+  "https://ecommerce-nu-two-18.vercel.app"
+];
+
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL,
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
+
 app.use(express.json());
 app.use(cookieParser());
 
@@ -23,8 +39,8 @@ const PORT = process.env.PORT || 8080;
 
 connectDB().then(() => {
   app.listen(PORT, () => {
-    console.log("connnect to DB");
-    console.log("Server is running " + PORT);
+    console.log("Connected to DB");
+    console.log("Server is running on port " + PORT);
   });
   app.get("/", (req, res) => {
     return res.json({
