@@ -41,9 +41,9 @@ const GoogleLoginButton = ({ loginType, accountType }) => {
         try {
             const result = await signInWithPopup(auth, provider);
             console.log(result);
-
+            
+            // Proceed with user data
             const user = result.user;
-
             if (loginType === "signup") {
                 const newSignupData = {
                     email: user.email,
@@ -61,9 +61,11 @@ const GoogleLoginButton = ({ loginType, accountType }) => {
                 signin(newLoginData);
             }
         } catch (error) {
-            console.error("Error during Google sign-in:", error);
+            console.error("Error during Google sign-in:", error.message, error.code);
+            alert(`Sign-in failed: ${error.message}`);
         }
     };
+    
 
     return (
         <div>
