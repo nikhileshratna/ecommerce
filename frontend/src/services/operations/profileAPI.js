@@ -2,6 +2,7 @@ import { toast } from "react-hot-toast"
 import { setLoading, setUser } from "../../slices/profileSlice"
 import { apiConnector } from "../apiConnector"
 import { logout } from "./authAPI"
+import { toast } from 'react-toastify';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL
 
@@ -25,6 +26,9 @@ export function getUserDetails(token, navigate) {
         : `https://api.dicebear.com/5.x/initials/svg?seed=${response.data.data.firstName} ${response.data.data.lastName}`
       dispatch(setUser({ ...response.data.data, image: userImage }))
       localStorage.setItem("userData", JSON.stringify(response.data.data));
+
+      toast.success("User Details Fetched Successfully");
+
     
     } catch (error) {
       dispatch(logout(navigate))

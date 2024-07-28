@@ -4,6 +4,7 @@ import { resetCart } from "../../slices/cartSlice"
 import { setUser } from "../../slices/profileSlice"
 import { apiConnector } from "../apiConnector"
 import { useSelector } from "react-redux"
+import { toast } from 'react-toastify';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL
 
@@ -120,6 +121,7 @@ export function login(email, password, navigate) {
     }
     dispatch(setLoading(false))
     toast.dismiss(toastId)
+    
   }
 }
 

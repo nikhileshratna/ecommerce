@@ -29,18 +29,18 @@ const Login = () => {
         dispatch(login(data.email, data.password, navigate));
     };
 
-    useEffect(() => {
-        function start() {
-            if (!gapi.auth2.getAuthInstance()) {
-                gapi.auth2.init({
-                    clientId: clientId,
-                    scope: "email profile"
-                });
-            }
-        }
+    // useEffect(() => {
+    //     function start() {
+    //         if (!gapi.auth2.getAuthInstance()) {
+    //             gapi.auth2.init({
+    //                 clientId: clientId,
+    //                 scope: "email profile"
+    //             });
+    //         }
+    //     }
     
-        gapi.load('client:auth2', start);
-    }, [clientId]);
+    //     gapi.load('client:auth2', start);
+    // }, [clientId]);
     
     
 
