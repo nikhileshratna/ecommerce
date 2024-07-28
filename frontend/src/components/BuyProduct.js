@@ -1,4 +1,6 @@
-import { toast } from "react-hot-toast";
+// import { toast } from "react-hot-toast";
+import { toast } from 'react-toastify';
+
 import Logo from "../assest/ecommercelogo.jpg";
 import { setPaymentLoading } from "../slices/productSlice";
 import { apiConnector } from "../services/apiConnector";

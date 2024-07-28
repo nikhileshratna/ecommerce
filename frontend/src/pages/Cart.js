@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { MdDelete } from "react-icons/md";
 import { BuyProduct } from "../components/BuyProduct";
 import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
+
 
 const Cart = () => {
   const [data, setData] = useState([]);
@@ -44,6 +46,10 @@ const Cart = () => {
 
     if (responseData.success) {
       setData(responseData.cart);
+      toast.success("Item Added To Cart");
+    }
+    else{
+      toast.error("Something went wrong");
     }
   };
 
