@@ -1,4 +1,4 @@
-import { toast } from "react-hot-toast"
+// import { toast } from "react-hot-toast"
 import { setLoading, setUser } from "../../slices/profileSlice"
 import { apiConnector } from "../apiConnector"
 import { logout } from "./authAPI"

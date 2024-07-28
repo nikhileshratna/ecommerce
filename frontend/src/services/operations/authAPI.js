@@ -1,4 +1,4 @@
-import { toast } from "react-hot-toast"
+// import { toast } from "react-hot-toast"
 import { setLoading, setToken } from "../../slices/authSlice"
 import { resetCart } from "../../slices/cartSlice"
 import { setUser } from "../../slices/profileSlice"
@@ -121,7 +121,7 @@ export function login(email, password, navigate) {
     }
     dispatch(setLoading(false))
     toast.dismiss(toastId)
-    
+
   }
 }
 
