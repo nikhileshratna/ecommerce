@@ -1,14 +1,12 @@
-import { GoogleLogin } from '@react-oauth/google';
-import React, { useContext, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useContext } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import Context from '../context';
-import { login } from '../services/operations/authAPI';
-import { signUp } from '../services/operations/authAPI';
+import { login, signUp } from '../services/operations/authAPI';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { auth } from './firebase';
 
 const GoogleLoginButton = ({ loginType, accountType }) => {
-    const user = useSelector(state => state.profile);
     const { fetchUserDetails, fetchUserAddToCart } = useContext(Context);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -38,46 +36,47 @@ const GoogleLoginButton = ({ loginType, accountType }) => {
         }
     };
 
-    const onSuccess = (res) => {
-        console.log("Login Successful", res.profileObj);
+    const googleLogin = async () => {
+        const provider = new GoogleAuthProvider();
+        try {
+            const result = await signInWithPopup(auth, provider);
+            console.log(result);
 
-        if (loginType === "signup") {
-            console.log(loginType, "inside onSuccess function");
+            const user = result.user;
 
-            const newSignupData = {
-                email: res.profileObj.email,
-                password: res.profileObj.googleId,
-                name: res.profileObj.name,
-                confirmPassword: res.profileObj.googleId,
-                profilePic: res.profileObj.imageUrl,
-            };
-
-            signin(newSignupData);
-        } else {
-            console.log(loginType, "inside else part");
-
-            const newLoginData = {
-                email: res.profileObj.email,
-                password: res.profileObj.googleId
-            };
-
-            signin(newLoginData);
+            if (loginType === "signup") {
+                const newSignupData = {
+                    email: user.email,
+                    password: user.uid,
+                    name: user.displayName,
+                    confirmPassword: user.uid,
+                    profilePic: user.photoURL,
+                };
+                signin(newSignupData);
+            } else {
+                const newLoginData = {
+                    email: user.email,
+                    password: user.uid
+                };
+                signin(newLoginData);
+            }
+        } catch (error) {
+            console.error("Error during Google sign-in:", error);
         }
-    };
-
-    const onFailure = (res) => {
-        console.log("Login Failed", res);
     };
 
     return (
         <div>
-            <GoogleLogin
-                buttonText="Login with Google"
-                onSuccess={onSuccess}
-                onFailure={onFailure}
-                cookiePolicy={'single_host_origin'}
-                isSignedIn={true}
-            />
+            <div
+                className='flex justify-center cursor-pointer'
+                onClick={googleLogin}
+            >
+                <img
+                    src='https://developers.google.com/identity/images/g-logo.png'
+                    width="60%"
+                    alt="Google Sign-In"
+                />
+            </div>
         </div>
     );
 };
