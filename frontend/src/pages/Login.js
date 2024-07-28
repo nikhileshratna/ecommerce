@@ -72,15 +72,17 @@ const Login = () => {
     // };
     
     useEffect(() => {
-        function start(){
-            gapi.client.init({
-                clientId : clientId,
-                scope: "email profile"
-            })};
-        
-            gapi.load('client:auth2' , start);
+        function start() {
+            if (!gapi.auth2.getAuthInstance()) {
+                gapi.auth2.init({
+                    clientId: clientId,
+                    scope: "email profile"
+                });
+            }
+        }
 
-    },[]);
+        gapi.load('client:auth2', start);
+    }, [clientId]);
 
    
 
