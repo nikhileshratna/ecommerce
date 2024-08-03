@@ -261,7 +261,7 @@ const UploadProduct = ({
               >
               </textarea>
 
-              <label htmlFor='review' className='mt-3'>Riview of Product:</label>
+              <label htmlFor='review' className='mt-3'>Review of Product:</label>
               <textarea
                 className='h-28 bg-slate-100 border resize-none p-1' 
                 placeholder='enter product review' 

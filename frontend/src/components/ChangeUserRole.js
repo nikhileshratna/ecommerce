@@ -3,6 +3,7 @@ import ROLE from '../common/role'
 import { IoMdClose } from "react-icons/io";
 import SummaryApi from '../common';
 import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
 
 const ChangeUserRole = ({
     name,
@@ -13,6 +14,7 @@ const ChangeUserRole = ({
     callFunc,
 }) => {
     const [userRole,setUserRole] = useState(role)
+    const { token } = useSelector((state) => state.auth);
 
     const handleOnChangeSelect = (e) => {
         setUserRole(e.target.value)
@@ -24,8 +26,10 @@ const ChangeUserRole = ({
         const fetchResponse = await fetch(SummaryApi.updateUser.url,{
             method : SummaryApi.updateUser.method,
             headers : {
-                "Authorization" : `Bearer ${localStorage.getItem("token")}`
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
             },
+            credentials : "include",
             body : JSON.stringify({
                 email : email,
                 name : name,

@@ -45,10 +45,11 @@ const MyOrders = () => {
       });
 
       const dataResponse = await response.json();
+      console.log("product data", dataResponse)
       if (response.ok) {
         setData((prevData) => {
-          const existingIds = new Set(prevData.map(item => item._id));
-          if (!existingIds.has(dataResponse.data._id)) {
+          const existingIds = new Set(prevData.map(item => item?.data));
+          if (!existingIds.has(dataResponse.data)) {
             return [...prevData, dataResponse.data];
           }
           return prevData;
@@ -83,23 +84,23 @@ const MyOrders = () => {
         ) : (
           data.map((product) => (
             <div
-              key={product._id}
+              key={product?._id}
               className="w-full bg-white h-32 my-2 border border-slate-300 rounded grid grid-cols-[128px,1fr]"
             >
               <div className="w-32 h-32 bg-slate-200">
-                {product.productImage && (
+                {product?.productImage && (
                   <img
-                    src={product.productImage}
-                    alt={product.productName}
+                    src={product?.productImage[0]}
+                    alt={product?.productName}
                     className="w-full h-full object-scale-down mix-blend-multiply"
                   />
                 )}
               </div>
               <div className="p-4 flex flex-col justify-center">
                 <h2 className="text-lg lg:text-xl text-ellipsis line-clamp-1">
-                  {product.productName}
+                  {product?.productName}
                 </h2>
-                <p className="capitalize text-slate-500">{product.category}</p>
+                <p className="capitalize text-slate-500">{product?.category}</p>
               </div>
             </div>
           ))
