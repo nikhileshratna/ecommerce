@@ -106,12 +106,15 @@ exports.signup = async (req, res) => {
       country: "",
     });
     await address.save();
+
     const profile = new Profile({
       gender: "",
       dateOfBirth: "",
-      address: [address._id],
+      address: [],
       contactNumber: "",
     });
+
+    profile.address.push(address._id);
     await profile.save();
 
     
