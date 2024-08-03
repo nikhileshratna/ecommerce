@@ -74,7 +74,7 @@ const MyOrders = () => {
         fetchProductDetails(item.productId);
       });
     }
-  }, [orderDetails]);
+  }, [orderDetails.length]);
 
   return (
     <div className="bg-red-50 text-red-900 p-5 rounded-lg">
