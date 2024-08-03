@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getUserDetails } from '../services/operations/profileAPI';
 
+
 const EditProfileDetails = ({ onClose, additionalDetails }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -70,6 +71,7 @@ const EditProfileDetails = ({ onClose, additionalDetails }) => {
         const responseData = await response.json();
         if (responseData.success) {
             toast.success(responseData?.message);
+            dispatch(getUserDetails(token, navigate));
             onClose();
         } else if (responseData.error) {
             toast.error(responseData?.message);

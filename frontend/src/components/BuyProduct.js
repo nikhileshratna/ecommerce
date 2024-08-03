@@ -9,16 +9,24 @@ import { emptyCart } from '../slices/cartSlice';
 
 // Assuming `user` is defined at a higher scope in your actual usage
 const BASE_URL = process.env.REACT_APP_BASE_URL;
-const user = JSON.parse(localStorage.getItem("userData")) || null;
 const PRODUCT_PAYMENT_API = BASE_URL + "/capturePayment";
 const PRODUCT_VERIFY_API = BASE_URL + "/verifyPayment";
 
-// Load the Razorpay SDK from the CDN
+const crypto = require('crypto');
+
+const generateUniqueOrderId = () => {
+    const timestamp = Date.now();
+    const randomComponent = crypto.randomBytes(8).toString('hex'); // Generates a longer random hex string
+    return `ORD-${timestamp}-${randomComponent}`;
+};
+
+// Example usage in addOrderToShiprocket
 const addOrderToShiprocket = async (products, totalPrice, user) => {
+  console.log("products", products);
+
   const shiprocketURL = "https://apiv2.shiprocket.in/v1/external";
 
   try {
-    // Step 1: Login and get the token
     const loginResponse = await fetch(`${shiprocketURL}/auth/login`, {
       method: 'POST',
       headers: {
@@ -31,48 +39,46 @@ const addOrderToShiprocket = async (products, totalPrice, user) => {
     });
 
     const loginText = await loginResponse.text();
-    console.log("Login Response Text:", loginText);
     const loginData = JSON.parse(loginText);
     const shiprocketToken = loginData.token;
-    console.log("Login Data:", loginData);
 
     if (!loginResponse.ok || !shiprocketToken) {
       throw new Error('Login failed');
     }
 
-    // Step 2: Create the order
+    const orderItems = products.map(product => ({
+      "name": product.productId.productName,
+      "sku": product.productId._id,
+      "units": product.quantity,
+      "selling_price": product.productId.sellingPrice,
+      "hsn": "441122"
+    }));
+
+    const uniqueOrderId = generateUniqueOrderId();
     const payload = {
-      "order_id": "4050000000",
-      "order_date": "2024-07-24 11:11",
+      "order_id": uniqueOrderId,
+      "order_date": new Date().toISOString(),
       "pickup_location": "haryana",
       "channel_id": "",
       "comment": "Reseller: M/s Goku",
-      "billing_customer_name": "Naruto",
-      "billing_last_name": "Uzumaki",
-      "billing_address": "House 221B, Leaf Village",
-      "billing_address_2": "Near Hokage House",
-      "billing_city": "New Delhi",
-      "billing_pincode": "110002",
-      "billing_state": "Delhi",
-      "billing_country": "India",
-      "billing_email": "naruto@uzumaki.com",
-      "billing_phone": "9876543210",
+      "billing_customer_name": user?.name,
+      "billing_last_name": "",
+      "billing_address": user?.additionalDetails?.address1,
+      "billing_address_2": user?.additionalDetails?.address2 || "",
+      "billing_city": user?.additionalDetails?.city,
+      "billing_pincode": user?.additionalDetails?.pincode,
+      "billing_state": user?.additionalDetails?.state,
+      "billing_country": user?.additionalDetails?.country,
+      "billing_email": user?.email,
+      "billing_phone": user?.additionalDetails?.contactNumber,
       "shipping_is_billing": true,
-      "order_items": [
-        {
-          "name": "Kunai",
-          "sku": "chakra123",
-          "units": 10,
-          "selling_price": "900",
-          "hsn": 441122
-        }
-      ],
+      "order_items": orderItems,
       "payment_method": "Prepaid",
       "shipping_charges": 0,
       "giftwrap_charges": 0,
       "transaction_charges": 0,
       "total_discount": 0,
-      "sub_total": 9000,
+      "sub_total": totalPrice,
       "length": 10,
       "breadth": 15,
       "height": 20,
@@ -91,18 +97,13 @@ const addOrderToShiprocket = async (products, totalPrice, user) => {
     });
 
     const orderText = await orderResponse.text();
-    console.log('Order Response Text:', orderText);
 
-    // Attempt to parse the response as JSON
     let orderData;
     try {
       orderData = JSON.parse(orderText);
     } catch (error) {
-      console.error('Failed to parse order response as JSON:', error);
-      orderData = { error: orderText }; // Capture the response text in case of parsing error
+      orderData = { error: orderText };
     }
-
-    console.log('Response from Shiprocket:', orderData);
 
     if (orderResponse.ok) {
       console.log('Order added successfully to Shiprocket!');
@@ -110,7 +111,6 @@ const addOrderToShiprocket = async (products, totalPrice, user) => {
       console.error('Failed to add order to Shiprocket:', orderData.message || orderData.error);
     }
 
-    // Step 3: Logout
     const logoutResponse = await fetch(`${shiprocketURL}/auth/logout`, {
       method: 'POST',
       headers: {
@@ -119,28 +119,12 @@ const addOrderToShiprocket = async (products, totalPrice, user) => {
       }
     });
 
-    // const logoutText = await logoutResponse.text();
-    // console.log("Logout Response Text:", logoutText);
-
-    // let logoutData;
-    // try {
-    //   logoutData = JSON.parse(logoutText);
-    // } catch (error) {
-    //   console.error('Failed to parse logout response as JSON:', error);
-    //   logoutData = { error: logoutText }; // Capture the response text in case of parsing error
-    // }
-
-    // console.log("Logout Data:", logoutData);
-    // if (logoutResponse.ok) {
-    //   console.log('Logged out successfully from Shiprocket!');
-    // } else {
-    //   console.error('Failed to logout from Shiprocket:', logoutData.message || logoutData.error);
-    // }
-
   } catch (error) {
     console.error('Error:', error);
   }
 };
+
+
 
 
 
@@ -211,7 +195,7 @@ const editMyOrders = async (token, products) => {
 };
 
 // Buy the Product
-export async function BuyProduct(products, total_amount, token, user, navigate, dispatch) {
+export async function BuyProduct(products, total_amount, token, user, navigate, dispatch , data) {
   const toastId = toast.loading("Loading...");
   try {
     // Loading the script of Razorpay SDK
@@ -260,7 +244,7 @@ export async function BuyProduct(products, total_amount, token, user, navigate, 
         email: user.email,
       },
       handler: function (response) {
-        verifyPayment({ ...response }, products, token, navigate, dispatch, user, total_amount);
+        verifyPayment({ ...response }, products, token, navigate, dispatch, user, total_amount , data);
       },
     };
     const paymentObject = new window.Razorpay(options);
@@ -278,7 +262,7 @@ export async function BuyProduct(products, total_amount, token, user, navigate, 
 }
 
 // Verify the Payment
-async function verifyPayment(bodyData, products, token, navigate, dispatch, user, toatalPrice) {
+async function verifyPayment(bodyData, products, token, navigate, dispatch, user, toatalPrice , data) {
   const toastId = toast.loading("Verifying Payment...");
   console.log("PAYMENT VERIFY BODY DATA............", bodyData);
   dispatch(setPaymentLoading(true));
@@ -299,7 +283,7 @@ async function verifyPayment(bodyData, products, token, navigate, dispatch, user
     }
 
     await editMyOrders(token, products);
-    await addOrderToShiprocket(products, toatalPrice, user);
+    await addOrderToShiprocket(data, toatalPrice, user);
     toast.success("Payment Successful. You will receive the product shortly.");
     localStorage.setItem("verifyPayment", true);
     resetCart(token);

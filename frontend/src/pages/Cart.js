@@ -18,10 +18,7 @@ const Cart = () => {
   const { user } = useSelector((state) => state.profile);
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  // const dispatch = useDispatch();
-
-  
+  const navigate = useNavigate();  
   const handleBuyProduct = async () => {
     let products = [];
     data?.map((product) => {
@@ -35,7 +32,7 @@ const Cart = () => {
       return;
     }
 
-    BuyProduct(products,totalPrice,token,user, navigate, dispatch);
+    BuyProduct(products,totalPrice,token,user, navigate, dispatch , data);
     // addOrderToShiprocket(products,totalPrice,user);
   };
 
@@ -68,6 +65,7 @@ const Cart = () => {
     setLoading(true);
     handleLoading();
     setLoading(false);
+    // console.log("data", data);
   }, []);
 
   const increaseQty = async (id, qty) => {

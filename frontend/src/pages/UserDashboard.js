@@ -44,7 +44,7 @@ const UserDashboard = () => {
     if (user) {
       setAdditionalDetails(user.additionalDetails ?? {});
     }
-  }, [user]);
+  }, [user , openModal ]);
 
   if (!user) {
     return <div className="flex items-center justify-center h-screen text-red-500">Loading...</div>;
@@ -74,9 +74,9 @@ const UserDashboard = () => {
             <button className='px-3 py-1 rounded-full text-white bg-red-600 hover:bg-red-700' onClick={() => setOpenModal(true)}>
               Edit Details
             </button>
-            <button className='px-3 py-1 rounded-full text-white bg-red-600 hover:bg-red-700' onClick={fetchAdditionalDetails}>
+            {/* <button className='px-3 py-1 rounded-full text-white bg-red-600 hover:bg-red-700' onClick={fetchAdditionalDetails}>
               Refresh
-            </button>
+            </button> */}
           </div>
           <div className='flex flex-col gap-4'>
             <div className="text-red-700">
