@@ -10,7 +10,7 @@ const Address = require("../models/Address");
 // const Profile = require("../models/Profile")
 require("dotenv").config();
 
-// Signup Controller for Registering USers
+// Signup Controller for Registering users
 
 exports.signup = async (req, res) => {
   try {
