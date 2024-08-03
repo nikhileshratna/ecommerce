@@ -12,6 +12,8 @@ import { useDispatch } from 'react-redux';
 import { setUserDetails } from './store/userSlice';
 import { getUserDetails } from './services/operations/profileAPI';
 import { useNavigate } from 'react-router-dom';
+import { setCartCount } from './slices/cartSlice';
+import toast from 'react-hot-toast';
 
 function App() {
   const dispatch = useDispatch()
@@ -46,6 +48,29 @@ function App() {
     if (localStorage.getItem("token")) {
       const token = JSON.parse(localStorage.getItem("token"))
       dispatch(getUserDetails(token, navigate))
+      const fetchData = async () => {
+        const response = await fetch(SummaryApi.cartProductView.url, {
+          method: SummaryApi.cartProductView.method,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+    
+        const responseData = await response.json();
+    
+        console.log("response data", responseData);
+    
+        if (responseData.success) {
+          console.log("cart count", responseData?.cart.length);
+          dispatch(setCartCount(responseData?.cart.length));
+        }
+        else{
+          toast.error("Something went wrong while feftching cart data");
+        }
+      };
+
+      fetchData()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     /**user Details cart product */

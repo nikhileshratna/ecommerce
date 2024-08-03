@@ -8,12 +8,14 @@ import VerticalCardProduct from '../components/VerticalCardProduct';
 import CategroyWiseProductDisplay from '../components/CategoryWiseProductDisplay';
 import AddToCart from '../helpers/addToCart'
 import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
 
 import Context from '../context';
 import { useSelector } from 'react-redux';
 
 const ProductDetails = () => {
   const { token } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   const [data,setData] = useState({
     productName : "",
     brandName : "",
@@ -87,14 +89,14 @@ const ProductDetails = () => {
 
 
   const handleAddToCart = async(e,id,quantity) =>{
-    await AddToCart(e,id,quantity,token)
+    await AddToCart(e,id,quantity,token,dispatch)
     toast.success("Item Added To Cart");
     // fetchUserAddToCart()
   }
 
   const handleBuyProduct = async(e,id)=>{
-    await AddToCart(e,id,1,token)
-    // fetchUserAddToCart()
+    await AddToCart(e,id,1,token, dispatch)
+    // fetchUser()
     navigate("/cart")
 
   }

@@ -23,6 +23,7 @@ const Header = () => {
   const URLSearch = new URLSearchParams(searchInput?.search);
   const searchQuery = URLSearch.getAll("q");
   const [search, setSearch] = useState(searchQuery);
+  const {totalItems} = useSelector(state => state.cart);
 
   const handleLogout = async () => {
     dispatch(logout(navigate))
@@ -119,7 +120,7 @@ const Header = () => {
               </span>
 
               <div className="bg-red-600 text-white w-5 h-5 rounded-full p-1 flex items-center justify-center absolute -top-2 -right-3">
-                <p className="text-sm">{context?.cartProductCount}</p>
+                <p className="text-sm">{totalItems}</p>
               </div>
             </Link>
           )}

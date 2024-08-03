@@ -3,12 +3,14 @@ import fetchCategoryWiseProduct from '../helpers/fetchCategoryWiseProduct'
 import displayINRCurrency from '../helpers/displayCurrency'
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa6'
 import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import AddToCart from '../helpers/addToCart'
 
 import { useSelector } from 'react-redux'
 import Context from '../context'
 
 const VerticalCardProduct = ({category, heading}) => {
+    const dispatch = useDispatch()
     const { token } = useSelector((state) => state.auth);
     const [data,setData] = useState([])
     const [loading,setLoading] = useState(true)
@@ -20,7 +22,7 @@ const VerticalCardProduct = ({category, heading}) => {
     const { fetchUserAddToCart } = useContext(Context)
 
     const handleAddToCart = async(e,id,quantity)=>{
-       await AddToCart(e,id,quantity,token)
+       await AddToCart(e,id,quantity,token,dispatch)
     //    fetchUserAddToCart()
     }
 

@@ -5,6 +5,7 @@ import Logo from "../assest/ecommercelogo.jpg";
 import { setPaymentLoading } from "../slices/productSlice";
 import { apiConnector } from "../services/apiConnector";
 import SummaryApi from "../common";
+import { emptyCart } from '../slices/cartSlice';
 
 // Assuming `user` is defined at a higher scope in your actual usage
 const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -30,6 +31,7 @@ function loadScript(src) {
 // Reset cart
 const resetCart = async (token) => {
   try {
+    console.log("emptyCart called");
     const response = await fetch(SummaryApi.emptyCart.url, {
       method: SummaryApi.emptyCart.method,
       headers: {
@@ -39,6 +41,8 @@ const resetCart = async (token) => {
     });
 
     const responseData = await response.json();
+    console.log("emptyCart",responseData);
+    
     if (responseData.success) {
       toast.success(responseData.message);
     }
@@ -164,9 +168,9 @@ async function verifyPayment(bodyData, products, token, navigate, dispatch) {
 
     editMyOrders(token, products);
     toast.success("Payment Successful. You will receive the product shortly.");
-    navigate("/");
     resetCart(token);
-
+    dispatch(emptyCart());
+    navigate("/");
   } catch (error) {
     console.log("PAYMENT VERIFY ERROR............", error);
     toast.error("Could Not Verify Payment.");

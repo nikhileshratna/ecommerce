@@ -6,11 +6,13 @@ import { Link } from 'react-router-dom'
 import AddToCart from '../helpers/addToCart'
 import Context from '../context'
 import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 const HorizontalCardProduct = ({category, heading}) => {
     const [data,setData] = useState([])
     const [loading,setLoading] = useState(true)
     const loadingList = new Array(13).fill(null)
+    const dispatch = useDispatch()
 
     const [scroll,setScroll] = useState(0)
     const scrollElement = useRef()
@@ -20,7 +22,7 @@ const HorizontalCardProduct = ({category, heading}) => {
     const { fetchUserAddToCart } = useContext(Context)
 
     const handleAddToCart = async(e,id)=>{
-       await AddToCart(e,id,1,token)
+       await AddToCart(e,id,1,token,dispatch)
     //    fetchUserAddToCart()
     }
 

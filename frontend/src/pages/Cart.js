@@ -6,6 +6,7 @@ import { MdDelete } from "react-icons/md";
 import { BuyProduct } from "../components/BuyProduct";
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
+import { emptyCart, removeFromCart, resetCart } from "../slices/cartSlice";
 
 
 const Cart = () => {
@@ -85,7 +86,6 @@ const Cart = () => {
 
     if (responseData.success) {
       fetchData();
-      
     }
   };
 
@@ -130,6 +130,7 @@ const Cart = () => {
     const responseData = await response.json();
 
     if(responseData.success){
+      dispatch(removeFromCart());
       toast.success(responseData.message);
     }
     else{

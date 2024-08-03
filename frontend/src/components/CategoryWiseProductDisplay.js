@@ -7,17 +7,19 @@ import AddToCart from '../helpers/addToCart'
 import Context from '../context'
 import scrollTop from '../helpers/scrollTop'
 import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 const CategroyWiseProductDisplay = ({category, heading}) => {
     const [data,setData] = useState([])
     const [loading,setLoading] = useState(true)
+    const dispatch = useDispatch()
     const loadingList = new Array(13).fill(null)
     const {token} = useSelector((state) => state.auth);
 
     // const { fetchUserAddToCart } = useContext(Context)
 
     const handleAddToCart = async(e,id,quantity)=>{
-       await AddToCart(e,id,quantity,token)
+       await AddToCart(e,id,quantity,token,dispatch)
     //    fetchUserAddToCart()
     }
 
