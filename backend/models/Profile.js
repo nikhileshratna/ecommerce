@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
 const profileSchema = new mongoose.Schema({
-
     gender: {
         type: String,
     },
@@ -10,21 +9,41 @@ const profileSchema = new mongoose.Schema({
         type: String,
     },
 
-
     contactNumber: {
         type: Number,
         trim: true,
     },
 
-    address: {
-        type: [{
-            addressId: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'address',
-            }
-        }],
-        default: [],
+    address1: {
+        type: String,
+        trim: true,
     },
+
+    address2: {
+        type: String,
+        trim: true,
+    },
+
+    city: {
+        type: String,
+        trim: true,
+    },
+
+    pincode: {
+        type: String, // Changed to String to accommodate leading zeros
+        trim: true,
+    },
+
+    state: {
+        type: String,
+        trim: true,
+    },
+
+    country: {
+        type: String,
+        trim: true,
+    },
+
     myOrders: {
         type: [{
             productId: {

@@ -12,11 +12,19 @@ import { getUserDetails } from '../services/operations/profileAPI';
 const EditProfileDetails = ({ onClose, additionalDetails }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { token } = useSelector((state) => state.auth); 
+    const { token } = useSelector((state) => state.auth);
     const { user } = useSelector(state => state.profile);
 
     const [data, setData] = useState({
-        ...additionalDetails,
+        gender: additionalDetails.gender || "",
+        dateOfBirth: additionalDetails.dateOfBirth || "",
+        address1: additionalDetails.address?.[0]?.address1 || "",
+        address2: additionalDetails.address?.[0]?.address2 || "",
+        city: additionalDetails.address?.[0]?.city || "",
+        pincode: additionalDetails.address?.[0]?.pincode || "",
+        state: additionalDetails.address?.[0]?.state || "",
+        country: additionalDetails.address?.[0]?.country || "",
+        contactNumber: additionalDetails.contactNumber || "",
     });
 
     const [openFullScreenImage, setOpenFullScreenImage] = useState(false);
@@ -27,7 +35,15 @@ const EditProfileDetails = ({ onClose, additionalDetails }) => {
             dispatch(getUserDetails(token, navigate));
         }
         setData({
-            ...additionalDetails,
+            gender: additionalDetails.gender || "",
+            dateOfBirth: additionalDetails.dateOfBirth || "",
+            address1: additionalDetails.address?.[0]?.address1 || "",
+            address2: additionalDetails.address?.[0]?.address2 || "",
+            city: additionalDetails.address?.[0]?.city || "",
+            pincode: additionalDetails.address?.[0]?.pincode || "",
+            state: additionalDetails.address?.[0]?.state || "",
+            country: additionalDetails.address?.[0]?.country || "",
+            contactNumber: additionalDetails.contactNumber || "",
         });
         localStorage.setItem('userProfilePic', user?.profilePic);
     }, [dispatch, user, navigate, additionalDetails, token]);
@@ -92,14 +108,70 @@ const EditProfileDetails = ({ onClose, additionalDetails }) => {
                         className='p-2 bg-slate-100 border rounded'
                         required
                     />
-                    <label htmlFor='address' className='mt-3'>Address:</label>
-                    <textarea
-                        className='h-28 bg-slate-100 border resize-none p-1'
-                        placeholder='Enter address'
-                        rows={3}
+                    <label htmlFor='address1' className='mt-3'>Address Line 1:</label>
+                    <input
+                        type='text'
+                        id='address1'
+                        placeholder='Enter address line 1'
+                        value={data.address1}
+                        name='address1'
                         onChange={handleOnChange}
-                        name='address'
-                        value={data.address}
+                        className='p-2 bg-slate-100 border rounded'
+                        required
+                    />
+                    <label htmlFor='address2' className='mt-3'>Address Line 2:</label>
+                    <input
+                        type='text'
+                        id='address2'
+                        placeholder='Enter address line 2'
+                        value={data.address2}
+                        name='address2'
+                        onChange={handleOnChange}
+                        className='p-2 bg-slate-100 border rounded'
+                    />
+                    <label htmlFor='city' className='mt-3'>City:</label>
+                    <input
+                        type='text'
+                        id='city'
+                        placeholder='Enter city'
+                        value={data.city}
+                        name='city'
+                        onChange={handleOnChange}
+                        className='p-2 bg-slate-100 border rounded'
+                        required
+                    />
+                    <label htmlFor='pincode' className='mt-3'>Pincode:</label>
+                    <input
+                        type='text'
+                        id='pincode'
+                        placeholder='Enter pincode'
+                        value={data.pincode}
+                        name='pincode'
+                        onChange={handleOnChange}
+                        className='p-2 bg-slate-100 border rounded'
+                        required
+                    />
+                    <label htmlFor='state' className='mt-3'>State:</label>
+                    <input
+                        type='text'
+                        id='state'
+                        placeholder='Enter state'
+                        value={data.state}
+                        name='state'
+                        onChange={handleOnChange}
+                        className='p-2 bg-slate-100 border rounded'
+                        required
+                    />
+                    <label htmlFor='country' className='mt-3'>Country:</label>
+                    <input
+                        type='text'
+                        id='country'
+                        placeholder='Enter country'
+                        value={data.country}
+                        name='country'
+                        onChange={handleOnChange}
+                        className='p-2 bg-slate-100 border rounded'
+                        required
                     />
                     <label htmlFor='contactNumber' className='mt-3'>Contact Number:</label>
                     <input

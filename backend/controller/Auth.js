@@ -97,28 +97,19 @@ exports.signup = async (req, res) => {
 
     //create user profile
     // If additionalDetails does not exist, create a new Profile
-    const address = new Address({
+
+    const profile = new Profile({
+      gender: "",
+      dateOfBirth: "",
       address1: "",
       address2: "",
       city: "",
       pincode: "",
       state: "",
       country: "",
-    });
-    await address.save();
-
-    const profile = new Profile({
-      gender: "",
-      dateOfBirth: "",
-      address: [
-        {
-          addressId: address._id,
-        }
-      ],
       contactNumber: "",
     });
 
-    // profile.address.push({addressId: address._id});
     await profile.save();
 
     
