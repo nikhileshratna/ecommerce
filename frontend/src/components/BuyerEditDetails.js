@@ -18,12 +18,12 @@ const EditProfileDetails = ({ onClose, additionalDetails }) => {
     const [data, setData] = useState({
         gender: additionalDetails.gender || "",
         dateOfBirth: additionalDetails.dateOfBirth || "",
-        address1: additionalDetails.address?.[0]?.address1 || "",
-        address2: additionalDetails.address?.[0]?.address2 || "",
-        city: additionalDetails.address?.[0]?.city || "",
-        pincode: additionalDetails.address?.[0]?.pincode || "",
-        state: additionalDetails.address?.[0]?.state || "",
-        country: additionalDetails.address?.[0]?.country || "",
+        address1: additionalDetails?.address1 || "",
+        address2: additionalDetails?.address2 || "",
+        city: additionalDetails?.city || "",
+        pincode: additionalDetails?.pincode || "",
+        state: additionalDetails?.state || "",
+        country: additionalDetails?.country || "",
         contactNumber: additionalDetails.contactNumber || "",
     });
 
@@ -37,12 +37,12 @@ const EditProfileDetails = ({ onClose, additionalDetails }) => {
         setData({
             gender: additionalDetails.gender || "",
             dateOfBirth: additionalDetails.dateOfBirth || "",
-            address1: additionalDetails.address?.[0]?.address1 || "",
-            address2: additionalDetails.address?.[0]?.address2 || "",
-            city: additionalDetails.address?.[0]?.city || "",
-            pincode: additionalDetails.address?.[0]?.pincode || "",
-            state: additionalDetails.address?.[0]?.state || "",
-            country: additionalDetails.address?.[0]?.country || "",
+            address1: additionalDetails?.address1 || "",
+            address2: additionalDetails?.address2 || "",
+            city: additionalDetails?.city || "",
+            pincode: additionalDetails?.pincode || "",
+            state: additionalDetails?.state || "",
+            country: additionalDetails?.country || "",
             contactNumber: additionalDetails.contactNumber || "",
         });
         localStorage.setItem('userProfilePic', user?.profilePic);

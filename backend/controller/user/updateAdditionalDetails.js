@@ -1,15 +1,21 @@
 const userModel = require("../../models/userModel");
-const Profile = require("../../models/Profile"); // Adjust the path as needed
-
+const Profile = require("../../models/Profile"); 
 async function updateUserDetailsController(req, res) {
     try {
         const userId = req.userId;
         console.log("userId", userId);
+
         const { 
             gender = "", 
             dateOfBirth = "", 
-            address = "", 
-            contactNumber = "" } = req.body;
+            address1 = "", 
+            address2 = "", 
+            city = "", 
+            pincode = "", 
+            state = "", 
+            country = "", 
+            contactNumber = "" 
+        } = req.body;
 
         if (!userId) {
             return res.status(400).json({
@@ -48,7 +54,12 @@ async function updateUserDetailsController(req, res) {
             profile = new Profile({
                 gender,
                 dateOfBirth,
-                address,
+                address1,
+                address2,
+                city,
+                pincode,
+                state,
+                country,
                 contactNumber,
             });
             await profile.save();
@@ -60,7 +71,12 @@ async function updateUserDetailsController(req, res) {
         // Update the Profile document
         profile.gender = gender || profile.gender;
         profile.dateOfBirth = dateOfBirth || profile.dateOfBirth;
-        profile.address = address || profile.address;
+        profile.address1 = address1 || profile.address1;
+        profile.address2 = address2 || profile.address2;
+        profile.city = city || profile.city;
+        profile.pincode = pincode || profile.pincode;
+        profile.state = state || profile.state;
+        profile.country = country || profile.country;
         profile.contactNumber = contactNumber || profile.contactNumber;
         await profile.save();
 
@@ -74,6 +90,7 @@ async function updateUserDetailsController(req, res) {
             message: "User details updated successfully",
         });
     } catch (err) {
+        console.error(err); // Log the error for debugging
         res.status(400).json({
             message: "An error occurred while updating user details",
             error: true,

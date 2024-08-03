@@ -44,8 +44,8 @@ const UserDashboard = () => {
     if (user) {
       setAdditionalDetails(user.additionalDetails ?? {});
     }
-
   }, [user]);
+
   if (!user) {
     return <div className="flex items-center justify-center h-screen text-red-500">Loading...</div>;
   }
@@ -67,28 +67,49 @@ const UserDashboard = () => {
         </div>
         <div className="bg-white shadow-md rounded-lg p-6">
           <h3 className="text-2xl font-semibold text-red-600 mb-4">Account Information</h3>
-          <div className='flex gap-3'>
-            <button className='px-3 py-1 rounded-full text-white bg-red-600 hover:bg-red-700'
-             onClick={() => navigate('/orders')}
-            >My Orders</button>
-            <button className='px-3 py-1 rounded-full text-white bg-red-600 hover:bg-red-700'
-             onClick={() => setOpenModal(true)}
-            >Edit Details</button>
-            <button className='px-3 py-1 rounded-full text-white bg-red-600 hover:bg-red-700'
-             onClick={fetchAdditionalDetails}
-            >Refresh</button>
+          <div className='flex gap-3 mb-4'>
+            <button className='px-3 py-1 rounded-full text-white bg-red-600 hover:bg-red-700' onClick={() => navigate('/orders')}>
+              My Orders
+            </button>
+            <button className='px-3 py-1 rounded-full text-white bg-red-600 hover:bg-red-700' onClick={() => setOpenModal(true)}>
+              Edit Details
+            </button>
+            <button className='px-3 py-1 rounded-full text-white bg-red-600 hover:bg-red-700' onClick={fetchAdditionalDetails}>
+              Refresh
+            </button>
           </div>
-          <div className='flex flex-col gap-4 cursor-pointer' onClick={() => setOpenModal(true)}>
-            <p className="text-red-700 mt-4"><strong>Address:</strong> {additionalDetails.address ?? "Please Add Address"}</p>
-            <p className="text-red-700"><strong>Gender:</strong> {additionalDetails.gender ?? "Please Add Gender"}</p>
-            <p className="text-red-700"><strong>Date of Birth:</strong> {additionalDetails.dateOfBirth ?? "Please Add Date of Birth"}</p>
-            <p className="text-red-700"><strong>Contact Number:</strong> {additionalDetails.contactNumber ?? "Please Add Contact Number"}</p>
+          <div className='flex flex-col gap-4'>
+            <div className="text-red-700">
+              <strong>Address Line 1:</strong> {additionalDetails.address1 ?? "Please Add Address 1"}
+            </div>
+            <div className="text-red-700">
+              <strong>Address Line 2:</strong> {additionalDetails.address2 ?? "Please Add Address 2"}
+            </div>
+            <div className="text-red-700">
+              <strong>City:</strong> {additionalDetails.city ?? "Please Add City"}
+            </div>
+            <div className="text-red-700">
+              <strong>Pincode:</strong> {additionalDetails.pincode ?? "Please Add Pincode"}
+            </div>
+            <div className="text-red-700">
+              <strong>State:</strong> {additionalDetails.state ?? "Please Add State"}
+            </div>
+            <div className="text-red-700">
+              <strong>Country:</strong> {additionalDetails.country ?? "Please Add Country"}
+            </div>
+            <div className="text-red-700">
+              <strong>Gender:</strong> {additionalDetails.gender ?? "Please Add Gender"}
+            </div>
+            <div className="text-red-700">
+              <strong>Date of Birth:</strong> {additionalDetails.dateOfBirth ?? "Please Add Date of Birth"}
+            </div>
+            <div className="text-red-700">
+              <strong>Contact Number:</strong> {additionalDetails.contactNumber ?? "Please Add Contact Number"}
+            </div>
           </div>
         </div>
       </div>
-      {
-        openModal && <EditProfileDetails onClose={() => setOpenModal(false)} additionalDetails={additionalDetails} />
-      }
+      {openModal && <EditProfileDetails onClose={() => setOpenModal(false)} additionalDetails={additionalDetails} />}
     </div>
   );
 };
