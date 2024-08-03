@@ -42,7 +42,7 @@ const addOrderToShiprocket = async (products, totalPrice, user) => {
 
     // Step 2: Create the order
     const payload = {
-      "order_id": "4005",
+      "order_id": "4050000000",
       "order_date": "2024-07-24 11:11",
       "pickup_location": "haryana",
       "channel_id": "",

@@ -10,15 +10,20 @@ const profileSchema = new mongoose.Schema({
         type: String,
     },
 
-    
+
     contactNumber: {
         type: Number,
         trim: true,
     },
 
     address: {
-        type: String,
-        trim: true,
+        type: [{
+            addressId: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'address',
+            }
+        }],
+        default: [],
     },
     myOrders: {
         type: [{

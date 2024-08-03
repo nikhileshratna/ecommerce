@@ -4,6 +4,7 @@ const Profile = require("../models/Profile");
 const OTP = require("../models/OTP");
 const jwt = require("jsonwebtoken");
 const otpGenerator = require("otp-generator");
+const Address = require("../models/Address");
 // const mailSender = require("../utils/mailSender")
 // const { passwordUpdated } = require("../mail/templates/passwordUpdate")
 // const Profile = require("../models/Profile")
@@ -96,14 +97,26 @@ exports.signup = async (req, res) => {
 
     //create user profile
     // If additionalDetails does not exist, create a new Profile
+    const address = new Address({
+      address1: "",
+      address2: "",
+      city: "",
+      pincode: "",
+      state: "",
+      country: "",
+    });
+    await address.save();
     const profile = new Profile({
       gender: "",
       dateOfBirth: "",
-      address: "",
+      address: [address._id],
       contactNumber: "",
     });
     await profile.save();
 
+    
+
+    // user.additionalDetails.address.push(address._id); 
     // Associate the new Profile with the user
     user.additionalDetails = profile._id;
 
