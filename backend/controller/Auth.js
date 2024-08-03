@@ -110,11 +110,15 @@ exports.signup = async (req, res) => {
     const profile = new Profile({
       gender: "",
       dateOfBirth: "",
-      address: [],
+      address: [
+        {
+          addressId: address._id,
+        }
+      ],
       contactNumber: "",
     });
 
-    profile.address.push({addressId: address._id});
+    // profile.address.push({addressId: address._id});
     await profile.save();
 
     
