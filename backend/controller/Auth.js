@@ -114,7 +114,7 @@ exports.signup = async (req, res) => {
       contactNumber: "",
     });
 
-    profile.address.push(address._id);
+    profile.address.push({addressId: address._id});
     await profile.save();
 
     
