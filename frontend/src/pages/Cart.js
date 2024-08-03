@@ -21,6 +21,7 @@ const Cart = () => {
   const navigate = useNavigate();
   // const dispatch = useDispatch();
 
+  
   const handleBuyProduct = async () => {
     let products = [];
     data?.map((product) => {
@@ -33,7 +34,9 @@ const Cart = () => {
       toast.error("Cart is empty");
       return;
     }
+
     BuyProduct(products,totalPrice,token,user, navigate, dispatch);
+    // addOrderToShiprocket(products,totalPrice,user);
   };
 
   const fetchData = async () => {
@@ -150,6 +153,7 @@ const Cart = () => {
     (preve, curr) => preve + curr.quantity * curr?.productId?.sellingPrice,
     0
   );
+
   return (
     <div className="container mx-auto">
       <div className="text-center text-lg my-3">

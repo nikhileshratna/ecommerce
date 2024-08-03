@@ -33,7 +33,6 @@ const MyOrders = () => {
   };
 
   const fetchProductDetails = async (productId) => {
-    setLoading(true);
     try {
       const response = await fetch(SummaryApi.productDetails.url, {
         method: SummaryApi.productDetails.method,
@@ -48,8 +47,8 @@ const MyOrders = () => {
       console.log("product data", dataResponse)
       if (response.ok) {
         setData((prevData) => {
-          const existingIds = new Set(prevData.map(item => item?.data));
-          if (!existingIds.has(dataResponse.data)) {
+          const existingIds = new Set(prevData.map(item => item?._id));
+          if (!existingIds.has(dataResponse.data?._id)) {
             return [...prevData, dataResponse.data];
           }
           return prevData;
@@ -59,30 +58,42 @@ const MyOrders = () => {
       }
     } catch (error) {
       console.error('Error fetching product details:', error);
-    } finally {
-      setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchAdditionalDetails();
-  }, []);
+    const fetchData = async () => {
+      setLoading(true);
+      await fetchAdditionalDetails();
+      setLoading(false);
+    };
+
+    fetchData();
+  }, [token]);
 
   useEffect(() => {
+    const fetchAllProductDetails = async () => {
+      setLoading(true);
+      const promises = orderDetails.map(item => fetchProductDetails(item.productId));
+      await Promise.all(promises);
+      setLoading(false);
+    };
+
     if (orderDetails.length > 0) {
-      orderDetails.forEach((item) => {
-        fetchProductDetails(item.productId);
-      });
+      fetchAllProductDetails();
     }
-  }, [orderDetails.length]);
+  }, [orderDetails]);
 
   return (
-    <div className="bg-red-50 text-red-900 p-5 rounded-lg">
+    <div className="bg-red-50 text-red-900 p-5 rounded-lg flex flex-col items-center">
       <div className="w-full max-w-3xl">
+        {
+          data.length === 0 && !loading && <div className="text-center">No Orders Found</div> 
+        }
         {loading ? (
-          <div className="w-full bg-slate-200 h-32 my-2 border border-slate-300 animate-pulse rounded"></div>
+          <div className="text-center">Loading...</div>
         ) : (
-          data.map((product) => (
+          data?.map((product) => (
             <div
               key={product?._id}
               className="w-full bg-white h-32 my-2 border border-slate-300 rounded grid grid-cols-[128px,1fr]"
