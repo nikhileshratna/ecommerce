@@ -14,6 +14,7 @@ import SearchProduct from '../pages/SearchProduct'
 import VerifyEmail from '../pages/VerifyEmail'
 import UserDashboard from '../pages/UserDashboard'
 import MyOrders from '../pages/MyOrders'
+import TrackOrder from '../pages/TrackOrder'
 
 const router = createBrowserRouter([
     {
@@ -77,6 +78,10 @@ const router = createBrowserRouter([
             {
                 path:"orders",
                 element: <MyOrders/>
+            },
+            {
+                path : "track-order/:id",
+                element : <TrackOrder/>
             }
 
         ]

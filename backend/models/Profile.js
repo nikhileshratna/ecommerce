@@ -52,6 +52,9 @@ const profileSchema = new mongoose.Schema({
             },
             quantity: {
                 type: Number,
+            },
+            shipment_id: {
+                type: String
             }
         }],
         default: []

@@ -19,6 +19,8 @@ const Cart = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();  
+
+  
   const handleBuyProduct = async () => {
     let products = [];
     data?.map((product) => {

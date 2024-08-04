@@ -1,10 +1,10 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
-import SummaryApi from '../common'
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import SummaryApi from '../common';
 import { FaStar, FaStarHalf } from "react-icons/fa";
 import displayINRCurrency from '../helpers/displayCurrency';
 import CategroyWiseProductDisplay from '../components/CategoryWiseProductDisplay';
-import AddToCart from '../helpers/addToCart'
+import AddToCart from '../helpers/addToCart';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import Context from '../context';
@@ -46,9 +46,9 @@ const ProductDetails = () => {
       })
     });
     setLoading(false);
-    const dataReponse = await response.json();
-    setData(dataReponse?.data);
-    setActiveImage(dataReponse?.data?.productImage[0]);
+    const dataResponse = await response.json();
+    setData(dataResponse?.data);
+    setActiveImage(dataResponse?.data?.productImage[0]);
   };
 
   useEffect(() => {
@@ -153,8 +153,8 @@ const ProductDetails = () => {
               <FaStarHalf />
             </div>
             <div className='flex items-center gap-2 text-2xl lg:text-3xl font-medium my-1'>
-              <p className='text-red-600'>{displayINRCurrency(data.sellingPrice)}</p>
-              <p className='text-slate-400 line-through'>{displayINRCurrency(data.price)}</p>
+              <p className='text-red-600'>{displayINRCurrency(data?.sellingPrice)}</p>
+              <p className='text-slate-400 line-through'>{displayINRCurrency(data?.price)}</p>
             </div>
             <div className='flex items-center gap-3 my-2'>
               <button className='border-2 border-red-600 rounded px-3 py-1 min-w-[120px] text-red-600 font-medium hover:bg-red-600 hover:text-white' onClick={(e) => handleBuyProduct(e, data?._id)}>Buy</button>
@@ -183,7 +183,7 @@ const ProductDetails = () => {
           </div>
         )}
       </div>
-      {data.category && (
+      {data?.category && (
         <CategroyWiseProductDisplay category={data?.category} heading={"Recommended Product"} />
       )}
     </div>

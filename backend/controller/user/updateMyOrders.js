@@ -3,7 +3,7 @@ const Profile = require("../../models/Profile");
 
 const updateMyOrders = async (req, res) => {
   const userId = req.userId;
-  const { products , shipment_id } = req.body;
+  const { products , shipment_id} = req.body;
 
   try {
     const user = await userSchema.findById(userId);
@@ -44,10 +44,11 @@ const updateMyOrders = async (req, res) => {
     profile = await Profile.findById(user.additionalDetails);
 
     products.forEach((product) => {
+      // console.log(product);
       profile.myOrders.push({
-        productId: product._id,
+        productId: product?.productId._id,
         quantity: product.quantity,
-        shipment_id: shipment_id 
+        shipment_id: shipment_id
       });
     });
 

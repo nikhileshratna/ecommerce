@@ -171,6 +171,7 @@ const editMyOrders = async (token, products , shipment_id) => {
 };
 
 export async function BuyProduct(products, total_amount, token, user, navigate, dispatch, data) {
+    console.log("base:",BASE_URL);
     const toastId = toast.loading("Loading...");
     try {
         const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
