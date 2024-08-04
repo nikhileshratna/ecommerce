@@ -99,8 +99,8 @@ const SummaryApi = {
         method: 'post'
     },
     trackOrder:{
-        url : `${backendDomin}/api/track-order`,
-        method : 'post'
+        url : `${backendDomin}/api/track-order/`,
+        method : 'get'
     }
 
 }

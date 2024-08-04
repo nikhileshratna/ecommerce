@@ -91,7 +91,7 @@ router.get("/view-card-product",authToken, showCart);
 router.post("/update-cart-product",authToken, updateQuantity);
 router.post("/delete-cart-product",authToken, deleteFromCart);
 router.post("/empty-cart",authToken, emptyCart);
-router.get("/track-order", trackOrder);
+router.get("/track-order/:id", trackOrder);
 
 //user
 router.get("/show-additional-details",authToken, fetchUserAdditionalDetailsController);

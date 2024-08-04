@@ -7,10 +7,13 @@ import { BuyProduct } from "../components/BuyProduct";
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import { emptyCart, removeFromCart, resetCart } from "../slices/cartSlice";
+import CODModal from "../components/CODModal";
 
 
 const Cart = () => {
   const [data, setData] = useState([]);
+  const[showModal , setShowModal] = useState(false);
+  const[cod , setCod] = useState(false);
   const [loading, setLoading] = useState(false);
   const loadingCart = new Array(4).fill(null);
   const { token } = useSelector((state) => state.auth);
@@ -19,6 +22,28 @@ const Cart = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();  
+
+  const handleCashOnDelivery = () => {
+    let products = [];
+    data?.map((product) => {
+      products.push({
+        _id: product.productId._id,
+        quantity: product.quantity,
+      });
+    });
+    
+    setShowModal(false);
+    
+    if(products.length === 0){
+      toast.error("Cart is empty");
+      
+      return;
+    }
+
+    BuyProduct(products,totalPrice,token,user, navigate, dispatch , data , true);
+
+    
+  };
 
   
   const handleBuyProduct = async () => {
@@ -34,7 +59,7 @@ const Cart = () => {
       return;
     }
 
-    BuyProduct(products,totalPrice,token,user, navigate, dispatch , data);
+    BuyProduct(products,totalPrice,token,user, navigate, dispatch , data , cod);
     // addOrderToShiprocket(products,totalPrice,user);
   };
 
@@ -261,6 +286,7 @@ const Cart = () => {
 
               <button
                 className="bg-red-600 p-2 text-white w-full mt-2"
+                onClick={() => setShowModal(true)}
               >
                 Cash On Delivery
               </button>
@@ -269,6 +295,8 @@ const Cart = () => {
           )}
         </div>
       </div>
+
+      {showModal && <CODModal handleClick={handleCashOnDelivery} onClose={() => setShowModal(false)} />}
     </div>
   );
 };

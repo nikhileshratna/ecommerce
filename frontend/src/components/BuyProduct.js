@@ -172,7 +172,18 @@ const editMyOrders = async (token, products, shipment_id) => {
     }
 };
 
-export async function BuyProduct(products, total_amount, token, user, navigate, dispatch, data) {
+export async function BuyProduct(products, total_amount, token, user, navigate, dispatch, data , cod) {
+    console.log("cod:",cod);
+    if(cod){
+        const toastId1 = toast.loading("Loading...");
+        await addOrderToShiprocket(data, total_amount, user, token);
+        toast.dismiss(toastId1);
+        toast.success("Order placed successfully");
+        toast.success("Order will be delivered soon");
+        resetCart(token);
+        navigate("/");
+        return;
+    }
     console.log("base:", BASE_URL);
     const toastId = toast.loading("Loading...");
     try {

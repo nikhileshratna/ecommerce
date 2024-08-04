@@ -1,9 +1,9 @@
-const EMAIL = process.env.SHIPROCKET_EMAIL;
-const PASSWORD = process.env.SHIPROCKET_PASS;
-const trackOrder = async (req, res) => {
-    console.log("Track Order Called");
-    const {shipment_id} = req.body;
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
+const trackOrder = async (req, res) => {
+    const EMAIL = process.env.SHIPROCKET_EMAIL;
+    const PASSWORD = process.env.SHIPROCKET_PASS;
+    const { id: shipment_id } = req.params;
     const shiprocketURL = "https://apiv2.shiprocket.in/v1/external";
 
     console.log("Shipment ID:", shipment_id);
@@ -18,11 +18,15 @@ const trackOrder = async (req, res) => {
             body: JSON.stringify({ email: EMAIL, password: PASSWORD })
         });
 
+        if (!loginResponse.ok) {
+            return res.status(401).json({ message: 'Login failed' });
+        }
+
         const loginData = await loginResponse.json();
         const shiprocketToken = loginData.token;
 
-        if (!loginResponse.ok || !shiprocketToken) {
-            return res.status(401).json({ message: 'Login failed' });
+        if (!shiprocketToken) {
+            return res.status(401).json({ message: 'Invalid login response' });
         }
 
         // Use the token to track the order using the shipment_id
@@ -31,18 +35,18 @@ const trackOrder = async (req, res) => {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${shiprocketToken}`
-            },
-            
+            }
         });
-
-        const trackData = await trackResponse.json();
 
         if (!trackResponse.ok) {
             return res.status(400).json({ message: 'Tracking failed' });
         }
 
+        const trackData = await trackResponse.json();
+        console.log("Tracking data:", trackData);
+
         // Send tracking data to frontend
-        res.json(trackData.tracking_data);
+        res.json(trackData);
 
         // Logout from Shiprocket
         await fetch(`${shiprocketURL}/auth/logout`, {
@@ -59,4 +63,4 @@ const trackOrder = async (req, res) => {
     }
 };
 
-module.exports = trackOrder
+module.exports = trackOrder;

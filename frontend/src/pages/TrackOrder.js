@@ -10,17 +10,19 @@ const TrackOrder = () => {
     const PASSWORD = process.env.REACT_APP_SHIPROCKET_PASS;
 
     const trackOrderFunc = async (shipment_id) => {
-        
+        console.log("inside trackOrderFunc" , shipment_id);
         setLoading(true);
 
         try {
-            const response = await fetch(SummaryApi.trackOrder.url, {
+            const response = await fetch(SummaryApi.trackOrder.url+shipment_id, {
               method: SummaryApi.trackOrder.method,
               headers: {
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify({ shipment_id }),
+              
             });
+
+            console.log("inside trackOrderFunc" , response);
       
 
         } catch (err) {
@@ -33,6 +35,9 @@ const TrackOrder = () => {
     useEffect(() => {
         if (params.id) {
             trackOrderFunc(params.id);
+        }
+        else{
+            console.log("Inside else part");
         }
     }, [params.id]);
 
