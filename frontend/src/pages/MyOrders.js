@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import SummaryApi from '../common';
 
 const MyOrders = () => {
@@ -85,33 +86,35 @@ const MyOrders = () => {
   }, [orderDetails]);
 
   return (
-    <div className="bg-red-50 text-red-900 p-5 rounded-lg flex flex-col items-center">
-      <div className="w-full max-w-3xl">
-        {
-          data.length === 0 && !loading && <div className="text-center">No Orders Found</div> 
-        }
+    <div className="bg-gray-100 min-h-screen py-8">
+      <div className="max-w-3xl mx-auto">
         {loading ? (
-          <div className="text-center">Loading...</div>
+          <div className="text-center text-gray-600">Loading...</div>
+        ) : data.length === 0 ? (
+          <div className="text-center text-gray-600">No Orders Found</div>
         ) : (
-          data?.map((product) => (
-            <div
-              key={product?._id}
-              className="w-full bg-white h-32 my-2 border border-slate-300 rounded grid grid-cols-[128px,1fr]"
-            >
-              <div className="w-32 h-32 bg-slate-200">
-                {product?.productImage && (
-                  <img
-                    src={product?.productImage[0]}
-                    alt={product?.productName}
-                    className="w-full h-full object-scale-down mix-blend-multiply"
-                  />
-                )}
-              </div>
-              <div className="p-4 flex flex-col justify-center">
-                <h2 className="text-lg lg:text-xl text-ellipsis line-clamp-1">
-                  {product?.productName}
-                </h2>
-                <p className="capitalize text-slate-500">{product?.category}</p>
+          data.map((product) => (
+            <div key={product?._id} className="bg-white shadow-md rounded-lg overflow-hidden mb-4">
+              <Link to={`/product/${product?._id}`} className="flex">
+                <div className="w-32 h-32 bg-gray-200">
+                  {product?.productImage && (
+                    <img
+                      src={product?.productImage[0]}
+                      alt={product?.productName}
+                      className="w-full h-full object-cover"
+                    />
+                  )}
+                </div>
+                <div className="p-4 flex flex-col justify-center">
+                  <h2 className="text-lg lg:text-xl font-medium text-gray-800 line-clamp-1">
+                    {product?.productName}
+                  </h2>
+                  <p className="capitalize text-gray-500">{product?.category}</p>
+                </div>
+              </Link>
+              <div className="flex justify-end items-center gap-4 p-4">
+                <button className="border-2 border-blue-600 rounded px-3 py-2 text-blue-600 font-medium hover:bg-blue-600 hover:text-white">Track Order</button>
+                <button className="border-2 border-red-600 rounded px-3 py-2 text-red-600 font-medium bg-red-50 hover:text-white hover:bg-red-600">Cancel Order</button>
               </div>
             </div>
           ))

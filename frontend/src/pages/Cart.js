@@ -235,7 +235,7 @@ const Cart = () => {
           {loading ? (
             <div className="h-36 bg-slate-200 border border-slate-300 animate-pulse"></div>
           ) : (
-            <div className="h-36 bg-white">
+            <div className="h-36">
               <h2 className="text-white bg-red-600 px-4 py-1">Summary</h2>
               <div className="flex items-center justify-between px-4 gap-2 font-medium text-lg text-slate-600">
                 <p>Quantity</p>
@@ -247,12 +247,22 @@ const Cart = () => {
                 <p>{displayINRCurrency(totalPrice)}</p>
               </div>
 
+              <div className="flex flex-col gap-2 items-center justify-center  bg-white">
               <button
                 className="bg-blue-600 p-2 text-white w-full mt-2"
                 onClick={handleBuyProduct}
               >
-                Payment
+                Pay Now
               </button>
+
+              <p>OR</p>
+
+              <button
+                className="bg-red-600 p-2 text-white w-full mt-2"
+              >
+                Cash On Delivery
+              </button>
+              </div>
             </div>
           )}
         </div>

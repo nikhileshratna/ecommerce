@@ -17,7 +17,7 @@ const generateUniqueOrderId = () => {
     return `ORD-${timestamp}-${randomComponent}`;
 };
 
-const addOrderToShiprocket = async (products, totalPrice, user) => {
+const addOrderToShiprocket = async (products, totalPrice, user , token) => {
     console.log("products", products);
 
     const shiprocketURL = "https://apiv2.shiprocket.in/v1/external";
@@ -92,6 +92,7 @@ const addOrderToShiprocket = async (products, totalPrice, user) => {
         });
 
         const orderData = await orderResponse.json();
+        editMyOrders(token, products,orderData?.shipment_id);
 
         if (orderResponse.ok) {
             console.log('Order added successfully to Shiprocket!');
@@ -144,7 +145,7 @@ const resetCart = async (token) => {
     }
 };
 
-const editMyOrders = async (token, products) => {
+const editMyOrders = async (token, products , shipment_id) => {
     console.log("editMyOrders called with products:", products);
     try {
         const response = await fetch(SummaryApi.update_userOrders.url, {
@@ -154,7 +155,7 @@ const editMyOrders = async (token, products) => {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify({ products }),
+            body: JSON.stringify({ products , shipment_id}),
         });
 
         const responseData = await response.json();
@@ -239,8 +240,7 @@ async function verifyPayment(bodyData, products, token, navigate, dispatch, user
             throw new Error(response.data.message);
         }
 
-        await editMyOrders(token, products);
-        await addOrderToShiprocket(data, totalPrice, user);
+        await addOrderToShiprocket(data, totalPrice, user , token);
         toast.success("Payment Successful. You will receive the product shortly.");
         localStorage.setItem("verifyPayment", true);
         resetCart(token);

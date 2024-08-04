@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
 import { Outlet } from 'react-router-dom';
 import Header from './components/Header';
@@ -20,18 +20,18 @@ function App() {
   const navigate = useNavigate()
   const [cartProductCount,setCartProductCount] = useState(0)
 
-  const fetchUserDetails = async()=>{
-      const dataResponse = await fetch(SummaryApi.current_user.url,{
-        method : SummaryApi.current_user.method,
-        credentials : 'include'
-      })
+  // const fetchUserDetails = async()=>{
+  //     const dataResponse = await fetch(SummaryApi.current_user.url,{
+  //       method : SummaryApi.current_user.method,
+  //       credentials : 'include'
+  //     })
 
-      const dataApi = await dataResponse.json()
+  //     const dataApi = await dataResponse.json()
 
-      if(dataApi.success){
-        dispatch(setUserDetails(dataApi.data))
-      }
-  }
+  //     if(dataApi.success){
+  //       dispatch(setUserDetails(dataApi.data))
+  //     }
+  // }
 
   const fetchUserAddToCart = async()=>{
     const dataResponse = await fetch(SummaryApi.addToCartProductCount.url,{
