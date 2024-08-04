@@ -98,6 +98,10 @@ const SummaryApi = {
         url: `${backendDomin}/api/empty-cart`,
         method: 'post'
     },
+    trackOrder:{
+        url : `${backendDomin}/api/track-order`,
+        method : 'post'
+    }
 
 }
 

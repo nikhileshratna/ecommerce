@@ -1,50 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import SummaryApi from '../common';
 
 const TrackOrder = () => {
     const params = useParams();
     const [loading, setLoading] = useState(false);
+    const [trackingData, setTrackingData] = useState(null);
     const EMAIL = process.env.REACT_APP_SHIPROCKET_EMAIL;
     const PASSWORD = process.env.REACT_APP_SHIPROCKET_PASS;
+
     const trackOrderFunc = async (shipment_id) => {
-        const shiprocketURL = "https://apiv2.shiprocket.in/v1/external";
+        
         setLoading(true);
 
         try {
-            const loginResponse = await fetch(`${shiprocketURL}/auth/login`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    "email": EMAIL,
-                    "password": PASSWORD
-                })
+            const response = await fetch(SummaryApi.trackOrder.url, {
+              method: SummaryApi.trackOrder.method,
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ shipment_id }),
             });
+      
 
-            const loginData = await loginResponse.json();
-            const shiprocketToken = loginData.token;
-
-            if (!loginResponse.ok || !shiprocketToken) {
-                throw new Error('Login failed');
-            }
-
-            // Use the token to track the order using the shipment_id
-            const trackResponse = await fetch(`${shiprocketURL}/orders/track`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${shiprocketToken}`
-                },
-                body: JSON.stringify({ shipment_id })
-            });
-
-            const trackData = await trackResponse.json();
-            console.log('Track Data:', trackData);
-
-            if (!trackResponse.ok) {
-                throw new Error('Tracking failed');
-            }
         } catch (err) {
             console.error(err.message);
         } finally {
@@ -53,16 +31,41 @@ const TrackOrder = () => {
     };
 
     useEffect(() => {
-        console.log(PASSWORD);
-        console.log(EMAIL);
         if (params.id) {
             trackOrderFunc(params.id);
         }
     }, [params.id]);
 
     return (
-        <div>
-            {loading ? <p>Loading...</p> : <h1>Track Order</h1>}
+        <div className="container mx-auto p-4">
+            {loading ? (
+                <p>Loading...</p>
+            ) : trackingData ? (
+                <div>
+                    <h1 className="text-2xl font-bold mb-4">Track Order</h1>
+                    <div className="bg-white shadow-md rounded-lg p-4 mb-4">
+                        <h2 className="text-xl font-semibold mb-2">Shipment Details</h2>
+                        <p><strong>Status:</strong> {trackingData.shipment_track[0]?.current_status}</p>
+                        <p><strong>Tracking URL:</strong> <a href={trackingData.track_url} target="_blank" rel="noopener noreferrer">{trackingData.track_url}</a></p>
+                        <p><strong>Estimated Delivery Date:</strong> {trackingData.etd}</p>
+                    </div>
+                    <div className="bg-white shadow-md rounded-lg p-4">
+                        <h2 className="text-xl font-semibold mb-2">Tracking Activities</h2>
+                        <ul>
+                            {trackingData.shipment_track_activities.map((activity, index) => (
+                                <li key={index} className="mb-2">
+                                    <p><strong>Date:</strong> {activity.date}</p>
+                                    <p><strong>Status:</strong> {activity.status}</p>
+                                    <p><strong>Activity:</strong> {activity.activity}</p>
+                                    <p><strong>Location:</strong> {activity.location}</p>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+            ) : (
+                <h1>No Tracking Data Available</h1>
+            )}
         </div>
     );
 };

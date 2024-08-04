@@ -2,12 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import SummaryApi from '../common';
+import CancelOrderModal from '../components/CancelOrderModal';
 
 const MyOrders = () => {
   const { token } = useSelector(state => state.auth);
   const [orderDetails, setOrderDetails] = useState([]);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [openModal , setOpenModal] = useState(false);
+
+  const onClose = () => {
+    setOpenModal(false);
+  };
 
   const fetchAdditionalDetails = async () => {
     if (!token) return;
@@ -33,7 +39,7 @@ const MyOrders = () => {
     }
   };
 
-  const fetchProductDetails = async (productId) => {
+  const fetchProductDetails = async (productId, quantity, shipment_id) => {
     try {
       const response = await fetch(SummaryApi.productDetails.url, {
         method: SummaryApi.productDetails.method,
@@ -45,14 +51,24 @@ const MyOrders = () => {
       });
 
       const dataResponse = await response.json();
-      console.log("product data", dataResponse)
       if (response.ok) {
         setData((prevData) => {
-          const existingIds = new Set(prevData.map(item => item?._id));
-          if (!existingIds.has(dataResponse.data?._id)) {
-            return [...prevData, dataResponse.data];
+          const existingProduct = prevData.find(p => p._id === productId);
+          if (existingProduct) {
+            return prevData.map(p =>
+              p._id === productId
+                ? { ...p, quantity, shipment_id }
+                : p
+            );
           }
-          return prevData;
+          return [
+            ...prevData,
+            {
+              ...dataResponse.data,
+              quantity,
+              shipment_id
+            }
+          ];
         });
       } else {
         console.error('Failed to fetch product details:', dataResponse.message);
@@ -75,7 +91,9 @@ const MyOrders = () => {
   useEffect(() => {
     const fetchAllProductDetails = async () => {
       setLoading(true);
-      const promises = orderDetails.map(item => fetchProductDetails(item.productId));
+      const promises = orderDetails.map(item =>
+        fetchProductDetails(item.productId, item.quantity, item.shipment_id)
+      );
       await Promise.all(promises);
       setLoading(false);
     };
@@ -84,6 +102,10 @@ const MyOrders = () => {
       fetchAllProductDetails();
     }
   }, [orderDetails]);
+
+  useEffect(() => {
+    console.log("Updated data:", data);
+  }, [data]);
 
   return (
     <div className="bg-gray-100 min-h-screen py-8">
@@ -113,13 +135,26 @@ const MyOrders = () => {
                 </div>
               </Link>
               <div className="flex justify-end items-center gap-4 p-4">
-                <button className="border-2 border-blue-600 rounded px-3 py-2 text-blue-600 font-medium hover:bg-blue-600 hover:text-white">Track Order</button>
-                <button className="border-2 border-red-600 rounded px-3 py-2 text-red-600 font-medium bg-red-50 hover:text-white hover:bg-red-600">Cancel Order</button>
+                <Link className="border-2 border-blue-600 rounded px-3 py-2 text-blue-600 font-medium hover:bg-blue-600 hover:text-white"
+                to={`/track-order/${product?.shipment_id}`}
+                >
+                  Track Order
+                </Link>
+                <button className="border-2 border-red-600 rounded px-3 py-2 text-red-600 font-medium bg-red-50 hover:text-white hover:bg-red-600"
+                onClick={() => setOpenModal(true)}>
+                  Cancel Order
+                </button>
               </div>
+              {openModal && 
+            <CancelOrderModal onClose={() => setOpenModal(false)} shipment_id={product?.shipment_id}/>
+          }
             </div>
           ))
+
+          
         )}
       </div>
+      
     </div>
   );
 };

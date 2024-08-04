@@ -10,6 +10,8 @@ import { emptyCart } from '../slices/cartSlice';
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 const PRODUCT_PAYMENT_API = `${BASE_URL}/capturePayment`;
 const PRODUCT_VERIFY_API = `${BASE_URL}/verifyPayment`;
+const EMAIL = process.env.REACT_APP_SHIPROCKET_EMAIL;
+const PASSWORD = process.env.REACT_APP_SHIPROCKET_PASS;
 
 const generateUniqueOrderId = () => {
     const timestamp = Date.now();
@@ -17,7 +19,7 @@ const generateUniqueOrderId = () => {
     return `ORD-${timestamp}-${randomComponent}`;
 };
 
-const addOrderToShiprocket = async (products, totalPrice, user , token) => {
+const addOrderToShiprocket = async (products, totalPrice, user, token) => {
     console.log("products", products);
 
     const shiprocketURL = "https://apiv2.shiprocket.in/v1/external";
@@ -29,8 +31,8 @@ const addOrderToShiprocket = async (products, totalPrice, user , token) => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                "email": "dhananjaysharma2021@gmail.com",
-                "password": "@Rock2024"
+                "email": EMAIL,
+                "password": PASSWORD
             })
         });
 
@@ -92,7 +94,7 @@ const addOrderToShiprocket = async (products, totalPrice, user , token) => {
         });
 
         const orderData = await orderResponse.json();
-        editMyOrders(token, products,orderData?.shipment_id);
+        editMyOrders(token, products, orderData?.shipment_id);
 
         if (orderResponse.ok) {
             console.log('Order added successfully to Shiprocket!');
@@ -145,7 +147,7 @@ const resetCart = async (token) => {
     }
 };
 
-const editMyOrders = async (token, products , shipment_id) => {
+const editMyOrders = async (token, products, shipment_id) => {
     console.log("editMyOrders called with products:", products);
     try {
         const response = await fetch(SummaryApi.update_userOrders.url, {
@@ -155,7 +157,7 @@ const editMyOrders = async (token, products , shipment_id) => {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify({ products , shipment_id}),
+            body: JSON.stringify({ products, shipment_id }),
         });
 
         const responseData = await response.json();
@@ -171,7 +173,7 @@ const editMyOrders = async (token, products , shipment_id) => {
 };
 
 export async function BuyProduct(products, total_amount, token, user, navigate, dispatch, data) {
-    console.log("base:",BASE_URL);
+    console.log("base:", BASE_URL);
     const toastId = toast.loading("Loading...");
     try {
         const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
@@ -241,7 +243,7 @@ async function verifyPayment(bodyData, products, token, navigate, dispatch, user
             throw new Error(response.data.message);
         }
 
-        await addOrderToShiprocket(data, totalPrice, user , token);
+        await addOrderToShiprocket(data, totalPrice, user, token);
         toast.success("Payment Successful. You will receive the product shortly.");
         localStorage.setItem("verifyPayment", true);
         resetCart(token);
