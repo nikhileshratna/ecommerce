@@ -19,7 +19,7 @@ const generateUniqueOrderId = () => {
     return `ORD-${timestamp}-${randomComponent}`;
 };
 
-const addOrderToShiprocket = async (products, totalPrice, user, token) => {
+const addOrderToShiprocket = async (products, totalPrice, user, token , cod) => {
     console.log("products", products);
 
     const shiprocketURL = "https://apiv2.shiprocket.in/v1/external";
@@ -70,7 +70,7 @@ const addOrderToShiprocket = async (products, totalPrice, user, token) => {
             "billing_phone": user?.additionalDetails?.contactNumber,
             "shipping_is_billing": true,
             "order_items": orderItems,
-            "payment_method": "Prepaid",
+            "payment_method":`${cod ? "COD" : "Prepaid"}`,
             "shipping_charges": 0,
             "giftwrap_charges": 0,
             "transaction_charges": 0,
@@ -173,10 +173,10 @@ const editMyOrders = async (token, products, shipment_id) => {
 };
 
 export async function BuyProduct(products, total_amount, token, user, navigate, dispatch, data , cod) {
-    console.log("cod:",cod);
+    // console.log("cod:",cod);
     if(cod){
         const toastId1 = toast.loading("Loading...");
-        await addOrderToShiprocket(data, total_amount, user, token);
+        await addOrderToShiprocket(data, total_amount, user, token , cod);
         toast.dismiss(toastId1);
         toast.success("Order placed successfully");
         toast.success("Order will be delivered soon");

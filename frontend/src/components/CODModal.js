@@ -1,6 +1,6 @@
 import React from 'react'
 
-const CODModal = ({ handleClick, onClose }) => {
+const CODModal = ({ onConfirm, onClose }) => {
   return (
     <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center'>
             <div className='bg-[#0A7A7D] text-white p-6 rounded-lg shadow-lg flex flex-col items-center w-full max-w-sm'>
@@ -10,7 +10,7 @@ const CODModal = ({ handleClick, onClose }) => {
                 </p>
                 <div className='flex gap-4'>
                     <button
-                        onClick={handleClick}
+                        onClick={onConfirm}
                         className="py-2 px-4 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300"
                     >
                         Yes
