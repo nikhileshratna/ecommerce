@@ -15,6 +15,7 @@ import VerifyEmail from '../pages/VerifyEmail'
 import UserDashboard from '../pages/UserDashboard'
 import MyOrders from '../pages/MyOrders'
 import TrackOrder from '../pages/TrackOrder'
+import AllBlogs from '../pages/AllBlogs'
 
 const router = createBrowserRouter([
     {
@@ -68,6 +69,10 @@ const router = createBrowserRouter([
                     {
                         path : "all-products",
                         element : <AllProducts/>
+                    },
+                    {
+                        path : "all-blogs",
+                        element : <AllBlogs/>
                     }
                 ]
             },
