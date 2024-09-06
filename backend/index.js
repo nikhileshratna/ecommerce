@@ -15,6 +15,7 @@ const allowedOrigins = [
   "https://ecommerce-git-main-nikhilesh-ratnas-projects.vercel.app",
   "https://ecommerce-nu-two-18.vercel.app",
   "http://localhost:3000",
+  "http://localhost:3001",
 ];
 
 app.use(
