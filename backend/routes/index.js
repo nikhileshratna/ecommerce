@@ -50,6 +50,9 @@ const updateUserDetailsController = require("../controller/user/updateAdditional
 const fetchUserAdditionalDetailsController = require("../controller/user/showAdditionalDetails");
 const { updateMyOrders } = require("../controller/user/updateMyOrders");
 const trackOrder = require("../controller/user/trackOrder");
+const UploadBlogController = require("../controller/blog/uploadBlog");
+const getBlogController = require("../controller/blog/getBlog");
+const updateBlogController = require("../controller/blog/updateBlog");
 
 router.post("/login", login);
 router.post("/signup", signup);
@@ -72,6 +75,12 @@ router.post("/logout", userLogout);
 //admin panel
 router.get("/all-user", allUsers);
 router.post("/update-user", updateUser);
+
+//blog
+router.post("/upload-blog", UploadBlogController);
+router.get("/get-blog", getBlogController);
+router.post("/update-blog", updateBlogController);
+
 
 //product
 router.post("/upload-product", UploadProductController);
