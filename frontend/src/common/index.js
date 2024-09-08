@@ -101,6 +101,10 @@ const SummaryApi = {
     trackOrder:{
         url : `${backendDomin}/api/track-order/`,
         method : 'get'
+    },
+    uploadImage : {
+        url : `${backendDomin}/api/upload-image`,
+        method : 'post',
     }
 
 }

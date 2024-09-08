@@ -36,6 +36,9 @@ app.use(cookieParser());
 
 app.use("/api", router);
 app.use("/api/payment", paymentRoutes);
+var adminRoute = require('./routes/adminRoute');
+
+app.use('/api', adminRoute);
 
 const PORT = process.env.PORT || 8080;
 
