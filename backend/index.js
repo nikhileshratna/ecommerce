@@ -16,6 +16,7 @@ const allowedOrigins = [
   "https://ecommerce-nu-two-18.vercel.app",
   "http://localhost:3000",
   "http://localhost:3001",
+  "https://sidham.vercel.app/",
 ];
 
 app.use(
