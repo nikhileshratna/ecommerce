@@ -1,6 +1,8 @@
-const url = `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUD_NAME_CLOUDINARY}/image/upload`
+import SummaryApi from "../common"
+const url = `${SummaryApi.uploadImage.url}`
 
 const uploadImage  = async(image) => {
+    console.log("url",url);
     console.log(process.env.REACT_APP_CLOUD_NAME_CLOUDINARY)
     const formData = new FormData()
     formData.append("file",image)
@@ -11,7 +13,9 @@ const uploadImage  = async(image) => {
         method : "post",
         body : formData
     })
-
+    console.log("dataResponse",dataResponse)
+    console.log("image",image)
+    console.log("formData",formData);
     return dataResponse.json()
 
 }
