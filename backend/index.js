@@ -17,6 +17,9 @@ const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:3001",
   "https://sidham.vercel.app/",
+  "https://sidham-git-main-harsh-sainis-projects-0883263d.vercel.app/",
+  "https://sidham-lt4aserah-harsh-sainis-projects-0883263d.vercel.app/",
+  "https://sidham-harsh-sainis-projects-0883263d.vercel.app/",
 ];
 
 app.use(
