@@ -11,10 +11,10 @@ const uploadFile = async(req, res)=>{
         //     file_url:upload.secure_url
         // });
         // var record = await store.save();
-        res.send({ succes:true, msg:'File Uploaded Successfully!', data:upload });
+        res.send({ success:true, msg:'File Uploaded Successfully!', data:upload });
 
     } catch (error) {
-        res.send({ succes:false, msg:error.message });
+        res.send({ success:false, msg:error.message });
     }
 
 }

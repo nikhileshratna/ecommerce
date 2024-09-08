@@ -103,7 +103,7 @@ const SummaryApi = {
         method : 'get'
     },
     uploadImage : {
-        url : `${backendDomin}/api/upload-image`,
+        url : `${backendDomin}/api/upload-file`,
         method : 'post',
     }
 
