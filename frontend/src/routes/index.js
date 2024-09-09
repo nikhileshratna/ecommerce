@@ -16,6 +16,7 @@ import UserDashboard from '../pages/UserDashboard'
 import MyOrders from '../pages/MyOrders'
 import TrackOrder from '../pages/TrackOrder'
 import AllBlogs from '../pages/AllBlogs'
+import AllCategories from '../pages/AllCategory'
 
 const router = createBrowserRouter([
     {
@@ -73,6 +74,10 @@ const router = createBrowserRouter([
                     {
                         path : "all-blogs",
                         element : <AllBlogs/>
+                    },
+                    {
+                        path : "all-categories",
+                        element : <AllCategories/>
                     }
                 ]
             },

@@ -54,6 +54,9 @@ const UploadBlogController = require("../controller/blog/uploadBlog");
 const getBlogController = require("../controller/blog/getBlog");
 const updateBlogController = require("../controller/blog/updateBlog");
 const deleteBlogController = require("../controller/blog/deleteBlog");
+const UploadCategoryController = require("../controller/category/uploadCategory");
+const deleteCategoryController = require("../controller/category/deleteCategory");
+const getCategoryController = require("../controller/category/getCategory");
 
 router.post("/login", login);
 router.post("/signup", signup);
@@ -82,6 +85,11 @@ router.post("/upload-blog", UploadBlogController);
 router.get("/get-blog", getBlogController);
 router.post("/update-blog", updateBlogController);
 router.delete("/delete-blog", deleteBlogController);
+
+//category
+router.post("/upload-category", UploadCategoryController);
+router.delete("/delete-category", deleteCategoryController);
+router.get("/get-category", getCategoryController);
 
 
 //product
