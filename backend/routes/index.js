@@ -53,6 +53,7 @@ const trackOrder = require("../controller/user/trackOrder");
 const UploadBlogController = require("../controller/blog/uploadBlog");
 const getBlogController = require("../controller/blog/getBlog");
 const updateBlogController = require("../controller/blog/updateBlog");
+const deleteBlogController = require("../controller/blog/deleteBlog");
 
 router.post("/login", login);
 router.post("/signup", signup);
@@ -80,6 +81,7 @@ router.post("/update-user", updateUser);
 router.post("/upload-blog", UploadBlogController);
 router.get("/get-blog", getBlogController);
 router.post("/update-blog", updateBlogController);
+router.delete("/delete-blog", deleteBlogController);
 
 
 //product
