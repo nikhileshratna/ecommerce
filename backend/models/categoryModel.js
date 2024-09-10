@@ -6,7 +6,7 @@ const categorySchema = mongoose.Schema({
         required: true,
         unique: true, // Ensures that the category name is unique
     },
-    productCont : {
+    productCount : {
         type: Number,
         default: 0
     }

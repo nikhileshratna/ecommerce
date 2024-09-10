@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import UploadCategory from "../components/UploadCategory";
 import SummaryApi from "../common";
 import { MdDelete } from "react-icons/md";
+import { toast } from "react-toastify";
 
 const AllCategories = () => {
   const [allCategories, setAllCategories] = useState([]);
@@ -14,9 +15,30 @@ const AllCategories = () => {
     console.log(dataResponse?.data);
   };
 
-  const handleDelete = async () => {
+  const handleDelete = async (data) => {
     if (window.confirm("Are you sure you want to delete this category?")) {
-      console.log("id");
+      console.log("data", data);
+      fetch(SummaryApi.deleteCategory.url, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ _id: data._id }),
+      })
+        .then((res) => {
+          if (res.status === 200) {
+            toast.success("Category deleted successfully");
+            fetchAllCategories();
+          } else {
+            return res.json().then((data) => {
+              throw new Error(data.message || "Failed to delete category");
+            });
+          }
+        })
+        .catch((error) => {
+          toast.error("Failed to delete category");
+          console.error("Error deleting category:", error);
+        });
     }
   };
 
@@ -48,7 +70,7 @@ const AllCategories = () => {
             </p>
             <div
               className="w-8 h-8 flex items-center justify-center p-2 bg-red-100 hover:bg-red-600 rounded-full hover:text-white cursor-pointer transition-colors duration-300"
-              onClick={handleDelete}
+              onClick={() => handleDelete(category)}
             >
               <MdDelete className="text-lg" />
             </div>
