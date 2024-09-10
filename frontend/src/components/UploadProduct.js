@@ -32,7 +32,7 @@ const UploadProduct = ({ onClose, fetchData }) => {
       const response = await fetch(SummaryApi.getCategory.url);
       const dataResponse = await response.json();
       setCategories(dataResponse?.data || []); // Set categories from the API response
-      console.log("data", dataResponse?.data);
+      console.log("Categories fetched:", dataResponse?.data);
     } catch (error) {
       console.error("Error fetching categories:", error);
     }
@@ -48,6 +48,7 @@ const UploadProduct = ({ onClose, fetchData }) => {
       ...prev,
       [name]: value,
     }));
+    console.log(name, value); // Log the field name and its new value
   };
 
   const handleUploadProduct = async (e) => {
@@ -75,7 +76,7 @@ const UploadProduct = ({ onClose, fetchData }) => {
   // Handle product upload submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
     const response = await fetch(SummaryApi.uploadProduct.url, {
       method: SummaryApi.uploadProduct.method,
       credentials: "include",
@@ -84,8 +85,6 @@ const UploadProduct = ({ onClose, fetchData }) => {
       },
       body: JSON.stringify(data),
     });
-
-    
 
     const responseData = await response.json();
 
@@ -151,8 +150,8 @@ const UploadProduct = ({ onClose, fetchData }) => {
             onChange={handleOnChange}
             className="p-2 bg-slate-100 border rounded text-black"
           >
-            <option value={""}>Select Category</option>
-            {categories.map((category, index) => (
+            <option value="">Select Category</option>
+            {categories.map((category) => (
               <option value={category.categoryName} key={category._id}>
                 {category.categoryName}
               </option>

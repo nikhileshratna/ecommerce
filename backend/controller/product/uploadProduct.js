@@ -14,6 +14,9 @@ async function UploadProductController(req, res) {
         // Extract category from the request body
         const { category, ...productData } = req.body;
 
+        // Add the category to the product data
+        productData.category = category;
+
         // Find the category by its name
         const categoryToUpdate = await categoryModel.findOne({ categoryName: category });
         
