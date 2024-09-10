@@ -6,6 +6,10 @@ const categorySchema = mongoose.Schema({
         required: true,
         unique: true, // Ensures that the category name is unique
     },
+    productCont : {
+        type: Number,
+        default: 0
+    }
 }, {
     timestamps: true, // Adds createdAt and updatedAt timestamps
 });
