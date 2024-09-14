@@ -4,6 +4,7 @@ import SummaryApi from '../common';
 
 const EditOrderStatusModal = ({ orderId, currentStatus, onClose, fetchData }) => {
   const [status, setStatus] = useState(currentStatus);
+  const [loading, setLoading] = useState(false); // Add loading state
   const statusOptions = ['pending', 'shipped', 'delivered', 'canceled'];
 
   const handleStatusChange = (e) => {
@@ -11,6 +12,7 @@ const EditOrderStatusModal = ({ orderId, currentStatus, onClose, fetchData }) =>
   };
 
   const updateOrderStatus = async () => {
+    setLoading(true); // Show loading before the request starts
     try {
       const response = await fetch(SummaryApi.updateOrder.url, {
         method: "POST",
@@ -33,6 +35,8 @@ const EditOrderStatusModal = ({ orderId, currentStatus, onClose, fetchData }) =>
     } catch (error) {
       console.error("Error updating order status", error);
       toast.error('Error updating order status.');
+    } finally {
+      setLoading(false); // Hide loading after the request completes
     }
   };
 
@@ -58,16 +62,24 @@ const EditOrderStatusModal = ({ orderId, currentStatus, onClose, fetchData }) =>
           <button
             className='border-2 border-gray-600 text-gray-600 hover:bg-gray-600 hover:text-white transition-all py-1 px-3 rounded'
             onClick={onClose}
+            disabled={loading} // Disable cancel while loading
           >
             Cancel
           </button>
           <button
             className='border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white transition-all py-1 px-3 rounded'
             onClick={updateOrderStatus}
+            disabled={loading} // Disable update while loading
           >
-            Update
+            {loading ? 'Updating...' : 'Update'}
           </button>
         </div>
+
+        {loading && (
+          <div className='mt-4 text-center'>
+            <div>Updating.......Please Wait</div> {/* Simple loading message */}
+          </div>
+        )}
       </div>
     </div>
   );
