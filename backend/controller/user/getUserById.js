@@ -2,7 +2,7 @@ const userModel = require("../../models/userModel");
 
 async function userDetailsController(req, res) {
     try {
-        // Extract userId from request body or URL params
+        // Extract userId from either request body or URL params
         const userId = req.body.userId || req.params.userId;
 
         // Check if userId is provided
