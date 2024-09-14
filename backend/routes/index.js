@@ -123,7 +123,8 @@ router.get("/track-order/:id", trackOrder);
 router.get("/show-additional-details",authToken, fetchUserAdditionalDetailsController);
 router.post("/edit-additional-details",authToken, updateUserDetailsController);
 router.post("/update-userOrders",authToken, updateMyOrders);
-router.get("/get-user-details",userDetailsByIdController);
+router.get("/get-user-details/:userId",userDetailsByIdController);
+router.post("/get-user-details",userDetailsByIdController);
 
 //payments
 router.post("/capturePayment",authToken, capturePayment)

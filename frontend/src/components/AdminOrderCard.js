@@ -24,19 +24,19 @@ const AdminOrderCard = ({ data, fetchData }) => {
     }
 
     return (
-        <div className='bg-white p-4 rounded shadow-md w-full md:w-[49%] h-full'>
+        <div className='bg-white p-4 rounded shadow-md w-full md:w-[49%] '>
             <div className='w-full'>
                 <h1 className='font-bold mb-2'>Order #{_id}</h1>
                 <p className='text-ellipsis line-clamp-2 mb-2'>Order Date: {new Date(createdAt).toLocaleDateString()}</p>
                 <div>
-                    <p className='font-semibold'>Total Price: ₹{totalPrice}</p>
+                    {/* <p className='font-semibold'>Total Price: ₹{totalPrice}</p> */}
                     <p className='mb-2'>Order Status: 
                         <span className={`font-bold ${orderStatus === "completed" ? "text-green-600" : "text-red-600"}`}>
                             {orderStatus}
                         </span>
                     </p>
                     
-                    <div>
+                    {/* <div>
                         <strong>Products:</strong>
                         <ul>
                             {productIds.map((productId, index) => (
@@ -45,7 +45,7 @@ const AdminOrderCard = ({ data, fetchData }) => {
                                 </li>
                             ))}
                         </ul>
-                    </div>
+                    </div> */}
 
                     <div className='flex flex-col sm:flex-row justify-end mt-4 w-full gap-2'>
                         <button 
