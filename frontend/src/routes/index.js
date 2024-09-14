@@ -17,6 +17,7 @@ import MyOrders from '../pages/MyOrders'
 import TrackOrder from '../pages/TrackOrder'
 import AllBlogs from '../pages/AllBlogs'
 import AllCategories from '../pages/AllCategory'
+import AllOrders from '../pages/AllOrders'
 
 const router = createBrowserRouter([
     {
@@ -78,6 +79,10 @@ const router = createBrowserRouter([
                     {
                         path : "all-categories",
                         element : <AllCategories/>
+                    },
+                    {
+                        path : "all-orders" , 
+                        element : <AllOrders/>
                     }
                 ]
             },

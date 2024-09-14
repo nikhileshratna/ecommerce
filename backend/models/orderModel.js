@@ -8,7 +8,7 @@ const orderSchema = mongoose.Schema({
         enum: ['pending', 'shipped', 'delivered', 'canceled'],
         default: 'pending'
     },
-    paymentStatus : { type: String , default: 'paid' },
+    paymentStatus : { type: String , default: 'cod' },
     customerId: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
 }, {
     timestamps: true
