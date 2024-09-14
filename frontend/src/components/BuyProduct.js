@@ -13,6 +13,24 @@ const PRODUCT_VERIFY_API = `${BASE_URL}/verifyPayment`;
 const EMAIL = process.env.REACT_APP_SHIPROCKET_EMAIL;
 const PASSWORD = process.env.REACT_APP_SHIPROCKET_PASS;
 
+const makeDataObject = (products,token, paymentStatus) => {
+    const data = { 
+        productIds: [],
+        quantities: [],
+        paymentStatus: paymentStatus,
+        token : token
+    };
+
+    // Map through products and populate productIds and quantities
+    products.forEach(product => {
+        data.productIds.push(product.productId._id); // Push product ID
+        data.quantities.push(product.quantity); // Push product quantity
+    });
+
+    return data;
+};
+
+
 const generateUniqueOrderId = () => {
     const timestamp = Date.now();
     const randomComponent = CryptoJS.lib.WordArray.random(16).toString(); // Generates a random string
@@ -42,7 +60,7 @@ const addOrderToShiprocket = async (products, totalPrice, user, token , cod) => 
         if (!loginResponse.ok || !shiprocketToken) {
             throw new Error('Login failed');
         }
-
+        
         const orderItems = products.map(product => ({
             "name": product.productId.productName,
             "sku": product.productId._id,
@@ -109,6 +127,29 @@ const addOrderToShiprocket = async (products, totalPrice, user, token , cod) => 
                 'Authorization': `Bearer ${shiprocketToken}`
             }
         });
+
+        const response = await fetch(SummaryApi.uploadMyOrder.url, {
+            method: SummaryApi.uploadMyOrder.method,
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(makeDataObject(products,token, cod ? "COD" : "Prepaid" )),
+          });
+      
+        //   const responseData = await response.json();
+      
+        //   if (responseData.success) {
+        //     toast.success(responseData.message);
+        //     onClose();
+        //     fetchData();
+        //   } else {
+        //     toast.error(responseData.message);
+        //   }
+       
+
+
+
 
     } catch (error) {
         console.error('Error:', error);
@@ -182,6 +223,7 @@ export async function BuyProduct(products, total_amount, token, user, navigate, 
         toast.success("Order will be delivered soon");
         resetCart(token);
         navigate("/");
+        
         return;
     }
     console.log("base:", BASE_URL);
