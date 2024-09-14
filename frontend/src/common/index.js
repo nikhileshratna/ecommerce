@@ -71,6 +71,10 @@ const SummaryApi = {
         url: `${backendDomin}/api/upload-category`,
         method: 'post'
     },
+    getMyOrder: {
+        url: `${backendDomin}/api/get-order`,
+        method: 'get'
+    },
     getCategory : {
         url: `${backendDomin}/api/get-category`,
         method: 'get'

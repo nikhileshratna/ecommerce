@@ -58,6 +58,7 @@ const UploadCategoryController = require("../controller/category/uploadCategory"
 const deleteCategoryController = require("../controller/category/deleteCategory");
 const getCategoryController = require("../controller/category/getCategory");
 const UploadOrderController = require("../controller/order/uploadOrder");
+const getOrderController = require("../controller/order/getOrder");
 
 router.post("/login", login);
 router.post("/signup", signup);
@@ -94,7 +95,7 @@ router.get("/get-category", getCategoryController);
 
 //order
 router.post("/upload-order", authToken, UploadOrderController);
-router.get("/get-order",  UploadOrderController);
+router.get("/get-order",  getOrderController);
 router.post("/update-order",  updateMyOrders);
 
 //product
