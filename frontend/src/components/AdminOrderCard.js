@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import SummaryApi from '../common';
 import ProductDetailsModal from './ProductDetailsModal';
 import CustomerDetailsModal from './CustomerDetailsModal';
+import EditOrderStatusModal from './EditOrderStatusModal'; // Import EditOrderStatusModal
 
 const AdminOrderCard = ({ data, fetchData }) => {
     const { productIds, quantities, totalPrice, orderStatus, createdAt, _id } = data;
@@ -19,9 +20,9 @@ const AdminOrderCard = ({ data, fetchData }) => {
         setShowCustomerDetails(!showCustomerDetails);
     };
 
-    const editOrderHandler = () => {
-        console.log("edit order handler clciked");
-    }
+    const toggleEditOrder = () => {
+        setEditOrder(!editOrder);
+    };
 
     return (
         <div className='bg-white p-4 rounded shadow-md w-full md:w-[49%] '>
@@ -29,23 +30,11 @@ const AdminOrderCard = ({ data, fetchData }) => {
                 <h1 className='font-bold mb-2'>Order #{_id}</h1>
                 <p className='text-ellipsis line-clamp-2 mb-2'>Order Date: {new Date(createdAt).toLocaleDateString()}</p>
                 <div>
-                    {/* <p className='font-semibold'>Total Price: ₹{totalPrice}</p> */}
                     <p className='mb-2'>Order Status: 
                         <span className={`font-bold ${orderStatus === "completed" ? "text-green-600" : "text-red-600"}`}>
                             {orderStatus}
                         </span>
                     </p>
-                    
-                    {/* <div>
-                        <strong>Products:</strong>
-                        <ul>
-                            {productIds.map((productId, index) => (
-                                <li key={index} className='text-sm'>
-                                    Product ID: {productId} | Quantity: {quantities[index]}
-                                </li>
-                            ))}
-                        </ul>
-                    </div> */}
 
                     <div className='flex flex-col sm:flex-row justify-end mt-4 w-full gap-2'>
                         <button 
@@ -63,7 +52,7 @@ const AdminOrderCard = ({ data, fetchData }) => {
 
                         <button 
                             className='border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white transition-all py-2 px-3 rounded w-full sm:w-auto'
-                            onClick={editOrderHandler}
+                            onClick={toggleEditOrder}
                         >
                             Edit Order Status
                         </button>
@@ -72,10 +61,12 @@ const AdminOrderCard = ({ data, fetchData }) => {
             </div>
 
             {editOrder && (
-                <div>
-                    {/* Add your AdminEditOrder component here for editing */}
-                    {/* <AdminEditOrder orderData={data} onClose={() => setEditOrder(false)} fetchData={fetchData} /> */}
-                </div>
+                <EditOrderStatusModal
+                    orderId={_id}
+                    currentStatus={orderStatus}
+                    onClose={toggleEditOrder}
+                    fetchData={fetchData}
+                />
             )}
 
             {showProductDetails && (

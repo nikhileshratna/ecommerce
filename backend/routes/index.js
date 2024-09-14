@@ -60,6 +60,7 @@ const getCategoryController = require("../controller/category/getCategory");
 const UploadOrderController = require("../controller/order/uploadOrder");
 const getOrderController = require("../controller/order/getOrder");
 const userDetailsByIdController = require("../controller/user/getUserById");
+const updateOrderController = require("../controller/order/updateOrder");
 
 router.post("/login", login);
 router.post("/signup", signup);
@@ -97,7 +98,7 @@ router.get("/get-category", getCategoryController);
 //order
 router.post("/upload-order", authToken, UploadOrderController);
 router.get("/get-order",  getOrderController);
-router.post("/update-order",  updateMyOrders);
+router.post("/update-order",  updateOrderController);
 
 //product
 router.post("/upload-product", UploadProductController);
