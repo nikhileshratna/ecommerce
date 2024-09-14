@@ -1,9 +1,9 @@
 const userModel = require("../../models/userModel");
 
-async function userDetailsByIdController(req, res) {
+async function userDetailsController(req, res) {
     try {
-        // Extract userId from the request body
-        const { userId } = req.body;
+        // Extract userId from request body or URL params
+        const userId = req.body.userId || req.params.userId;
 
         // Check if userId is provided
         if (!userId) {
@@ -44,4 +44,4 @@ async function userDetailsByIdController(req, res) {
     }
 }
 
-module.exports = userDetailsByIdController;
+module.exports = userDetailsController;

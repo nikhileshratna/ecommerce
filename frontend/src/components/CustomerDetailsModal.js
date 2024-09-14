@@ -1,6 +1,27 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import SummaryApi from '../common';
 
 const CustomerDetailsModal = ({ customerId, onClose }) => {
+    const [data, setData] = React.useState({});
+    const fetchCustomerDetails = async () => {
+        const response = await fetch(SummaryApi.userDetailById.url, {
+          method: SummaryApi.productDetails.method,
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: customerId,
+          }),
+        });
+        const dataResponse = await response.json();
+        console.log(dataResponse?.data);
+        setData( dataResponse?.data );
+      };
+
+      useEffect(() => {
+        fetchCustomerDetails();
+      },[]);
+    
     return (
         <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center'>
             <div className='bg-white p-4 rounded shadow-md'>

@@ -19,6 +19,10 @@ const AdminOrderCard = ({ data, fetchData }) => {
         setShowCustomerDetails(!showCustomerDetails);
     };
 
+    const editOrderHandler = () => {
+        console.log("edit order handler clciked");
+    }
+
     return (
         <div className='bg-white p-4 rounded shadow-md w-full md:w-[49%] h-full'>
             <div className='w-full'>
@@ -55,6 +59,13 @@ const AdminOrderCard = ({ data, fetchData }) => {
                             onClick={toggleCustomerDetails}
                         >
                             See Customer Details
+                        </button>
+
+                        <button 
+                            className='border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white transition-all py-2 px-3 rounded w-full sm:w-auto'
+                            onClick={editOrderHandler}
+                        >
+                            Edit Order Status
                         </button>
                     </div>
                 </div>
