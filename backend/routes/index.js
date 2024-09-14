@@ -59,6 +59,7 @@ const deleteCategoryController = require("../controller/category/deleteCategory"
 const getCategoryController = require("../controller/category/getCategory");
 const UploadOrderController = require("../controller/order/uploadOrder");
 const getOrderController = require("../controller/order/getOrder");
+const userDetailsByIdController = require("../controller/user/getUserById");
 
 router.post("/login", login);
 router.post("/signup", signup);
@@ -122,6 +123,7 @@ router.get("/track-order/:id", trackOrder);
 router.get("/show-additional-details",authToken, fetchUserAdditionalDetailsController);
 router.post("/edit-additional-details",authToken, updateUserDetailsController);
 router.post("/update-userOrders",authToken, updateMyOrders);
+router.get("/get-user-details",userDetailsByIdController);
 
 //payments
 router.post("/capturePayment",authToken, capturePayment)

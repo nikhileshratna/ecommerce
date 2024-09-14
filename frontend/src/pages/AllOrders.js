@@ -4,6 +4,7 @@ import AdminOrderCard from '../components/AdminOrderCard'; // Assuming you have 
 
 const AllOrders = () => {
   const [allOrders, setAllOrders] = useState([]);
+  const [productData, setProductData] = useState([]);
 
   const fetchAllOrders = async () => {
     const response = await fetch(SummaryApi.getMyOrder.url); // Replace with your actual endpoint
@@ -12,7 +13,9 @@ const AllOrders = () => {
     console.log("order data", dataResponse);
 
     setAllOrders(dataResponse?.data || []);
+
     
+
   };
 
   useEffect(() => {
@@ -30,7 +33,7 @@ const AllOrders = () => {
         {
           allOrders?.map((order, index) => {
             return (
-              <AdminOrderCard data={order} key={index + "allOrders"} fetchData={fetchAllOrders} />
+              <AdminOrderCard data={order} productData = {productData} key={index + "allOrders"} fetchData={fetchAllOrders} />
             );
           })
         }
