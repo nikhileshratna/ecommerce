@@ -57,7 +57,7 @@ const updateMyOrders = async (req, res) => {
     //   }
 
       profile.myOrders.push({
-        orderId: orderDetails._id,
+        orderId: orderId,
         shipment_id: shipment_id
       });
     // }
