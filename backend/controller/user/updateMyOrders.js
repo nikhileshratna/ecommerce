@@ -4,7 +4,7 @@ const orderModel = require("../../models/orderModel");
 
 const updateMyOrders = async (req, res) => {
   const userId = req.userId;
-  const { orders, shipment_id } = req.body;
+  const { orderId, shipment_id } = req.body;
 
   try {
     const user = await userSchema.findById(userId);
@@ -45,22 +45,22 @@ const updateMyOrders = async (req, res) => {
     profile = await Profile.findById(user.additionalDetails);
 
     // Iterate over each order and add to myOrders in the profile
-    for (let order of orders) {
-      const orderDetails = await orderModel.findById(order?.orderId);
+    // for (let order of orderId) {
+    //   const orderDetails = await orderModel.findById(order?.orderId);
 
-      if (!orderDetails) {
-        return res.status(400).json({
-          message: "Order not found",
-          error: true,
-          success: false,
-        });
-      }
+    //   if (!orderDetails) {
+    //     return res.status(400).json({
+    //       message: "Order not found",
+    //       error: true,
+    //       success: false,
+    //     });
+    //   }
 
       profile.myOrders.push({
         orderId: orderDetails._id,
         shipment_id: shipment_id
       });
-    }
+    // }
 
     await profile.save();
     res.status(200).json(profile);
