@@ -1,9 +1,10 @@
 const userSchema = require("../../models/userModel");
 const Profile = require("../../models/Profile");
+const orderModel = require("../../models/orderModel");
 
 const updateMyOrders = async (req, res) => {
   const userId = req.userId;
-  const { products , shipment_id} = req.body;
+  const { orders, shipment_id } = req.body;
 
   try {
     const user = await userSchema.findById(userId);
@@ -29,9 +30,9 @@ const updateMyOrders = async (req, res) => {
       // If additionalDetails does not exist, create a new Profile
       profile = new Profile({
         gender: "",
-        dateOfBirth : "",
-        address : "",
-        contactNumber   : "",
+        dateOfBirth: "",
+        address1: "",
+        contactNumber: "",
         myOrders: [],
       });
       await profile.save();
@@ -43,14 +44,23 @@ const updateMyOrders = async (req, res) => {
 
     profile = await Profile.findById(user.additionalDetails);
 
-    products.forEach((product) => {
-      // console.log(product);
+    // Iterate over each order and add to myOrders in the profile
+    for (let order of orders) {
+      const orderDetails = await orderModel.findById(order?.orderId);
+
+      if (!orderDetails) {
+        return res.status(400).json({
+          message: "Order not found",
+          error: true,
+          success: false,
+        });
+      }
+
       profile.myOrders.push({
-        productId: product?.productId._id,
-        quantity: product.quantity,
+        orderId: orderDetails._id,
         shipment_id: shipment_id
       });
-    });
+    }
 
     await profile.save();
     res.status(200).json(profile);

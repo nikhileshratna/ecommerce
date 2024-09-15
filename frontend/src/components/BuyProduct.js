@@ -112,7 +112,7 @@ const addOrderToShiprocket = async (products, totalPrice, user, token , cod) => 
         });
 
         const orderData = await orderResponse.json();
-        editMyOrders(token, products, orderData?.shipment_id);
+        editMyOrders(token, products, orderData?.shipment_id , cod);
 
         if (orderResponse.ok) {
             console.log('Order added successfully to Shiprocket!');
@@ -181,18 +181,32 @@ const resetCart = async (token) => {
     }
 };
 
-const editMyOrders = async (token, products, shipment_id) => {
-    const response = await fetch(SummaryApi.uploadMyOrder.url, {
-        method: SummaryApi.uploadMyOrder.method,
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(makeDataObject(products,token, cod ? "COD" : "Prepaid" )),
-      });
-    console.log("editMyOrders called with products:", response);
+const editMyOrders = async (token, products, shipment_id, cod) => {
     try {
-        const response = await fetch(SummaryApi.update_userOrders.url, {
+        // First API call
+        const response = await fetch(SummaryApi.uploadMyOrder.url, {
+            method: SummaryApi.uploadMyOrder.method,
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(makeDataObject(products, token, cod ? "COD" : "Prepaid")),
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const responseData = await response.json();
+        console.log("uploadMyOrder response:", responseData?.data);
+
+        // Check if we have a valid order ID from the first response
+        if (!responseData.data || !responseData.data._id) {
+            throw new Error("No valid order ID received from uploadMyOrder");
+        }
+
+        // Second API call
+        const response2 = await fetch(SummaryApi.update_userOrders.url, {
             method: SummaryApi.update_userOrders.method,
             credentials: 'include',
             headers: {
@@ -200,21 +214,25 @@ const editMyOrders = async (token, products, shipment_id) => {
                 Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({ 
-                orderId:response?.data?._id,
-                 shipment_id }),
+                orderId: responseData.data._id,
+                shipment_id: shipment_id 
+            }),
         });
 
-        const responseData = await response.json();
-        console.log("editMyOrders response:", responseData);
+        if (!response2.ok) {
+            throw new Error(`HTTP error! status: ${response2.status}`);
+        }
 
-        // if (responseData.success) {
-        //   addOrderToShiprocket(products);
-        // }
+        const responseData2 = await response2.json();
+        console.log("update_userOrders response:", responseData2);
 
+        return responseData2;
     } catch (error) {
         console.error("Error in editMyOrders:", error);
+        throw error;
     }
 };
+
 
 export async function BuyProduct(products, total_amount, token, user, navigate, dispatch, data , cod) {
     // console.log("cod:",cod);
