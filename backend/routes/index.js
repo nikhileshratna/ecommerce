@@ -61,6 +61,7 @@ const UploadOrderController = require("../controller/order/uploadOrder");
 const getOrderController = require("../controller/order/getOrder");
 const userDetailsByIdController = require("../controller/user/getUserById");
 const updateOrderController = require("../controller/order/updateOrder");
+const getBlogDetails = require("../controller/blog/getBlogDetail");
 
 router.post("/login", login);
 router.post("/signup", signup);
@@ -89,6 +90,7 @@ router.post("/upload-blog", UploadBlogController);
 router.get("/get-blog", getBlogController);
 router.post("/update-blog", updateBlogController);
 router.delete("/delete-blog", deleteBlogController);
+router.post("/get-blog-details", getBlogDetails);
 
 //category
 router.post("/upload-category", UploadCategoryController);
