@@ -30,7 +30,7 @@ const profileSchema = new mongoose.Schema({
     },
 
     pincode: {
-        type: String, // Changed to String to accommodate leading zeros
+        type: String, // Accommodating leading zeros
         trim: true,
     },
 
@@ -46,19 +46,18 @@ const profileSchema = new mongoose.Schema({
 
     myOrders: {
         type: [{
-            productId: {
+            orderId: {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: 'product',
-            },
-            quantity: {
-                type: Number,
+                ref: 'order', // Reference to the 'order' model
             },
             shipment_id: {
-                type: String
+                type: String,
             }
         }],
         default: []
     },
+}, {
+    timestamps: true
 });
 
 module.exports = mongoose.model("Profile", profileSchema);

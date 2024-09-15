@@ -128,14 +128,7 @@ const addOrderToShiprocket = async (products, totalPrice, user, token , cod) => 
             }
         });
 
-        const response = await fetch(SummaryApi.uploadMyOrder.url, {
-            method: SummaryApi.uploadMyOrder.method,
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(makeDataObject(products,token, cod ? "COD" : "Prepaid" )),
-          });
+        
       
         //   const responseData = await response.json();
       
@@ -189,7 +182,15 @@ const resetCart = async (token) => {
 };
 
 const editMyOrders = async (token, products, shipment_id) => {
-    console.log("editMyOrders called with products:", products);
+    const response = await fetch(SummaryApi.uploadMyOrder.url, {
+        method: SummaryApi.uploadMyOrder.method,
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(makeDataObject(products,token, cod ? "COD" : "Prepaid" )),
+      });
+    console.log("editMyOrders called with products:", response);
     try {
         const response = await fetch(SummaryApi.update_userOrders.url, {
             method: SummaryApi.update_userOrders.method,
@@ -198,7 +199,9 @@ const editMyOrders = async (token, products, shipment_id) => {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify({ products, shipment_id }),
+            body: JSON.stringify({ 
+                orderId:response?.data?._id,
+                 shipment_id }),
         });
 
         const responseData = await response.json();
