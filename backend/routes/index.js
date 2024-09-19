@@ -63,6 +63,7 @@ const userDetailsByIdController = require("../controller/user/getUserById");
 const updateOrderController = require("../controller/order/updateOrder");
 const getBlogDetails = require("../controller/blog/getBlogDetail");
 const { getOrderById } = require("../controller/order/getOrderById");
+const addReviewController = require("../controller/product/addRatingController");
 
 router.post("/login", login);
 router.post("/signup", signup);
@@ -114,7 +115,7 @@ router.post("/product-details", getProductDetails);
 router.get("/search", searchProduct);
 router.post("/filter-product", filterProductController);
 router.delete("/delete-product", deleteProductController);
-
+router.post("/add-rating",authToken , addReviewController);
 //user add to cart
 router.post("/addtocart",authToken, addToCart);
 router.get("/countAddToCartProduct",authToken, countProductsInCart);
