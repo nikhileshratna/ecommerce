@@ -10,6 +10,15 @@ exports.googleAuth = async (req, res) => {
 
     console.log("Received Google Auth request:", { uid, name, email, profilePic });
 
+    // Ensure UID is present
+    if (!uid || typeof uid !== 'string' || uid.length === 0) {
+      console.error("Invalid UID:", uid);
+      return res.status(400).json({
+        success: false,
+        message: "Invalid or missing UID for Google authentication.",
+      });
+    }
+
     // Check if user already exists
     let user = await userModel.findOne({ email });
     console.log("User lookup result:", user);
