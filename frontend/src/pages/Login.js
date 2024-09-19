@@ -91,7 +91,8 @@ const Login = () => {
                     </div>
                 </div>
             </section>
-            <button className='mb-4 w-50 mx-auto '>
+            <button className='mb-4 w-50 mx-auto '
+            >
                 <GoogleLoginButton loginType='login' />
             </button>
         </div>

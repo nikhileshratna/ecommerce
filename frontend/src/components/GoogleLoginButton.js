@@ -60,6 +60,8 @@ const GoogleLoginButton = ({ loginType, accountType }) => {
         refreshToken,
       };
 
+      console.log("userData", userData);
+
       dispatch(googleLogin(userData,navigate));
 
       // if (loginType === "signup") {
@@ -92,7 +94,7 @@ const GoogleLoginButton = ({ loginType, accountType }) => {
 
   return (
     <div>
-      <div className="flex justify-center cursor-pointer" onClick={googleLogin}>
+      <div className="flex justify-center cursor-pointer" onClick={googleLogin2}>
         <button className="gsi-material-button">
           <div className="gsi-material-button-state"></div>
           <div className="gsi-material-button-content-wrapper">

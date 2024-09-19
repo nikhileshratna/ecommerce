@@ -8,8 +8,11 @@ exports.googleAuth = async (req, res) => {
   try {
     const { uid, name, email, profilePic } = req.body;
 
+    console.log("Received Google Auth request:", { uid, name, email, profilePic });
+
     // Check if user already exists
     let user = await userModel.findOne({ email });
+    console.log("User lookup result:", user);
 
     if (user) {
       // User exists, log them in
@@ -20,6 +23,7 @@ exports.googleAuth = async (req, res) => {
           expiresIn: "24h",
         }
       );
+      console.log("Generated token for existing user:", token);
 
       user.token = token;
       user.password = undefined;
@@ -29,6 +33,7 @@ exports.googleAuth = async (req, res) => {
         httpOnly: true,
       };
 
+      console.log("Login successful for existing user:", user);
       return res.cookie("token", token, options).status(200).json({
         success: true,
         token,
@@ -36,8 +41,11 @@ exports.googleAuth = async (req, res) => {
         message: `User logged in successfully with Google`,
       });
     } else {
+      console.log("User does not exist, proceeding with registration");
+
       // Hash the uid to store as password
       const hashedUid = await bcrypt.hash(uid, 10);
+      console.log("Hashed UID:", hashedUid);
 
       // Create a new profile
       const profile = new Profile({
@@ -53,6 +61,7 @@ exports.googleAuth = async (req, res) => {
       });
 
       await profile.save();
+      console.log("Profile created and saved:", profile);
 
       // Create a new user
       user = new userModel({
@@ -66,6 +75,7 @@ exports.googleAuth = async (req, res) => {
       });
 
       await user.save();
+      console.log("New user created and saved:", user);
 
       const token = jwt.sign(
         { email: user.email, id: user._id, role: user.role },
@@ -74,6 +84,7 @@ exports.googleAuth = async (req, res) => {
           expiresIn: "24h",
         }
       );
+      console.log("Generated token for new user:", token);
 
       user.token = token;
       user.password = undefined;
@@ -83,6 +94,7 @@ exports.googleAuth = async (req, res) => {
         httpOnly: true,
       };
 
+      console.log("Registration successful for new user:", user);
       return res.cookie("token", token, options).status(200).json({
         success: true,
         token,
@@ -91,7 +103,7 @@ exports.googleAuth = async (req, res) => {
       });
     }
   } catch (error) {
-    console.error(error);
+    console.error("Error in Google Auth:", error);
     return res.status(500).json({
       success: false,
       message: "Google authentication failed. Please try again.",
