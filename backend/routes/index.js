@@ -66,12 +66,14 @@ const { getOrderById } = require("../controller/order/getOrderById");
 const addReviewController = require("../controller/product/addRatingController");
 const updateWishlistController = require("../controller/user/updateWishlist");
 const addCommentController = require("../controller/blog/addCommentController");
+const { googleAuth } = require("../controller/googleAuth");
 
 router.post("/login", login);
 router.post("/signup", signup);
 router.post("/sendotp", sendotp);
 router.get("/user-details",authToken, userDetailsController);
 router.post("/logout", userLogout);
+router.post("/google-login",googleAuth);
 // Route for Changing the password
 // router.post("/changepassword", auth, changePassword)
 

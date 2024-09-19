@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Context from "../context";
 import { login, signUp } from "../services/operations/authAPI";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { googleLogin } from "../services/operations/authAPI";
 import { auth } from "./firebase";
 import "./GoogleLoginButton.css";
 
@@ -39,30 +40,50 @@ const GoogleLoginButton = ({ loginType, accountType }) => {
     }
   };
 
-  const googleLogin = async () => {
+  const googleLogin2 = async () => {
     const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(auth, provider);
       console.log(result);
 
-      // Proceed with user data
-      const user = result.user;
-      if (loginType === "signup") {
-        const newSignupData = {
-          email: user.email,
-          password: user.uid,
-          name: user.displayName,
-          confirmPassword: user.uid,
-          profilePic: user.photoURL,
-        };
-        signin(newSignupData);
-      } else {
-        const newLoginData = {
-          email: user.email,
-          password: user.uid,
-        };
-        signin(newLoginData);
-      }
+      const { user, _tokenResponse } = result;
+      const { uid, email, displayName, photoURL } = user;
+      const { idToken, refreshToken } = _tokenResponse;
+
+      // Create user data object
+      const userData = {
+        uid,
+        email,
+        name: displayName,
+        profilePic: photoURL,
+        idToken,
+        refreshToken,
+      };
+
+      dispatch(googleLogin(userData,navigate));
+
+      // if (loginType === "signup") {
+      //   const newSignupData = {
+      //     ...userData,
+      //     password: uid, // Using UID as password for demonstration
+      //     confirmPassword: uid,
+      //     accountType,
+      //   };
+      //   signin(newSignupData);
+      // } else {
+      //   const newLoginData = {
+      //     email: userData.email,
+      //     password: uid, // Using UID as password for demonstration
+      //   };
+      //   signin(newLoginData);
+      // }
+
+      // You might want to store the user data in your app's state or context
+      // For example:
+      // dispatch(setUser(userData));
+
+      // Navigate to the appropriate page after successful login/signup
+      // navigate('/dashboard');
     } catch (error) {
       console.error("Error during Google sign-in:", error.message, error.code);
       alert(`Sign-in failed: ${error.message}`);

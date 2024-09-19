@@ -11,6 +11,7 @@ const BASE_URL = process.env.REACT_APP_BASE_URL
 const SENDOTP_API = `${BASE_URL}/sendotp`
 const SIGNUP_API = `${BASE_URL}/signup`
 const LOGIN_API = `${BASE_URL}/login`
+const GOOGLE_AUTH_API = `${BASE_URL}/google-login`
 // const RESETPASSTOKEN_API = `${BASE_URL}/reset-password-token`
 // const RESETPASSWORD_API = `${BASE_URL}/reset-password`
 
@@ -122,6 +123,36 @@ export function login(email, password, navigate) {
     dispatch(setLoading(false))
     toast.dismiss(toastId)
 
+  }
+}
+
+export function googleLogin(userData, navigate) {
+  return async (dispatch) => {
+    const toastId = toast.loading("Logging in with Google...")
+    dispatch(setLoading(true))
+    try {
+      const response = await apiConnector("POST", GOOGLE_AUTH_API, {
+        userData, 
+      })
+
+      console.log("GOOGLE LOGIN API RESPONSE............", response)
+
+      if (!response.data.success) {
+        throw new Error(response.data.message)
+      }
+
+      toast.success("Google Login Successful")
+      dispatch(setToken(response.data.token))
+      dispatch(setUser({...response.data.user}))
+      localStorage.setItem("token", JSON.stringify(response.data.token))
+      navigate("/")
+    } catch (error) {
+      console.log("GOOGLE LOGIN API ERROR............", error)
+      toast.error("Google Login Failed")
+      navigate("/login")
+    }
+    dispatch(setLoading(false))
+    toast.dismiss(toastId)
   }
 }
 
