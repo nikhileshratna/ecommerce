@@ -7,7 +7,7 @@ require("dotenv").config();
 exports.googleAuth = async (req, res) => {
   try {
     console.log("req body" , req.body);
-    const { uid, name, email, profilePic } = req.body;
+    const { uid, name, email, profilePic } = req.body.userData;
 
     console.log("Received Google Auth request:", { uid, name, email, profilePic });
 
