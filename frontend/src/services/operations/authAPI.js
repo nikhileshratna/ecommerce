@@ -130,6 +130,7 @@ export function googleLogin(userData, navigate) {
   return async (dispatch) => {
     const toastId = toast.loading("Logging in with Google...")
     dispatch(setLoading(true))
+    console.log("userData",userData);
     try {
       const response = await apiConnector("POST", GOOGLE_AUTH_API, {
         userData, 
