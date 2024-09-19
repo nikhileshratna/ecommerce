@@ -56,6 +56,17 @@ const profileSchema = new mongoose.Schema({
         }],
         default: []
     },
+
+    wishlist: {
+        type: [{
+            productId: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'product', // Reference to the 'product' model
+            }
+        }],
+        default: []
+    }
+
 }, {
     timestamps: true
 });

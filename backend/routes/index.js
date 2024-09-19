@@ -64,6 +64,8 @@ const updateOrderController = require("../controller/order/updateOrder");
 const getBlogDetails = require("../controller/blog/getBlogDetail");
 const { getOrderById } = require("../controller/order/getOrderById");
 const addReviewController = require("../controller/product/addRatingController");
+const updateWishlistController = require("../controller/user/updateWishlist");
+const addCommentController = require("../controller/blog/addCommentController");
 
 router.post("/login", login);
 router.post("/signup", signup);
@@ -93,6 +95,7 @@ router.get("/get-blog", getBlogController);
 router.post("/update-blog", updateBlogController);
 router.delete("/delete-blog", deleteBlogController);
 router.post("/get-blog-details", getBlogDetails);
+router.post("add-comment" , authToken , addCommentController);
 
 //category
 router.post("/upload-category", UploadCategoryController);
@@ -116,6 +119,7 @@ router.get("/search", searchProduct);
 router.post("/filter-product", filterProductController);
 router.delete("/delete-product", deleteProductController);
 router.post("/add-rating",authToken , addReviewController);
+
 //user add to cart
 router.post("/addtocart",authToken, addToCart);
 router.get("/countAddToCartProduct",authToken, countProductsInCart);
@@ -131,6 +135,7 @@ router.post("/edit-additional-details",authToken, updateUserDetailsController);
 router.post("/update-userOrders",authToken, updateMyOrders);
 router.get("/get-user-details/:userId",userDetailsByIdController);
 router.post("/get-user-details",userDetailsByIdController);
+router.post("/update-wishlist",authToken, updateWishlistController);  
 
 //payments
 router.post("/capturePayment",authToken, capturePayment)
