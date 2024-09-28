@@ -1,12 +1,14 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
+// Review Schema
 const reviewSchema = mongoose.Schema({
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },  // Reference to User model
     rating: { type: Number, required: true, min: 1, max: 5 },  // Rating out of 5
     review: { type: String },  // User's review
     date: { type: Date, default: Date.now }  // Date of review
-})
+});
 
+// Product Schema
 const productSchema = mongoose.Schema({
     productName: String,
     brandName: String,
@@ -18,12 +20,23 @@ const productSchema = mongoose.Schema({
     howToUse: String,
     benefits: String,
     ingredients: String,
-    reviews: { type: [reviewSchema], default: [] },  // Default value as an empty array
-    averageRating: { type: Number, default: 0 }  // Average rating of product
+    reviews: { type: [reviewSchema], default: [] },  // Reviews array
+    averageRating: { type: Number, default: 0 }  // Average rating of the product
 }, {
     timestamps: true
-})
+});
 
-const productModel = mongoose.model('product', productSchema)
+// Pre-save hook to calculate average rating
+productSchema.pre('save', function(next) {
+    if (this.reviews && this.reviews.length > 0) {
+        const totalRating = this.reviews.reduce((sum, review) => sum + review.rating, 0);
+        this.averageRating = totalRating / this.reviews.length;  // Calculate the average
+    } else {
+        this.averageRating = 0;  // No reviews, set rating to 0
+    }
+    next();
+});
 
-module.exports = productModel
+const productModel = mongoose.model('product', productSchema);
+
+module.exports = productModel;
