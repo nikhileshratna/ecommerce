@@ -26,16 +26,16 @@ const productSchema = mongoose.Schema({
     timestamps: true
 });
 
-// Pre-save hook to calculate average rating
-productSchema.pre('save', function(next) {
-    if (this.reviews && this.reviews.length > 0) {
-        const totalRating = this.reviews.reduce((sum, review) => sum + review.rating, 0);
-        this.averageRating = totalRating / this.reviews.length;  // Calculate the average
-    } else {
-        this.averageRating = 0;  // No reviews, set rating to 0
-    }
-    next();
-});
+// // Pre-save hook to calculate average rating
+// productSchema.pre('save', function(next) {
+//     if (this.reviews && this.reviews.length > 0) {
+//         const totalRating = this.reviews.reduce((sum, review) => sum + review.rating, 0);
+//         this.averageRating = totalRating / this.reviews.length;  // Calculate the average
+//     } else {
+//         this.averageRating = 0;  // No reviews, set rating to 0
+//     }
+//     next();
+// });
 
 const productModel = mongoose.model('product', productSchema);
 

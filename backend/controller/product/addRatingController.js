@@ -1,18 +1,28 @@
-const productModel = require('../../models/productModel')
+const productModel = require('../../models/productModel');
 
 async function addReviewController(req, res) {
     try {
         const { productId, rating, review } = req.body;
-        console.log("addReviewController", productId, rating, review, req.body);
 
         if (!rating) {
-            throw new Error("Rating are required");
+            throw new Error("Rating is required");
         }
 
         // Fetch the product by ID
         const product = await productModel.findById(productId);
         if (!product) {
             throw new Error("Product not found");
+        }
+
+        // Check if the user has already submitted a review
+        const existingReview = product.reviews.find(r => r.user.toString() === req.userId);
+
+        if (existingReview) {
+            return res.status(400).json({
+                message: "You have already reviewed this product",
+                error: true,
+                success: false
+            });
         }
 
         // Add new review to the product
