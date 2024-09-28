@@ -18,7 +18,7 @@ async function addReviewController(req, res) {
         const existingReview = product.reviews.find(r => r.user.toString() === req.userId);
 
         if (existingReview) {
-            return res.status(400).json({
+            return res.status(200).json({
                 message: "You have already reviewed this product",
                 // error: true,
                 success: false
