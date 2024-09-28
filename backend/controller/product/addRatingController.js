@@ -20,7 +20,7 @@ async function addReviewController(req, res) {
         if (existingReview) {
             return res.status(400).json({
                 message: "You have already reviewed this product",
-                error: true,
+                // error: true,
                 success: false
             });
         }
