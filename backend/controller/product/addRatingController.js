@@ -3,6 +3,7 @@ const productModel = require('../../models/productModel')
 async function addReviewController(req, res) {
     try {
         const { productId, rating, review } = req.body;
+        console.log("addReviewController", productId, rating, review, req.body);
 
         if (!rating) {
             throw new Error("Rating are required");
