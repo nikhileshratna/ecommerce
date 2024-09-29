@@ -1,4 +1,5 @@
 // import { toast } from "react-hot-toast"
+import SummaryApi from "../../common";
 import { setLoading, setUser } from "../../slices/profileSlice"
 import { apiConnector } from "../apiConnector"
 import { logout } from "./authAPI"
@@ -39,3 +40,18 @@ export function getUserDetails(token, navigate) {
     dispatch(setLoading(false))
   }
 }
+
+export const fetchCategories = async () => {
+  try {
+    const response = await fetch(SummaryApi.getCategory.url);
+    const dataResponse = await response.json();
+    console.log("Categories fetched:", dataResponse?.data);
+    return dataResponse?.data || []; // Set categories from the API response
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+  }
+};
+
+
+
+
