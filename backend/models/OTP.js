@@ -4,7 +4,11 @@ const emailTemplate = require("../mail/templates/emailVerificationTemplate");
 const OTPSchema = new mongoose.Schema({
 	email: {
 		type: String,
-		required: true,
+		default: "No email address",
+	},
+	phoneNumber:{
+		type: String,
+		default: "No phone number"
 	},
 	otp: {
 		type: String,
