@@ -26,7 +26,29 @@ const router = createBrowserRouter([
         children : [
             {
                 path : "",
-                element : <Home/>
+                element : <AdminPanel/>,
+                children : [
+                    {
+                        path : "all-users",
+                        element : <AllUsers/>
+                    },
+                    {
+                        path : "all-products",
+                        element : <AllProducts/>
+                    },
+                    {
+                        path : "all-blogs",
+                        element : <AllBlogs/>
+                    },
+                    {
+                        path : "all-categories",
+                        element : <AllCategories/>
+                    },
+                    {
+                        path : "all-orders" , 
+                        element : <AllOrders/>
+                    }
+                ]
             },
             {
                 path : "login",
