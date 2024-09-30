@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 // Comment schema for nested comments inside the blog
 const commentSchema = mongoose.Schema({
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },  // Reference to User model
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },  // Reference to User model
     commentText: { type: String, required: true },  // Comment text
     date: { type: Date, default: Date.now },  // Date of the comment
 });

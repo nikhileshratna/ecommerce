@@ -4,7 +4,7 @@ const getBlogDetails = async (req, res) => {
     try {
         const { blogId } = req.body;
 
-        const blog = await blogModel.findById(blogId);
+        const blog = await blogModel.findById(blogId).populate("comments.user");
 
         res.json({
             data: blog,
