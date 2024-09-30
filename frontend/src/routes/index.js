@@ -18,6 +18,7 @@ import TrackOrder from '../pages/TrackOrder'
 import AllBlogs from '../pages/AllBlogs'
 import AllCategories from '../pages/AllCategory'
 import AllOrders from '../pages/AllOrders'
+import AllContactUs from '../pages/AllContactUs'
 
 const router = createBrowserRouter([
     {
@@ -105,6 +106,10 @@ const router = createBrowserRouter([
                     {
                         path : "all-orders" , 
                         element : <AllOrders/>
+                    },
+                    {
+                        path : "add-contact",
+                        element : <AllContactUs/>
                     }
                 ]
             },

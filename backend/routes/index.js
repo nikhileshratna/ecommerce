@@ -67,6 +67,8 @@ const addReviewController = require("../controller/product/addRatingController")
 const updateWishlistController = require("../controller/user/updateWishlist");
 const addCommentController = require("../controller/blog/addCommentController");
 const { googleAuth } = require("../controller/googleAuth");
+const UploadContactController = require("../controller/contactUs/uploadContact");
+const GetAllContactsController = require("../controller/contactUs/getAllContact");
 
 router.post("/login", login);
 router.post("/signup", signup);
@@ -142,5 +144,9 @@ router.post("/update-wishlist",authToken, updateWishlistController);
 //payments
 router.post("/capturePayment",authToken, capturePayment)
 router.post("/verifyPayment",authToken, verifyPayment)
+
+//contact
+router.post("/contact-us" , authToken ,UploadContactController );
+router.get("/get-contact-us" , GetAllContactsController);
 
 module.exports = router;

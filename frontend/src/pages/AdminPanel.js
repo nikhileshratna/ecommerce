@@ -52,6 +52,9 @@ const AdminPanel = () => {
             <Link to={"all-orders"} className="px-2 py-1 hover:bg-slate-100">
               All Orders
             </Link>
+            <Link to={"all-contact"} className="px-2 py-1 hover:bg-slate-100">
+              All Contact
+            </Link>
           </nav>
         </div>
       </aside>
