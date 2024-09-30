@@ -97,7 +97,7 @@ router.get("/get-blog", getBlogController);
 router.post("/update-blog", updateBlogController);
 router.delete("/delete-blog", deleteBlogController);
 router.post("/get-blog-details", getBlogDetails);
-router.post("add-comment" , authToken , addCommentController);
+router.post("/add-comment" , authToken , addCommentController);
 
 //category
 router.post("/upload-category", UploadCategoryController);

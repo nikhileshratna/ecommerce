@@ -1,5 +1,5 @@
 const blogModel = require('../../models/blogModel');
-const uploadBlogPermission = require('../../helpers/permission');
+// const uploadBlogPermission = require('../../helpers/permission');
 
 async function addCommentController(req, res) {
     try {
