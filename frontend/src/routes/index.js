@@ -48,6 +48,10 @@ const router = createBrowserRouter([
                     {
                         path : "all-orders" , 
                         element : <AllOrders/>
+                    },
+                    {
+                        path : "add-contact",
+                        element : <AllContactUs/>
                     }
                 ]
             },

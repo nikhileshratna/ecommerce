@@ -151,6 +151,10 @@ const SummaryApi = {
     uploadImage : {
         url : `${backendDomin}/api/upload-file`,
         method : 'post',
+    },
+    allContact : {
+        url : `${backendDomin}/api/get-contact-us`,
+        method : 'get',
     }
 
 }
