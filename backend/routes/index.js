@@ -69,6 +69,8 @@ const addCommentController = require("../controller/blog/addCommentController");
 const { googleAuth } = require("../controller/googleAuth");
 const UploadContactController = require("../controller/contactUs/uploadContact");
 const GetAllContactsController = require("../controller/contactUs/getAllContact");
+const UploadCarouselController = require("../controller/carousel/uploadCarousel");
+const deleteCarouselController = require("../controller/carousel/deleteCarousel");
 
 router.post("/login", login);
 router.post("/signup", signup);
@@ -148,5 +150,9 @@ router.post("/verifyPayment",authToken, verifyPayment)
 //contact
 router.post("/contact-us" , authToken ,UploadContactController );
 router.get("/get-contact-us" , GetAllContactsController);
+
+//carousel
+router.post("/upload-carousel", UploadCarouselController);
+router.post("/delete-carousel", deleteCarouselController);
 
 module.exports = router;

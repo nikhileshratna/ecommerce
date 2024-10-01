@@ -7,7 +7,6 @@ const getBlogDetails = async (req, res) => {
         const blog = await blogModel
             .findById(blogId)
             .populate("comments.user") // Chain all populate methods before exec
-            .populate("user.additonalDetails")
             .exec(); // Call exec only once at the end to execute the query
 
         res.json({

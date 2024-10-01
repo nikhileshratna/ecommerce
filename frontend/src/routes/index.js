@@ -19,6 +19,7 @@ import AllBlogs from '../pages/AllBlogs'
 import AllCategories from '../pages/AllCategory'
 import AllOrders from '../pages/AllOrders'
 import AllContactUs from '../pages/AllContactUs'
+import AllCarousel from '../pages/AllCarousel'
 
 const router = createBrowserRouter([
     {
@@ -52,6 +53,10 @@ const router = createBrowserRouter([
                     {
                         path : "add-contact",
                         element : <AllContactUs/>
+                    },
+                    {
+                        path : "all-carousel",
+                        element : <AllCarousel/>
                     }
                 ]
             },

@@ -55,6 +55,9 @@ const AdminPanel = () => {
             <Link to={"add-contact"} className="px-2 py-1 hover:bg-slate-100">
               All Message
             </Link>
+            <Link to={"all-carousel"} className="px-2 py-1 hover:bg-slate-100">
+              All Carousel
+            </Link>
           </nav>
         </div>
       </aside>
